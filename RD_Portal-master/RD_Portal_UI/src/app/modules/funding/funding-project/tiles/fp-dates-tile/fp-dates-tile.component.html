@@ -1,0 +1,145 @@
+<div class="card border-secondary mb-1"  *ngIf="!isExternal; else External">
+    <div class="card-body" *ngIf="isAccepted; else Pending">
+        <h5 class="card-title">Dates</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="form-group row" *ngIf="fundDates?.received">
+                <label class="col-sm-3 col-form-label" *ngIf="!arr">Funding received date</label>
+                <label class="col-sm-3 col-form-label" *ngIf="arr">Funding Applied date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.received | date:'mediumDate' }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundDates?.start">
+                <label class="col-sm-3 col-form-label">Funding start date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.start | date:'mediumDate' }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundDates?.end">
+                <label class="col-sm-3 col-form-label">Funding end date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.end | date:'mediumDate' }}
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="fundDatesForm">
+                <div class="form-group row">
+                    
+                    <label class="col-sm-3 col-form-label" *ngIf="!arr">Funding received date</label>
+                    <label class="col-sm-3 col-form-label" *ngIf="arr">Funding Applied date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control col-sm-4" formControlName="received"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Funding start date</label>
+                    <div class="col-sm-9">
+                        <input 
+                            type="date"
+                            class="form-control col-sm-4"
+                            formControlName="start" 
+                            min="{{fundDatesForm.get('received').value}}"
+                            [readonly]="!fundDatesForm.get('received').value"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Funding end date</label>
+                    <div class="col-sm-9">
+                        <input
+                            type="date"
+                            class="form-control col-sm-4" 
+                            formControlName="end" 
+                            min="{{fundDatesForm.get('start').value}}"
+                            [readonly]="!fundDatesForm.get('start').value"/>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+    <ng-template #Pending>
+        <div class="card-body">
+            <h5 class="card-title text-muted">Dates</h5>
+            <p class="text-muted"> Will be available if applied funding has accepted</p>
+        </div>
+    </ng-template>
+</div>
+<ng-template #External>
+    <div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Dates</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="form-group row" *ngIf="fundDates?.applied">
+                <label class="col-sm-3 col-form-label" >Funding Applied date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.applied | date:'mediumDate' }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundDates?.received">
+                <label class="col-sm-3 col-form-label" >Funding Received date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.received | date:'mediumDate' }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundDates?.start">
+                <label class="col-sm-3 col-form-label">Funding start date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.start | date:'mediumDate' }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundDates?.end">
+                <label class="col-sm-3 col-form-label">Funding end date</label>
+                <div class="col-sm-9">
+                    {{fundDates?.end | date:'mediumDate' }}
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="fundDatesForm">
+                <div class="form-group row">
+                    
+                    <label class="col-sm-3 col-form-label" >Funding Applied date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control col-sm-4" formControlName="applied"/>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Funding Received date</label>
+                    <div class="col-sm-9">
+                        <input 
+                            type="date"
+                            class="form-control col-sm-4"
+                            formControlName="received" 
+                            min="{{fundDatesForm.get('received').value}}"
+                         />
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Funding start date</label>
+                    <div class="col-sm-9">
+                        <input 
+                            type="date"
+                            class="form-control col-sm-4"
+                            formControlName="start" 
+                            min="{{fundDatesForm.get('received').value}}"
+                          />
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Funding end date</label>
+                    <div class="col-sm-9">
+                        <input
+                            type="date"
+                            class="form-control col-sm-4" 
+                            formControlName="end" 
+                            min="{{fundDatesForm.get('start').value}}"
+                           />
+                    </div>
+                </div>
+            </form>
+            </ng-template>
+        </div>
+    </div>
+</ng-template>

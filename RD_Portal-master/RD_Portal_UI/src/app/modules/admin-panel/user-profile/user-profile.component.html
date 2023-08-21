@@ -1,0 +1,335 @@
+<style>
+    .notc{
+        background-color: rgb(241, 157, 55);
+    }
+    </style>
+    <div class="container pt-5 " >
+        <h6 class="mb-3" *ngIf="projects?.length">PROJECTS</h6>
+        <div class="row">
+            <div class="col-md-8" >
+                <div class="card"  *ngIf="projects?.length">
+                    <div class="table-responsive" *ngIf="projects?.length">
+                        <table class="table table-hover">
+                            <thead class="thead sona">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Project Title</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Started On</th>
+    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let project of projects; index as i"
+                                    routerLink="/project/{{project.projectId}}"
+                                    [ngClass]="{notc: !project.isapproved}">
+                                    
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{project.projectTitle}}</td>
+                                    <td>{{project.status}}</td>
+                                    <td>{{project.createdAt | date:'mediumDate'}}</td>
+    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #Emptybox>
+                        <app-empty-layout></app-empty-layout>
+                    </ng-template>
+                </div>
+                <h6 class="mt-5 mb-3" *ngIf="receivedfundings?.length">Received Funding Details</h6>
+                <div class="card" *ngIf="receivedfundings?.length">
+                    <div class="table-responsive" *ngIf="receivedfundings?.length">
+                        <table class="table table-hover">
+                            <thead class="thead sona">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Name of Fund</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">Funding Organisation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let receivedfunding of receivedfundings; index as i"
+                                    routerLink="/funding/{{receivedfunding.isExternal?'apply':'applied'}}/{{receivedfunding.fundingProjectId}}">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{receivedfunding.nameOfGrant}}</td>
+                                    <td>{{receivedfunding.fundingType}}</td>
+                                    <td>{{receivedfunding.status}}</td>
+                                    <td>{{receivedfunding.fundingOrganisation}}</td>
+    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #Emptybox>
+                        <app-empty-layout></app-empty-layout>
+                    </ng-template>
+                </div>
+                <h6 class="mt-5 mb-3" *ngIf="fundingProjects?.length">Applied Funding</h6>
+                <div class="card" *ngIf="fundingProjects?.length">
+                    <div class="table-responsive" *ngIf="fundingProjects?.length">
+                        <table class="table table-hover">
+                            <thead class="thead sona">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Name of Fund</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">Funding Organisation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let fundingProject of fundingProjects; index as i"
+                                    routerLink="/funding/{{fundingProject.isExternal?'apply':'applied'}}/{{fundingProject.fundingProjectId}}">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{fundingProject.nameOfGrant}}</td>
+                                    <td>{{fundingProject.fundingType}}</td>
+                                    <td>{{fundingProject.status}}</td>
+                                    <td>{{fundingProject.fundingOrganisation}}</td>
+    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <ng-template #Emptybox>
+                        <app-empty-layout></app-empty-layout>
+                    </ng-template>
+                </div>
+    
+                <h6 class="mt-5 mb-3" *ngIf="publications?.length">PUBLICATIONS</h6>
+                <div class="card" *ngIf="publications?.length">
+                    <div class="table-responsive" *ngIf="publications?.length">
+                        <table class="table table-hover">
+                            <thead class="thead sona">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Paper Title</th>
+                                    <th scope="col">Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let publication of publications; index as i"
+                                routerLink="/publication/{{publication.publicationId}}">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{publication.publicationType}}</td>
+                                    <td>{{publication.paperTitle}}</td>
+                                    <td>{{publication.yearOfPublication | date:'yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #Emptybox>
+                        <app-empty-layout></app-empty-layout>
+                    </ng-template>
+                </div>
+    
+                
+            </div>
+            <div class="col-md-4" >
+                <div class="card">
+                    <div class="card-header sona">
+                        Profile
+                    </div>
+                    <ul class="list-group list-group-flush" *ngIf="!editMode">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="../../../../assets/image/avatar.png" class="card-img-top" alt="avatar">
+                                </div>
+                                <div class="col-md-8">
+                                    <h6 class="card-title">{{user?.userName}}</h6>
+                                    <small class="card-text text-muted">{{userId}}</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <h5>
+                                <small>
+                                    Designation
+                                    <span class="float-right card-title text-capitalize">{{user?.userGroupname}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                        <li class="list-group-item">
+                            <h5>
+                                <small>
+                                    User Group
+                                    <span class="float-right card-title text-capitalize">{{user?.userDesignation}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                        <li class="list-group-item">
+                            <h5>
+                                <small>
+                                    Department
+                                    <span class="float-right card-title">{{user?.userDepartmentId}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                        <li class="list-group-item">
+                            <h5>
+                                <small>
+                                    LAB
+                                    <span class="float-right card-title">{{user?.details.lab}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                        <li class="list-group-item" *ngIf="user?.details.phoneNumber">
+                            <h5>
+                                <small>
+                                    Phone Number
+                                    <span class="float-right card-title">{{user?.details.phoneNumber}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                        <li class="list-group-item" *ngIf="user?.details.email">
+                            <h5>
+                                <small>
+                                    Email
+                                    <span class="float-right card-title">{{user?.details.email}}</span>
+                                </small>
+                            </h5>
+                        </li>
+                    </ul>
+                    <form [formGroup]="userForm" *ngIf="editMode" >
+                        <div class="row" >
+                            <div class="col-md-11 mx-auto my-1">
+                                <div class="form-group">
+                                    <label>User Id<span class="required">*</span> </label>
+                                    <input type="text" class="form-control" formControlName="userId"/>
+                                </div>
+                            </div>
+                        <div class="col-md-11 mx-auto my-1">
+                            <div class="form-group">
+                                <label>Username<span class="required">*</span> </label>
+                                <input type="text" class="form-control" formControlName="userName"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-11 mx-auto my-1">
+                            <label>User Group<span class="required">*</span> </label>
+                            <select type="text" class="form-control my-1" formControlName="userDesignationCode" (change)="setDepartment()">
+                              <option value="">...</option>
+                              <option *ngFor="let role of designation" [value]="role.userDesignationCode">
+                                {{ role.userDesignation}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-11 mx-auto my-1">
+                            <label>Designation<span class="required">*</span> </label>
+                            <select type="text" class="form-control my-1" formControlName="userGroup">
+                              <option value="">...</option>
+                              <option *ngFor="let role of group" [value]="role.usersDesignationCode">
+                                {{ role.usersDesignation}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-11 mx-auto my-1" *ngIf="needDepartment">
+                            <label>Department <span class="required">*</span> </label>
+                            <select type="text" class="form-control my-1" formControlName="userDepartmentId">
+                              <option value="">...</option>
+                              <option *ngFor="let dept of departments" [value]="dept.departmentId">
+                                {{ dept.departmentName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-11 mx-auto my-1" *ngIf="needDepartment">
+                            <label>LAB <span class="required">*</span> </label>
+                            <select type="text" class="form-control my-2" formControlName="lab">
+                                <option value="">...</option>
+                                <option *ngFor="let lab of researchLabs" [value]="lab.researchLabName">{{ lab.researchLabName }}</option>
+                              </select>
+                        </div>
+                    </div>
+                        <!-- <button type="submit" value="Submit" class="btn btn-primary float-lg-right  mx-2 my-2"  (click)="edituser()" [disabled]="userForm.invalid">
+                            Edit User Account
+                        </button> -->
+                        <!-- <button  class="btn btn-primary float-lg-right  mx-2"  (click)="restore()" >
+                            Reset Password
+                        </button>
+                        <button class="btn btn-primary float-lg-right mx-2" *ngIf="!isarchived" (click)="archive()"  >
+                            Archive
+                        </button>
+                        <button class="btn btn-primary float-lg-right mx-2" *ngIf="isarchived" (click)="restore()"  >
+                            Restore
+                        </button> -->
+                    
+                    </form>
+                </div>
+                
+            
+                <button 
+                    class="btn btn-info mx-2  my-2 float-right"
+                    *ngIf="user?.isarchived"
+                    (click)="restore()" 
+                    data-toggle="modal" data-target="#success_tic" >
+                    Restore User
+                </button>
+                <button 
+                    class="btn btn-danger mx-2  my-2 float-right"
+                    *ngIf="!user?.isarchived && !editMode"
+                    (click)="archive()" 
+                    data-toggle="modal" data-target="#success_tic">
+                    Archive User
+                </button>
+                <button 
+                    class="btn btn-info mx-2  my-2 float-right"
+                    *ngIf="!editMode"
+                    (click)="onedit()" 
+                    >
+                    Edit User
+                </button>
+                <button 
+                    class="btn btn-primary mx-2  my-2 float-right"
+                    *ngIf="!editMode"
+                    data-toggle="modal" data-target="#messageModal" 
+                    >
+                    Send Message
+                </button>
+                <div *ngIf="editMode">
+                    <button 
+                    class="btn btn-success mx-1  my-2 float-right"
+                    (click)="edituser()"
+                    >
+                    Update User
+                    </button>
+                    <button  class="btn btn-info my-2  mx-1 float-right"  (click)="resetpass()" 
+                    data-toggle="modal" data-target="#success_tic">
+                    Reset Password
+                    </button>
+                    <button 
+                    class="btn btn-secondary mx-1  my-2 float-right"
+                    (click)="cancel()" 
+                    >
+                    Cancel
+                    </button>
+                </div>
+            </div>
+        </div> 
+    </div>
+<app-message-modal
+[goBack]=1
+[successMessage]="modalmessage">     
+</app-message-modal>
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title">Send Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup] ="MessageForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea formControlName="Message" placeholder="Enter Message..." class="form-control" type="text"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-primary" [disabled]="MessageForm?.invalid" (click)="sendText()">Send</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.mng-btn {
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.card-red {
+  background-color: #f44336;
+  color: white;
+  font-size: 1.325rem;
+}
+.notification {
+  background-color: rgba(249, 249, 249, 0.838);
+}
+.notification .blip {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 5px 5px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+.scroll{
+  overflow-y: scroll;
+  height: 82vh;
+  margin: 0%;
+}

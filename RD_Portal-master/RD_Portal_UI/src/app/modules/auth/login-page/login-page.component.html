@@ -1,0 +1,152 @@
+<style>
+  .alert {
+ padding: 20px;
+ background-color: #f44336;
+ color: white;
+ opacity: 1;
+ transition: opacity 0.6s;
+ margin-bottom: 15px;
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+.closebtn {
+ margin-left: 15px;
+ color: white;
+ font-weight: bold;
+ float: right;
+ font-size: 22px;
+ line-height: 20px;
+ cursor: pointer;
+ transition: 0.3s;
+}
+
+.closebtn:hover {
+ color: black;
+}
+</style>
+<div class="mx-auto mt-5 col-md-5">
+  <h5 class="title">Login</h5>
+  <div class="alert warning" *ngIf="archived">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>  
+    <strong>This user has been archived, Please contact Admin!</strong>
+</div> 
+  <div class="card border-secondary">
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="authenticateUser()">
+        <div class="form-group">
+          <label>User Id</label>
+          <input type="text" class="form-control border-secondary" formControlName="userId" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control border-secondary" formControlName="userPassword" />
+        </div>
+        <button type="submit" value="Submit" style="border-radius: 12px;" class="btn btn-primary btn-lg btn-block mt-5 mb-2" [disabled]="loginForm.invalid">
+          Login
+        </button>
+        <div class="alert alert-danger text-center" [hidden]="!errorMessage"> {{errorMessage}}</div>
+      </form>
+      <a class="float-right my-2 c-pointer"
+      data-toggle="modal" 
+      data-target="#forgotpassmodal"><u>Forgot Password</u></a>
+    </div>
+  </div>
+</div>
+<div  class="modal fade" id="forgotpassmodal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+                  <h5 class="modal-title">Forgot Password</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <form [formGroup] ="Forgotpass">
+                  <div class="modal-body">
+                      <div class="form-group">
+                          <input [readonly]="showotp" formControlName="userid" placeholder="Enter your user ID" class="form-control" type="text"/>
+                      </div>
+                      <div class="alert alert-danger" *ngIf="modalErrorMessage">
+                        <span class="closebtn" (click)="clearModalMessage()">&times;</span>  
+                        {{modalErrorMessage}}
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button [disabled]="showotp" class="btn btn-primary"
+                       (click)="sendsms()">Send OTP</button>
+                  </div>
+            </form>
+          <div *ngIf="showotp">
+          <div class="modal-header" >
+            <h5 class="modal-title">Enter OTP</h5>
+        </div>
+            <div class="modal-body" >
+                <ng-otp-input (onInputChange)="onOtpChange($event)"  [config]="{length:4}"></ng-otp-input>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-primary" [disabled]="!showotp" (click)="checkOTP()">Change Password</button>
+                <button id="CPButton" data-toggle="modal"  data-target="#reset" [hidden]="true"></button>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div  class="modal fade" id="reset" tabindex="-1" role="dialog" aria-hidden="closeModal">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+                  <h5 class="modal-title">Password Reset</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <form [formGroup] ="Newpass" *ngIf="otpVerified">
+              <div class="modal-body">
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input  formControlName="Npass" placeholder="Enter your new password" class="form-control" type="text"/>
+                    <label class="my-2">Confirm New Password</label>
+                    <input  formControlName="CNpass" placeholder="Confirm password" class="form-control" type="text"/>
+                  </div>
+              </div>
+              <div class="modal-body"  *ngIf="changed">
+                <div style="align-content: center;">
+                <p>Password Reset Successful!</p>
+                </div>
+            </div>
+              <div class="modal-footer">
+                  <button  class="btn btn-primary" *ngIf='!changed'
+                   (click)="change()">Change Password</button>
+                   <button  class="btn btn-primary" *ngIf='changed' data-dismiss="modal"
+                   (click)="change()">OK</button>
+              </div>
+            </form>
+                  
+      </div>
+  </div>
+</div>
+<!-- <div  class="modal fade" id="reset" tabindex="-1" role="dialog" aria-hidden="closeModal">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content" *ngIf="changed || !otpVerified">
+          <div class="modal-header">
+                  <h5 class="modal-title">Password Reset</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            
+          <div class="modal-body" *ngIf="!changed && !otpVerified">
+            <div style="align-content: center;">
+            <p>Password Reset Failed!</p>
+            <p>Invalid OTP</p>
+            </div>
+        </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div> -->

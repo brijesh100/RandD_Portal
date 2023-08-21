@@ -1,0 +1,36 @@
+<!-- <div 
+    *ngIf="!isEditMode" 
+    class="p-2 m-2 text-center btn btn-info" 
+    type="button" 
+    data-toggle="modal"
+    data-target="#projectHistoryModal"
+> -->
+<div *ngIf="!isEditMode" class="my-1">
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#projectHistoryModal" style="width:100%">Show edit history</button>
+</div>
+<!-- </div> -->
+
+<div class="modal fade" id="projectHistoryModal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">History</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let history of projectHistory">
+                        <div>{{history.commitMessage}}</div>
+                        <small class="text-muted">{{history.userId}}
+                            <span class="float-right">{{history.updatedDate | date:'mediumDate'}}</span>
+                        </small>
+                        <br>
+                        <small *ngIf="history.approvedby" class="text-muted">Approved By : {{history.approvedby}}</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> 

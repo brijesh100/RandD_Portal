@@ -1,0 +1,37 @@
+<div *ngIf="!isEditMode" class="my-1">
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#viewReviewRemarkModal" style="width:100%"> Show Review Remarks </button>
+        
+    </div>
+    <div  class="modal fade" id="viewReviewRemarkModal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title">Review Remarks</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngFor="let r of remarks">
+                            <div class="card border-secondary mt-1" >
+                                <div class="card-body">
+                                                <span *ngIf="r.remark!=''">Remarks : {{r.remark}}<br></span>
+                                                <span *ngIf="r.progress!=''">Progress : {{r.progress}}<br></span>
+                                                <small class="text-muted">
+                                                    <span *ngIf="r.reviewDate!=''">Review Date: {{r.reviewDate  | date:'mediumDate'}}<br></span>
+                                                </small>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="card border-secondary mt-1" *ngIf="remarkLength==0">
+                                <div class="card-body">
+                                <h5 class="card-title mx-auto">No Remarks</h5>
+                                </div>
+                            </div>
+    
+                    </div>
+    
+            </div>
+        </div>
+    </div>
+    

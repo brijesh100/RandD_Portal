@@ -1,0 +1,78 @@
+<style>
+    .notc{
+        background-color: coral;
+    }
+</style>
+<div class="card ">
+    <div class="card-header" >{{isEditMode?'Add Investigators':'Investigators'}}</div>
+        <form [formGroup]="coInvestigatorForm">
+        <div class="card-body ">
+            <span #userId class="badge badge-pill badge-secondary p-1 c-pointer"
+            data-toggle="modal"
+            (click)="showUserOverview(investigator)"
+            data-target="#userOverviewModal">
+                {{ investigator }}
+            </span>
+            <!-- <span #userId class="badge badge-pill badge-secondary p-1 c-pointer"
+            data-toggle="modal"
+            (click)="showUserOverview(investigator)"
+            data-target="#userOverviewModal">
+                {{ investigator }}
+            </span> -->
+            <hr>
+        </div>
+        <div class="card-header" >{{isEditMode?'Add Co-Investigators':'Co - Investigators'}}</div>
+        <div class="card-body " *ngIf="!isEditMode">
+            <span *ngFor="let coInvestigator of coInvestigators"  #userId class="badge badge-pill badge-secondary p-1 c-pointer"
+            data-toggle="modal"
+            (click)="showUserOverview(coInvestigator)"
+            data-target="#userOverviewModal"> {{ coInvestigator }} 
+            </span>
+            <hr>
+        </div>
+        <div *ngIf="newlyAddedcoInvestigators && isEditMode">
+            <div class="card-body ">
+            <span class="mr-3 mt-2" formArrayName="newlyAddedcoInvestigators"
+                *ngFor="let control of newlyAddedcoInvestigators.controls; let i = index">
+                <span class="badge badge-pill badge-secondary c-pointer p-1">
+                    {{ control?.value }}
+            <span class=" badge badge-dark badge-pill" *ngIf="isEditMode" (click)="deleteNewcoInvestigator(i)">X</span>
+            </span>          
+            </span>
+        </div>
+        </div>
+
+        <div *ngIf="isEditMode">
+            <div class="card">
+                <div class="alert alert-danger alert-dismissible fade show " role="alert" [hidden]="!usererror">
+                  {{usererror}}
+                  <button type="button" class="close" (click) = "clearMessage()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            <input 
+                placeholder="Search coInvestigatorId..." 
+                type="text" 
+                class="form-control"
+                autocomplete="off"
+                formControlName = "newcoInvestigator"
+                (keyup) = "getMatchingIds($event.target.value)"
+            />
+            <span *ngIf="coInvestigatorSearchList">
+                <li class="c-pointer list-group-item list-group-item-action list-group-item-dark"
+                    formArrayName="coInvestigatorSearchList"
+                    *ngFor="let control of coInvestigatorSearchList.controls; let i = index" 
+                    (click)="addNewcoInvestigator(i)"
+                >
+                {{control?.value}} 
+    
+                </li>
+            </span>
+        </div>
+        </div>
+        </form>
+</div>
+<app-user-modal
+[user]="user"
+>
+</app-user-modal>

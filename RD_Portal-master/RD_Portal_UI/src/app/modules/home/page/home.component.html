@@ -1,0 +1,50 @@
+<div class="container-fluid mt-2">
+  <div class="mx-2 mt-3">
+    <app-snapshot-tiles [snapshot] = "overAllSnapshot"> </app-snapshot-tiles>
+    <div class="row">
+      <div class="col-md-12">
+        <div  [ngClass]="{'card my-2' : true , 'dark' : darktheme}" style="display: block" *ngIf="isgraph">
+          <div class="graph">
+            <canvas baseChart height="80"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [plugins]="barChartPlugins"
+              [legend]="barChartLegend"
+              [colors]="ChartColors"
+              [chartType]="barChartType">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-md-4 col-sm-12"  *ngFor="let department of departmentSnapshot">
+      <div  [ngClass]="{'card mb-3 c-pointer' : true , 'dark' : darktheme}" >
+        <div class="card-body same-height">
+          <span [ngClass]="{'title-2 hvr' : true , 'dark-text' : darktheme}" routerLink="/department/{{department.departmentId}}">{{department.departmentName}}</span>
+            <div class="graph">
+              <canvas baseChart width="400" height="250" 
+                [datasets]="department.linechartdata"
+                [labels]="lineChartLabels"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [options]="lineChartOptions"
+                [plugins]="lineChartPlugins">
+              </canvas>
+            </div>
+        </div>
+      </div>
+  </div>
+  <button type="button" class="btn btn-primary" #launchModal data-toggle="modal" data-target="#welcomeModal" [hidden]="true"></button>
+  <app-user-data-modal [darktheme]="darktheme"></app-user-data-modal>
+  <app-welcome-modal 
+    [darktheme]="darktheme" 
+    [userDetails]="userDetails">
+  </app-welcome-modal>
+</div>
+

@@ -1,0 +1,99 @@
+<div class="card border-secondary mb-1">
+    <div class="card-body" *ngIf="isFilled; else Pending">
+        <h5 class="card-title">Application Check</h5>
+        <div *ngIf="!isEditMode; else Editor">
+
+          <div class="form-check">
+            <span class="check {{checkform.get('filled').value? 'text-success':'text-warning'}}">{{ checkform.get('filled').value? '&#10003;':'&#33;'}}</span>
+            <label class="form-check-label">
+              Application filled/ uploaded
+            </label>  
+          </div>
+
+          <div class="form-check">
+            <span class="check {{checkform.get('hod').value? 'text-success':'text-warning'}}">{{ checkform.get('hod').value? '&#10003;':'&#33;'}}</span>
+            <label class="form-check-label">
+              HOD check
+            </label>  
+          </div>
+          
+          <div class="form-check">
+            <span class="check {{checkform.get('technical').value? 'text-success':'text-warning'}}">{{ checkform.get('technical').value? '&#10003;':'&#33;'}}</span>
+            <label class="form-check-label">
+              Proposal check
+            </label>  
+          </div>
+          
+          <div class="form-check">
+            <span class="check {{checkform.get('proposal').value? 'text-success':'text-warning'}}">{{checkform.get('proposal').value? '&#10003;':'&#33;'}}</span>
+            <label class="form-check-label">
+              Technical check
+            </label>  
+          </div>
+          
+          <div class="form-check">
+            <span class="check {{checkform.get('principal').value? 'text-success':'text-warning'}}">{{ checkform.get('principal').value? '&#10003;':'&#33;'}}</span>
+            <label class="form-check-label">
+              Principal check
+            </label>  
+          </div>
+
+        </div>
+        <ng-template #Editor>
+          <form [formGroup]="checkform">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName ="filled" checked ="filled" value="true" [attr.disabled] = "true">
+                <label class="form-check-label">
+                    Application filled/ uploaded
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName ="hod" checked ="hod" value="true" [attr.disabled] = "hodCheck">
+                <label class="form-check-label">
+                  HOD check
+                </label>
+                <div> 
+                  <small *ngIf="!hodCheck"> please validate the uploaded application before checking the box </small>
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName ="proposal" checked ="proposal" value="true" [attr.disabled] = "proposalCheck">
+                <label class="form-check-label">
+                  Proposal check
+                </label>
+                <div> 
+                  <small *ngIf="!proposalCheck"> please validate the uploaded application before checking the box </small>
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName ="technical" checked ="technical" value="true" [attr.disabled] = "technicalCheck">
+                <label class="form-check-label">
+                  Technical check
+                </label>
+                <div> 
+                  <small *ngIf="!technicalCheck"> please validate the uploaded application before checking the box </small>
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName ="principal" checked ="principal" value="true" [attr.disabled] = "principalCheck">
+                <label class="form-check-label">
+                  Principal check
+                </label>
+                <div> 
+                  <small *ngIf="!principalCheck"> please validate the uploaded application before checking the box </small>
+                </div>
+              </div>
+            </form>
+      </ng-template>
+
+    </div>
+
+    <ng-template #Pending>
+        <div class="card-body">
+            <h5 class="card-title text-muted">Application Check</h5>
+            <p class="text-muted"> Will be available after uploading the filled application in this portal</p>
+        </div>
+    </ng-template>
+
+</div>
+

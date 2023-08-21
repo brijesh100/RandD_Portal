@@ -1,0 +1,21 @@
+<style>
+    a {
+      color: rgb(51, 51, 251);
+    }
+    </style>
+<div>
+    <dl class="row">
+        <dt class="col-sm-3"><h5>Name of Fund/Grant</h5></dt>
+        <dd class="col-sm-9 blockquote">{{nameOfGrant}}</dd>
+
+        <dt class="col-sm-3"><h5>Funding Organisation</h5></dt>
+        <dd class="col-sm-9 blockquote">{{fundingOrganisation}}</dd>
+        
+        <dt class="col-sm-3"><h5>Funding Type</h5></dt>
+        <dd class="col-sm-9 blockquote">{{fundingType}}</dd>
+        
+        <dt class="col-sm-3"><h5>Project Title</h5></dt>
+        <a class="col-sm-9 blockquote c-pointer"
+            routerLink="/project/{{project?.projectId}}"><u>{{project?.projectTitle}}</u></a>
+    </dl>
+</div>

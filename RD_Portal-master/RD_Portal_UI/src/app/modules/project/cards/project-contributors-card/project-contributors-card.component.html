@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-body">
+        <h5>
+            <small class="modal-title">{{isEditMode?'Add Contributor':'Contributors'}}
+            </small>
+        </h5>
+    <form [formGroup]="contributorForm">
+            <!-- <span class=" mr-2 mt-2" *ngFor="let contributor of contributors; let i = index">
+                <span #userId class="badge badge-pill badge-secondary p-1">
+                    {{ contributor }}
+                </span>
+                <span class=" badge badge-dark badge-pill" (click)="deletecontributor(i)">X</span>
+            </span> -->
+            <div *ngIf="newlyAddedContributors && !isEditMode">
+                <span class="mr-3 mt-2" formArrayName="newlyAddedContributors"
+                    *ngFor="let control of newlyAddedContributors.controls; let i = index">
+                    <span class="badge badge-pill badge-secondary c-pointer"
+                                        data-toggle="modal"
+                                        (click)="showUserOverview(control?.value)"
+                                        data-target="#userOverviewModal">
+                        {{ control?.value }}
+                    </span>  
+                </span>
+            </div>
+            <div *ngIf="newlyAddedContributors && isEditMode">
+                <span class="mr-3 mt-2" formArrayName="newlyAddedContributors"
+                    *ngFor="let control of newlyAddedContributors.controls; let i = index">
+                    <span class="badge badge-pill badge-secondary c-pointer">
+                        {{ control?.value }}
+                <span class=" badge badge-dark badge-pill" *ngIf="i!=0 && isEditMode" (click)="deleteNewcontributor(i)">X</span>
+                </span>          
+                </span>
+            </div>
+
+        <div *ngIf="isEditMode">
+            <input 
+                placeholder="Search contributorId..." 
+                type="text" 
+                class="form-control mt-2"
+                autocomplete="off"
+                formControlName = "newContributor"
+                (keyup) = "getMatchingIds($event.target.value)"
+            />
+            <span *ngIf="contributorSearchList">
+                <li class="c-pointer list-group-item list-group-item-action list-group-item-dark"
+                    formArrayName="contributorSearchList"
+                    *ngFor="let control of contributorSearchList.controls; let i = index" 
+                    (click)="addNewContributor(i)"
+                >
+                {{control?.value}} 
+
+                </li>
+            </span>
+        </div>
+    </form>
+</div>
+<app-user-modal
+[user]="user"
+>
+</app-user-modal>

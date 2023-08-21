@@ -1,0 +1,83 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active">Fibre</li>
+    </ol>
+</nav>
+<div class="container-fluid my-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="text-mint my-2">Priority Project List </h4>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary float-right mx-4 my-2" routerLink="/project/addPriority" >
+                Add Priority Project
+            </button>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-md-8 center ">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filter</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="trl">Technology Readiness Level</label>
+                                <select type="text" class="form-control" id="trl" [(ngModel)]="selectedTRL" (ngModelChange)="filter()">
+                                    <option value="">...</option>
+                                    <option *ngFor="let level of TRL" [value]="level">
+                                      {{ level }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select type="text" class="form-control" id="status" [(ngModel)]="selectedStatus" (ngModelChange)="filter()">
+                                    <option value="">...</option>
+                                    <option value="underReview">Under Review</option>
+                                    <option value="live">Live</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="btn btn-danger float-right" (click)="reset()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-md-12 my-4 selfscroll">
+            <!-- Table  -->
+            <table class="table table-hover">
+                <thead class="thead sona">
+                    <tr>
+                        <th scope="col" style="width: 2%;">S.No</th>
+                        <th scope="col" style="width: 8%;">Title</th>
+                        <th scope="col" style="width: 10%;">Description</th>
+                        <th scope="col" style="width: 5%;">Start Date</th>
+                        <th scope="col" style="width: 5%;">Researchers</th>
+                        <th scope="col" style="width: 5%;">Collaborators</th>
+                        <th scope="col" style="width: 2%;">TRL</th>
+                        <th scope="col" style="width: 5%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let project of priorityProjects; index as i" routerLink="/project/{{project.projectId}}" >
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{project.projectTitle}}</td>
+                        <td class="wrap">{{project.projectSummary}}</td>
+                        <td>{{project.start | date :'MMM-yyyy'}}</td>
+                        <td>{{project.team[0]}}</td>
+                        <td>{{project.priority.collaborators}}</td>
+                        <td>{{project.priority.technologyReadinessLevel}}</td>
+                        <td>{{project.priority.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="card my-1" *ngIf="publications!=undefined">
+    <div class="card-body" >
+        <h5 class="card-title">Linked Publication</h5>
+
+        <!-- <span class="badge badge-pill badge-success c-pointer" *ngFor=" let publication of publications" routerLink="/publication/{{publication?.publicationId}}"
+        >{{publication?.paperTitle }}</span> -->
+            <span *ngFor="let publication of publications" class='c-pointer' routerLink="/publication/{{publication?.publicationId}}">
+                <span class="card-text text-dark mr-2">
+                    <span class="disc">&#9673;</span>{{ publication?.paperTitle  }}
+                    <br>
+                </span>
+            </span>
+    
+    </div>
+</div>

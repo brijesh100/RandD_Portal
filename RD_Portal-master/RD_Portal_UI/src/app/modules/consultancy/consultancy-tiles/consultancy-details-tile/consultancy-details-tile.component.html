@@ -1,0 +1,33 @@
+<div class="card bg-light mb-2">
+    <div class="card-header" *ngIf="consultancy?.consultancyTitle"><h5 class="card-title">{{consultancy?.consultancyTitle}}</h5></div>
+    <div class="card-header" *ngIf="consultancy?.consultancyTesting"><h5 class="card-title">{{consultancy?.consultancyTesting}}</h5></div>
+</div>
+
+<div class="card border-secondary mb-1" >
+    <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyIndustry"><span class="disc">&#9673;</span>
+                <b>Industry : </b>
+                <span >{{consultancy?.consultancyIndustry}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyDepartment"><span class="disc">&#9673;</span>
+                <b>Department: </b>
+                <span > {{consultancy?.consultancyDepartment}}</span></div>
+            <div class="col-md-6 my-2 " *ngIf="consultancy?.consultancyType"><span class="disc">&#9673;</span>
+                <b>Type: </b>
+                <span > {{consultancy?.consultancyType}}</span></div>
+            <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyInvoiceNumber"><span class="disc">&#9673;</span>
+                <b>Invoice Number: </b>
+                <span >{{consultancy?.consultancyInvoiceNumber}}</span></div>
+            <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyReceiptNumber"><span class="disc">&#9673;</span>
+                <b>Receipt Number: </b>
+                <span >{{consultancy?.consultancyReceiptNumber}}</span></div>  
+            <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyReceiptcost"><span class="disc">&#9673;</span>
+                <b>Receipt Cost: </b>
+                <span >{{consultancy?.consultancyReceiptcost}}</span></div>
+            <div class="col-md-6 my-2" *ngIf="consultancy?.consultancyReceiptDate"><span class="disc">&#9673;</span>
+                <b>Receipt Date: </b>
+                <span >{{consultancy?.consultancyReceiptDate | date:'mediumDate'}}</span></div>
+          </div>
+          </div>
+  </div>
+

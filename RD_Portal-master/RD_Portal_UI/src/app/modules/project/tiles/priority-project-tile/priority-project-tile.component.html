@@ -1,0 +1,143 @@
+<div *ngIf="!isAdmin">
+    <div class="row mb-1 pl-0">
+        <div class="col-md-5 pr-md-0">
+            <div class="card">
+                <div class="card-header"  >
+                    <h5>TRL
+                        <span placement="bottom" ngbTooltip="{{TRlevelContent[priorityProjectDetails?.technologyReadinessLevel]}}" class="badge float-right {{TRlevelBadge[priorityProjectDetails?.technologyReadinessLevel]}} c-pointer p-2" data-toggle="modal"
+                        data-target="#trlOverviewModal">{{ priorityProjectDetails?.technologyReadinessLevel }} - {{ TRlevelText[priorityProjectDetails?.technologyReadinessLevel] }}</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 pl-md-1 pr-md-1">
+            <div class="card">
+                <div class="card-header"  >
+                    <h5>Patent count
+                        <span *ngIf="priorityProjectDetails?.patentCount" class="float-right badge badge-pill badge-secondary smt">{{priorityProjectDetails?.patentCount}}</span>
+                        <span *ngIf="!priorityProjectDetails?.patentCount" class="float-right badge badge-pill badge-secondary smt">~</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 pl-md-0">
+            <div class="card">
+                <div class="card-header"  >
+                    <h5>Publication count
+                        <span *ngIf="priorityProjectDetails?.publicationCount" class="float-right badge badge-pill badge-secondary smt">{{priorityProjectDetails?.publicationCount}}</span>
+                        <span *ngIf="!priorityProjectDetails?.publicationCount" class="float-right badge badge-pill badge-secondary smt">~</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-1 pl-md-0" *ngIf="priorityProjectDetails?.collaborators.length!=0">
+        <div class="col-md-12"  >
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Collaborators</h5>
+                    <span *ngFor="let c of priorityProjectDetails?.collaborators">
+                        <span class="card-text text-dark mr-2">
+                            <span class="disc">&#9673;</span>{{ c }}
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="isAdmin">
+    <div *ngIf="!isEditMode; else Editor">
+        <div class="row mb-1 pl-md-0">
+            <div class="col-md-5 pr-md-0">
+                <div class="card">
+                    <div class="card-header"  >
+                        <h5>TRL
+                            <span placement="bottom" ngbTooltip="{{TRlevelContent[priorityProjectDetails?.technologyReadinessLevel]}}" class="badge float-right {{TRlevelBadge[priorityProjectDetails?.technologyReadinessLevel]}} c-pointer p-2" data-toggle="modal"
+                            data-target="#trlOverviewModal">{{ priorityProjectDetails?.technologyReadinessLevel }} - {{ TRlevelText[priorityProjectDetails?.technologyReadinessLevel] }}</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 pl-md-1 pr-md-1">
+                <div class="card">
+                    <div class="card-header"  >
+                        <h5>Patent count
+                            <span *ngIf="priorityProjectDetails?.patentCount" class="float-right badge badge-pill badge-secondary smt">{{priorityProjectDetails?.patentCount}}</span>
+                            <span *ngIf="!priorityProjectDetails?.patentCount" class="float-right badge badge-pill badge-secondary smt">~</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 pl-md-0">
+                <div class="card">
+                    <div class="card-header"  >
+                        <h5>Publication count
+                            <span *ngIf="priorityProjectDetails?.publicationCount" class="float-right badge badge-pill badge-secondary smt">{{priorityProjectDetails?.publicationCount}}</span>
+                            <span *ngIf="!priorityProjectDetails?.publicationCount" class="float-right badge badge-pill badge-secondary smt">~</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-1 pl-md-0"  *ngIf="priorityProjectDetails?.collaborators.length!=0">
+            <div class="col-md-12" >
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Collaborators</h5>
+                        <span *ngFor="let c of priorityProjectDetails?.collaborators">
+                            <span class="card-text text-dark mr-2">
+                                <span class="disc">&#9673;</span>{{ c }}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #Editor>
+        <div class="card border-secondary mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Priority Project Details</h5>
+                <form [formGroup] ="projectPriorityForm">
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label>Technology Readiness Level<span class="required">*</span> </label>
+                            <select type="text" class="form-control" formControlName="technologyReadinessLevel">
+                                <option value="">...</option>
+                                <option *ngFor="let level of TRlevels" [value]="level">
+                                {{ level }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Patent Count<span class="required">*</span> </label>
+                            <input  type="number" class="form-control" formControlName="patentCount">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Publication Count<span class="required">*</span> </label>
+                            <input  type="number" class="form-control" formControlName="publicationCount" >
+                        </div>
+                        <div class="form-group col-md-12"  *ngIf="collaborators.length>=0">
+                            <label>Collaborators </label>
+                            <div class="input-group" *ngFor="let c of collaborators">
+                            <input  type="text" class="form-control  my-2" [value]="c" readonly>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary  my-2"
+                                (click)="removeCollaborator(c)"
+                                >X</button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group col-md-12 ">
+                          <input  type="text" placeholder="Enter collaborator" class="form-control" formControlName="typedCollaborators">
+                          <div class="input-group-append ml-auto mr-1">
+                            <button type="button" class="btn btn-secondary" (click)="addCollaborator(projectPriorityForm.value.typedCollaborators)" >&#10010;</button>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>   
+    </ng-template>
+</div>

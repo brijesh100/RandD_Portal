@@ -1,0 +1,300 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap'); */
+.title {
+  font-size: 1.7rem;
+  font-weight: 350;
+  padding-bottom: 3vh;
+}
+
+.title-2 {
+  font-size: 1.3rem;
+  font-weight: 420;
+  padding-bottom: 5vh;
+}
+
+.required {
+  color: red;
+}
+:root {
+  --primary-color: #fff;
+  --background-color: #e5e5e5;
+  --text-color: #2d2d2d;
+  --background-color-dropdown: #fdfdfd;
+  --text-color-header: #000000;
+  --background-color-form: #fff;
+  --text-color-card: #343a40;
+  --text-mint: #000000;
+  --drop-bg: #aaaaaa;
+  --drop-text: "#fff";
+  --text-mute: "rgb(110,117,124)";
+  --table-hover: "rgb(234,234,234)";
+  --sona-blue:#1e4175;
+  --sona-gold: #ffcc29
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 0;
+  margin: 0;
+}
+/* body{
+    background-color:rgb(36, 36, 36)
+} */
+/* body{
+    background-color:rgb(244, 244, 244)
+} */
+/* a{
+    text-decoration: none !important;
+    color: var(--text-color) !important;
+} */
+
+.c-pointer {
+  cursor: pointer;
+}
+.c-pointer:focus {
+  outline: 0;
+}
+
+.bottom-section {
+  z-index: 2;
+  position: fixed;
+  bottom: 4vh;
+  right: 6vw;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #1e4175 !important;
+  color: #ffcc29 !important;
+}
+
+.sona {
+  background-color: rgb(38, 65, 113) !important;
+  color: rgb(247, 205, 79) !important;
+}
+
+.navbar-custom {
+  background-color: #1e4175;
+}
+
+.nav-item .nav-link,
+.navbar-brand {
+  color: #ffcc29 !important;
+}
+.dropdown-menu {
+  border: none;
+  display: block;
+  height: 0px;
+  overflow: hidden;
+  padding: 0px;
+  top: 60px;
+  background-color: var(--background-color-dropdown);
+
+  transition: all 350ms;
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+  height: inherit;
+  top: 33px;
+}
+
+.dropdown-item {
+  padding: 15px;
+  border-bottom: 1px var(--background-color) solid;
+  color: var(--text-color-dropdown);
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background-color: var(--drop-bg);
+  color: var(--drop-text);
+}
+
+.empty-content {
+  text-align: center;
+  opacity: 0.2;
+  margin: 10vh auto;
+}
+
+input[type="password"] {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+label {
+  font-weight: 500;
+}
+.disc {
+  font-weight: 300;
+  margin-right: 5px;
+}
+
+.check {
+  font-weight: 1000;
+  font-size: 20px;
+  margin-right: 5px;
+}
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/*  remove  */
+
+.bg-c-v {
+  background: linear-gradient(45deg, #9e52d1, #d596ff);
+}
+
+.bg-c-i {
+  background: linear-gradient(45deg, #358bee, #83bdff);
+}
+
+.bg-c-b {
+  background: linear-gradient(45deg, #18bb9a, #6affe1);
+}
+
+.bg-c-g {
+  background: linear-gradient(45deg, #ffb64d, #ffd499);
+}
+
+.bg-c-y {
+  background: linear-gradient(45deg, #ff8f62, #ffa07a);
+}
+
+.bg-c-o {
+  background: linear-gradient(45deg, #ff5370, #ff869a);
+}
+
+/* .bg-c-v {
+    background: linear-gradient(135deg,#8722ca,#442fff);
+}
+.bg-c-i {
+    background: linear-gradient(135deg,#3f16d6,#24baff);
+}
+.bg-c-b {
+    background: linear-gradient(135deg,#0383d9,#12ffc0);
+}
+.bg-c-g {
+    background: linear-gradient(135deg,#2ed8cf,#70dd55);
+}
+.bg-c-y {
+    background: linear-gradient(135deg,#55D284,#F2CF07);
+}
+.bg-c-o {
+    background: linear-gradient(135deg,#F2CF07,#ff7b2f
+    );
+} */
+
+.gradient-card {
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  margin-bottom: 30px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  border: none;
+}
+
+.same-height {
+  min-height: 7rem;
+}
+.count {
+  font-size: 1.7rem;
+  font-weight: 350;
+}
+
+.card:hover {
+  box-shadow: 0 1px 2px 1px rgba(4, 26, 55, 0.16);
+}
+
+.card:focus {
+  outline: none;
+  border: 0;
+}
+.card {
+  background-color: var(--background-color-dropdown);
+  border: #000000;
+}
+.card-body {
+  color: var(--text-color-dropdown);
+}
+.card-header {
+  color: var(--text-color-header);
+  background-color: var(--background-color-dropdown);
+  border-color: var(--background-color-dropdown);
+}
+.card-title {
+  color: var(--text-color-header);
+}
+.table {
+  background-color: var(--background-color-dropdown) !important;
+  color: var(--text-color-dropdown);
+  border: 0;
+}
+tr {
+  border-top: hidden;
+}
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  background-color: var(--table-hover);
+  color: var(--drop-text);
+
+  cursor: pointer;
+}
+.list-group,
+.list-group-item,
+.breadcrumb {
+  background-color: var(--background-color-dropdown);
+  color: var(--text-color-dropdown);
+}
+.form-control {
+  background-color: var(--background-color-form);
+  color: var(--text-color-dropdown);
+}
+.form-control[readonly] {
+  background-color: var(--background-color-dropdown) !important;
+}
+.modal-content {
+  background-color: var(--background-color-form);
+  color: var(--text-color-dropdown);
+}
+.page-body {
+  background-color: var(--background-color-form) !important;
+  color: var(--text-color-dropdown);
+}
+.close {
+  color: var(--text-color-dropdown);
+}
+.tbody {
+  background-color: var(--background-color-dropdown) !important;
+}
+.text-dark {
+  color: var(--text-color-card) !important;
+}
+.text-mint {
+  color: var(--text-mint);
+}
+a {
+  color: var(--text-mint);
+  text-decoration: none !important;
+}
+a:hover,
+a:not([href]) {
+  color: var(--text-mint);
+}
+.form-control:focus {
+  background-color: var(--background-color-form);
+  color: var(--text-color-dropdown);
+}
+.modal-title {
+  color: var(--text-color-header);
+}
+.text-mute {
+  color: var(--text-mute);
+}
+.input-group-text {
+  color: var(--text-color-header);
+  background-color: var(--background-color);
+}

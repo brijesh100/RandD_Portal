@@ -1,0 +1,67 @@
+<div class="card bg-light mb-3" >
+    <div class="card-header"><h5 class="card-title"><b>Name : </b>{{publication?.publicationName}}</h5></div>
+  </div>
+  
+
+  <div class="card border-secondary mb-1" >
+    <div class="card-body">
+        <!-- <h5 class="card-title">Publication : {{publication?.publicationName}}</h5> -->
+          <div class="row">
+              <div class="col-md-6 my-2" *ngIf="publication?.publicationType"><span class="disc">&#9673;</span>
+              <b>Type: </b>
+              <span > {{publication?.publicationType}}</span></div>
+              <div class="col-md-6 my-2 " *ngIf="publication?.indexing"><span class="disc">&#9673;</span>
+              <b>Indexing: </b>
+              <span > {{publication?.indexing}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.reach"><span class="disc">&#9673;</span>
+              <b>Reach: </b>
+              <span >{{publication?.reach}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.impactFactor"><span class="disc">&#9673;</span>
+                <b>Impact Factor: </b>
+                <span >{{publication?.impactFactor}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.ISSN"><span class="disc">&#9673;</span>
+              <b>ISSN: </b>
+              <span >{{publication?.ISSN}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.ISBN"><span class="disc">&#9673;</span>
+              <b>ISBN: </b>
+              <span >{{publication?.ISBN}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.volumeNumber"><span class="disc">&#9673;</span>
+              <b>Volume Number: </b>
+              <span >{{publication?.volumeNumber}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.issueNumber"><span class="disc">&#9673;</span>
+              <b>Issue Number: </b>
+              <span >{{publication?.issueNumber}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.editionNumber"><span class="disc">&#9673;</span>
+              <b>Edition Number: </b>
+              <span >{{publication?.editionNumber}}</span></div>
+              <div class="col-md-6 my-2" *ngIf="publication?.pagesFrom || publication?.pagesTo"><span class="disc">&#9673;</span>
+                <b>Pages: </b>
+                <span *ngIf="publication?.pagesFrom">{{publication?.pagesFrom}}</span>
+                <span *ngIf=" publication?.pagesTo">-{{publication?.pagesTo}}</span>
+                </div>
+              
+              <div class="col-md-12 my-2" *ngIf="publication?.DOIorURL"><span class="disc">&#9673;</span>
+                <b>DOI or URL: </b>
+              <span ><u><a href="{{publication?.DOIorURL}}" target="_blank">{{publication?.DOIorURL}}</a></u></span></div>
+              <div class="col-md-12 my-2" *ngIf="publication?.file?.filledApplication?.fileName">
+                <span>
+                  
+                <button (click) = "download()" class="btn btn-info"><i class="fa fa-download"></i> Click here to download Attached Document</button></span>
+              </div>
+              
+              
+
+          </div>
+          </div>
+  </div>
+  <div class="card border-secondary mb-1" *ngIf="publication?.abstract">
+    <div class="card" >
+      <div class="card-body">
+        <h5 class="card-title">Abstract</h5>
+        <div class="row">
+          <div class="col-md-12">
+          {{publication?.abstract}}
+          </div>
+        </div>
+    </div>
+  </div>

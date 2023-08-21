@@ -1,0 +1,31 @@
+<style>
+    .alert  {border-color: #f09917;}
+</style>
+
+<div [className]="edited ? 'card mb-1' : 'card border-secondary mb-1'">
+    <div class="card-body">
+        <h5 class="card-title">References</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div *ngFor="let reference of referenceLink">
+                <a href={{reference}} target="_blank">
+                    <span class="disc">&#9673;</span> 
+                    <span  >{{ reference }}</span>
+                </a>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="referenceLinkForm">
+                <div formArrayName="referenceLink" class="mb-3" *ngFor="let reference of referenceLinkArray.controls; let i = index">
+                    <div class="input-group input-group-sm mb-1">
+                        <input type="text" class="form-control sub-head" [formControlName]="i" />
+                        <div class="input-group-append">
+                            <span class=" btn input-group-text" (click)="deleteReferenceLink(i)">X</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="addReferenceLink()">&#10010;</button>
+            </form>
+        </ng-template>
+    </div>
+</div>

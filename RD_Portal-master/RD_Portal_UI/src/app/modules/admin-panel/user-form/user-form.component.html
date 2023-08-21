@@ -1,0 +1,87 @@
+<div class="container-fluid pt-5">
+  <div class="row">
+    <div class="col-md-6 mt-3">
+      <h5 class="title text-center mb-3">Manage User</h5>
+      <div class="row mt-3">
+        <div class="col-md-6 col-sm-12" *ngFor="let department of departmentSnapshot">
+          <div class="card mb-5 c-pointer" routerLink="/admin-panel/user-list/{{department.departmentId}}">
+            <div class="card-body same-height">
+              <span class="title-2">{{department.departmentName}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12" >
+          <div class="card mb-5 c-pointer" >
+            <div class="card-body same-height" routerLink="/admin-panel/user-list/NIL">
+              <span class="title-2">Others</span>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>  
+    <div class="col-md-6 mt-3">
+      <div class="alert alert-success alert-dismissible fade show" role="alert" [hidden]="!successMessage">
+        {{successMessage}}
+        <button type="button" class="close">
+          <span (click)="clearMessage()">&times;</span>
+        </button>
+      </div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" [hidden]="!errorMessage">
+        {{errorMessage}}
+        <button type="button" class="close">
+          <span (click)="clearMessage()">&times;</span>
+        </button>
+      </div>
+
+      <h5 class="title text-center mb-3">Create User</h5>
+      <div class="card">
+          <div class="card-body">
+              <form [formGroup]="userForm" (ngSubmit)="createUser()">
+                  <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                            <label>User Id<span class="required">*</span> </label>
+                            <input type="text" class="form-control" formControlName="userId"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Username<span class="required">*</span> </label>
+                            <input type="text" class="form-control" formControlName="userName"/>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>User Group<span class="required">*</span> </label>
+                        <select type="text" class="form-control" formControlName="userDesignationCode" (change)="setDepartment()">
+                          <option value="">...</option>
+                          <option *ngFor="let role of designation" [value]="role.userDesignationCode">
+                            {{ role.userDesignation}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Designation<span class="required">*</span> </label>
+                        <select type="text" class="form-control" formControlName="userGroup">
+                          <option value="">...</option>
+                          <option *ngFor="let role of group" [value]="role.usersDesignationCode">
+                            {{ role.usersDesignation}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12" *ngIf="needDepartment">
+                        <label>Department <span class="required">*</span> </label>
+                        <select type="text" class="form-control" formControlName="userDepartmentId">
+                          <option value="">...</option>
+                          <option *ngFor="let dept of departments" [value]="dept.departmentId">
+                            {{ dept.departmentName}}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block mt-5 mb-2" [disabled]="userForm.invalid">
+                      Create User Account
+                  </button>
+              </form>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+

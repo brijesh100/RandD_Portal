@@ -1,0 +1,58 @@
+<style>
+    img {
+        max-width:100%;
+max-height:100%;
+margin-top: 5px;
+}
+</style>
+<div [className]="edited ? 'card bg-warning mb-1' : 'card border-secondary mb-1' " *ngIf="!isEditMode; else Editor">
+    <div class="card-body">
+        <h5 class="card-title">Details </h5>
+        <div *ngFor="let content of projectContent; let i = index">
+            <h6 class="my-2 text-mint">{{ content.subHeading }}</h6>
+            <p class="card-text text-dark mb-4">{{  content.subContent }}</p>
+            <img [src]="content.images" >
+            <br>
+            <!-- <button type="button" class="btn btn-secondary btn-sm mx-2" (click) = "download(i)">Download</button> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #Editor>
+    <div class="card border-secondary mb-1">
+        <div class="card-body">
+            <h5 class="card-title">Details</h5>
+            <form [formGroup] ="projectContentForm">
+                <div id="subSectionBlock" formArrayName="subSection">
+                    <div class="mb-3" *ngFor="let item of subSectionArray.controls; let i = index" [formGroupName] = "i">
+                        <div class="input-group input-group-sm mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Sub Heading</span>
+                            </div>
+                            <textarea type="text" class="form-control sub-head" formControlName = "subHeading" rows="1"></textarea>
+                            <span class="btn input-group-text" (click)="deleteSubSection(i)">X</span>
+                        </div>
+                        <textarea type="text" class="form-control" formControlName="subContent" rows="6"></textarea>
+                        <input type="file"
+                        class="my-2"
+                        id="filledApplication{{i}}" 
+                        name="filledApplication"
+                        accept="image/*"
+                        (change) = "selectApplication($event)"
+                        >
+                        <span *ngIf='projectContent[i]?.documents!=""'>{{projectContent[i]?.documents.fileName}}</span>
+
+                        <button class="btn btn-secondary btn-sm my-2" (click) = "uploadApplication(i)">Upload</button>
+                        <p  class="text-muted small"> Please click upload once you select the file</p>
+                        <div>
+                            <div *ngIf="uploaded[i]">
+                                <small class="text-muted"> Application has been uploaded</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="addSubSection()">&#10010;</button>
+            </form>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,31 @@
+<div class="conatiner">
+    <div class="row">
+        <div class="col-md-12">
+
+            <table class="table">
+                <thead class="thead sona">
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">SCI</th>
+                    <th scope="col">SCOPUS</th>
+                    <th scope="col">UGC</th>
+                    <th scope="col">Others</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let data of publicationOverview;index as i">
+                  <tr>
+                    <th scope="row" rowspan="4">{{data.year}}</th>
+                  </tr>
+                  <tr *ngFor="let d of data.data | keyvalue">
+                    <td>{{d.key}}</td>
+                    <td>{{d.value['SCI'] ? d.value['SCI'] : '-'}}</td>
+                    <td>{{d.value['SCOPUS'] ? d.value['SCOPUS'] : '-'}}</td>
+                    <td>{{d.value['UGC'] ? d.value['UGC'] : '-'}}</td>
+                    <td>{{d.value['Others'] ? d.value['Others'] : '-'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+RD_Portal_UI/RD_Portal-darwin-x64/
+node_modules/
+.DS_Store
+RD_Portal_WebService/target/npmlist.json
+RD_Portal_UI/dist1

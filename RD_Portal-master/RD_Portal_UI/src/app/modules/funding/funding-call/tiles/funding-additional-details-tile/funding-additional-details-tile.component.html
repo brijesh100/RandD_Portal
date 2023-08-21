@@ -1,0 +1,32 @@
+<div class="card border-secondary mb-1" *ngIf="!isEditMode; else Editor">
+    <div class="card-body">
+        <h5 class="card-title">Additional Details</h5>
+        <div *ngFor="let content of addlDetails">
+            <h6>{{ content.title }}</h6>
+            <p class="card-text text-dark mb-4">{{  content.detail }}</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #Editor>
+    <div class="card border-secondary mt-1">
+        <div class="card-body">
+            <h5 class="card-title">Additional Details</h5>
+            <form [formGroup] ="additionalDetailsForm">
+                <div id="additionalDetailBlock" formArrayName="additionalDetails">
+                    <div class="mb-3" *ngFor="let item of additionalDetailsArray.controls; let i = index" [formGroupName] = "i">
+                        <div class="input-group input-group-sm mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Title</span>
+                            </div>
+                            <textarea type="text" class="form-control sub-head" formControlName = "title" rows="1"></textarea>
+                            <span class="btn input-group-text" (click)="deleteAdditionalDetail(i)">X</span>
+                        </div>
+                        <textarea type="text" class="form-control" formControlName="detail" rows="6"></textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="addAdditionalDetail()">&#10010;</button>
+            </form>
+        </div>
+    </div>
+</ng-template>

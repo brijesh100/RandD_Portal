@@ -1,0 +1,32 @@
+<div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Files</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="row">
+                <div class="col-md-10" *ngIf="downloadableDocName!=undefined">
+                    <span >
+                        <!-- <button type="button" *ngIf="canedit" class="btn btn-secondary btn-sm mx-2" (click) = "download()">Download</button> -->
+                        <button (click) = "download()" *ngIf="canedit" class="btn btn-info"><i class="fa fa-download"></i> Click here to download Attached Document</button>
+                    </span>
+                    <!-- {{downloadableDocName}} -->
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <input type="file"
+            id="filledApplication" 
+            name="filledApplication"
+            (change) = "selectApplication($event)"
+            >
+            <!-- {{downloadableDocName}} -->
+            <button class="btn btn-secondary btn-sm" (click) = "uploadApplication()">Upload</button>
+            <div>
+                <div *ngIf="uploaded">
+                    <small class="text-muted"> Application has uploaded</small>
+                </div>
+                <p *ngIf="!uploaded" class="text-muted small"> Please click upload once you select the file</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

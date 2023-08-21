@@ -1,0 +1,20 @@
+<!-- <div class="card border-secondary mb-1"> -->
+<style>
+    .alert  {background-color: #f09917;}
+</style>
+<div class="card border-secondary mb-1" >
+    <div class="card-body">
+        <h5 class="card-title">Summary</h5>
+        <p  *ngIf="!isEditMode; else Editor" class=" card-text text-dark" >
+            {{ projectSummary }}
+        </p>
+        
+        
+        <ng-template #Editor>
+            <form [formGroup] ="projectSummaryForm">
+                <textarea type="text" class="form-control" formControlName="projectSummary" rows="6">
+                </textarea>
+            </form>
+        </ng-template>
+    </div>
+</div>

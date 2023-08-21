@@ -1,0 +1,184 @@
+<style>
+  .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+   .alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+  </style>
+<div class="container mt-5">
+    <div class="col-md-8 m-auto">
+        <app-message 
+          [successMessage]="successMessage" 
+          [errorMessage]="errorMessage">
+        </app-message> 
+        <h5 class="title text-center mb-3">Add Funding</h5>
+        <div class="alert danger">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            
+          <strong>Please enter details of Research Project before entering fund details</strong>
+          <br>
+          <strong><a href="/project/add"><u>Click here</u></a> to add a Research Project</strong>
+        </div> 
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup] ="appliedFundingForm" (ngSubmit)="addAppliedFunding()">
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+                          <label>Name of Fund/Grant <span class="required">*</span> </label>
+                          <input type="text" class="form-control" formControlName = "nameOfGrant"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label>Funding Organisation <span class="required">*</span> </label>
+                          <input type="text" class="form-control" formControlName = "fundingOrganisation"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label>Funding Type <span class="required">*</span> </label>
+                          <select type="text" class="form-control" formControlName="fundingType" (change)='change($event.target.value)'>
+                            <option value="">...</option>
+                            <option *ngFor="let type of fundingTypeList" [value]="type.fundingType">
+                              {{ type.fundingType }}</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="fundingType=='Others'">
+                          <label>Custom funding type <span class="required">*</span></label>
+                          <input type="text" class="form-control" formControlName = "otherFundingType"/>
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="fundingType=='Conference/Workshop grant'">
+                          <label>Conference/Workshop <span class="required">*</span></label>
+                          <input type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="needPro">
+                          <div formGroupName="project">
+                            <label>Project Name <span class="required" *ngIf="fundingType!='Travel grant'">*</span> </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                formControlName = "projectTitle"
+                                (keyup) = "searchUserProject()"
+                                placeholder = "Search project name..."
+                            />
+                          </div>
+                            <span *ngIf="projectSearchList">
+                                <li class="c-pointer list-group-item list-group-item-action list-group-item-dark"
+                                    formArrayName="projectSearchList"
+                                    *ngFor="let control of projectSearchList.controls; let i = index" 
+                                    (click)="setProject(i)"
+                                >
+                                {{control?.value.projectTitle}} 
+                                </li>
+                            </span>
+                            <p class="text-muted small"> Please enter the first letter of the Project</p>
+                        </div>
+                      </div>
+                      <div class="row" >
+                        <div class="form-group col-md-6">
+                          <label>Investigators</label>
+                          <input 
+                          placeholder="Search contributorId..." 
+                          type="text" 
+                          class="form-control"
+                          autocomplete="off"
+                          formControlName = "investigator"
+                          (keyup) = "getMatchinginvestigatorIds($event.target.value)"
+                          />
+                          <span *ngIf="investigatorSearchList">
+                              <li class="c-pointer list-group-item list-group-item-action list-group-item-dark"
+                                  formArrayName="investigatorSearchList"
+                                  *ngFor="let control of investigatorSearchList.controls; let i = index" 
+                                  (click)="addinvestigator(i)"
+                              >
+                              {{control?.value}} 
+              
+                              </li>
+                          </span>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label>Co-Investigator</label>
+                          <input 
+                          placeholder="Search username..." 
+                          type="text" 
+                          class="form-control"
+                          autocomplete="off"
+                          formControlName = "coInvestigator"
+                          (keyup) = "getMatchingcoinvestigatorsIds($event.target.value)"
+                          />
+                          <span *ngIf="coinvestigatorSearchList">
+                              <li class="c-pointer list-group-item list-group-item-action list-group-item-dark"
+                                  formArrayName="coinvestigatorSearchList"
+                                  *ngFor="let control of coinvestigatorSearchList.controls; let i = index" 
+                                  (click)="addcoinvestigator(i)"
+                              >
+                              {{control?.value}} 
+              
+                              </li>
+                          </span>
+                        </div>
+                        <div class="col-md-12">
+                          <p>is this Seed money funded project ? <span class="required">*</span></p>
+                          <div class="form-check">
+                            <input class="form-check-input mr-5" type="radio" formControlName="seedmoney" id="yes" value="true">
+                            <label class="form-check-label" for="ongoing">Yes</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input mr-5" type="radio" formControlName="seedmoney" id="no"
+                          value="false">
+                      <label class="form-check-label" for="complete">No</label>
+                        </div>
+                        </div>
+                    </div>
+                      <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block mt-5 mb-2" [disabled]="appliedFundingForm.invalid">
+                        Add Funding
+                      </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

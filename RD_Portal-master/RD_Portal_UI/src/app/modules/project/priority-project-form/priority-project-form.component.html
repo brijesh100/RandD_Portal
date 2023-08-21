@@ -1,0 +1,159 @@
+<div class="container mt-5">
+    <div class="col-md-8 m-auto">
+      <h5 class="title text-center mb-3">Add Priority Project</h5>
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="project" (ngSubmit)="createProject()">
+            <div class="form-group">
+              <label>Project Title <span class="required">*</span> </label>
+              <textarea type="text" class="form-control" formControlName="projectTitle" rows="1"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Project Description <span class="required">*</span></label>
+              <textarea type="text" class="form-control" formControlName="projectSummary" rows="3"></textarea>
+            </div>
+            <div class="form-row">
+                  <div class="col-md-12" *ngIf="departmentarray.length==0">
+                    <label>Department <span class="required">*</span> </label>
+                  </div>
+                  <div class="form-group col-md-12"  *ngIf="departmentarray.length>0">
+                    <label>Department <span class="required">*</span> </label>
+                    <div class="input-group" *ngFor="let dept of departmentarray">
+                      <input  type="text" class="form-control  my-2" [value]="getDeptname(dept)" readonly>
+                      <div class="input-group-append">
+                        <button type="button"*ngIf="dept != userDeptId" class="btn btn-secondary  my-2"
+                        (click)="removedepartment(dept)"
+                         >X</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-11 i-group">
+                    <select type="text" class="form-control" formControlName="projectDepartment">
+                        <option value="">...</option>
+                        <option *ngFor="let dept of departments" [value]="dept.departmentId">
+                          {{ dept.departmentName }}</option>
+                    </select>
+                  </div>
+                  <div class="i-group-append ml-auto mr-1">
+                    <button type="button" class="btn btn-secondary" (click)="addDepartment(project.value.projectDepartment)" >&#10010;</button>
+                  </div>
+                  <span class="mx-2 my-2 text-muted">Please click add button after selecting the department</span>
+            </div>
+            <label for="contributors" class="my-2">Researchers </label>
+            <div class="card">
+              <div class="alert alert-danger alert-dismissible fade show " role="alert" [hidden]="!usererror">
+                {{usererror}}
+                <button type="button" class="close" (click) = "clearMessage()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="card-body form-row">
+                <div class="form-group col-md-6">
+                  <div>
+                        <span *ngFor="let contributorId of team;index as i">
+                            <span *ngIf="i==0">
+                                Principal Investigator
+                                <br>
+                            </span>
+                            <span *ngIf="i==1">
+                                <br>  
+                                Co-Investigator
+                                <br>
+                            </span>  
+                            <span class="badge badge-pill badge-secondary pr-1">
+                                {{ contributorId }}
+                                <span *ngIf="contributorId !== userIdName" (click)="removeContributorFromTeam(contributorId)" class="c-pointer p-1 text-danger">
+                                    X
+                                </span>
+                            </span>
+                            <br>
+                        </span>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Search UserId</label>
+                  <div class="input-group">
+                    <input list="users" type="text" class="form-control" formControlName="searchedContributorId"
+                      autocomplete="off" (keyup)="searchContributorIds(project.value.searchedContributorId)" />
+                    <datalist id="users">
+                      <option *ngFor="let contributor of contributorIds" [value]="contributor"
+                        (click)="clearContributorIdsDataList()">{{contributor}}</option>
+                    </datalist>
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-secondary"
+                        (click)="addContributorToTeam(project.get('searchedContributorId').value)">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row my-2">
+              <div class="col-md-12" *ngIf="collaborators.length==0">
+                <label>Collaborators</label>
+              </div>
+              <div class="form-group col-md-12"  *ngIf="collaborators.length>0">
+                <label>Collaborators </label>
+                <div class="input-group" *ngFor="let c of collaborators">
+                  <input  type="text" class="form-control  my-2" [value]="c" readonly>
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-secondary  my-2"
+                    (click)="removeCollaborator(c)"
+                      >X</button>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group col-md-12 ">
+                <input  type="text" class="form-control" formControlName="typedCollaborators">
+                <div class="input-group-append ml-auto mr-1">
+                  <button type="button" class="btn btn-secondary" (click)="addCollaborator(project.value.typedCollaborators)" >&#10010;</button>
+                </div> 
+              </div>
+            </div>
+            <div class="form-row my-4">
+              <div class="form-group col-md-6">
+                <label class="my">Started date <span class="required">*</span></label>
+                  <input class="form-control" type="date" value="project.get('createdAt').value"
+                    formControlName="start" max="{{lastDate}}" />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="my">End date </label>
+                    <input class="form-control" type="date"
+                      formControlName="end" max="{{lastDate}}" />
+              </div>
+              <div class="form-group col-md-6">
+                <label>Patent Count  </label>
+                <input  type="number" class="form-control" formControlName="patentCount">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Publication Count </label>
+                <input  type="number" class="form-control" formControlName="publicationCount" >
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Technology Readiness Level <span class="required">*</span> </label>
+                <select type="text" class="form-control" formControlName="technologyReadinessLevel">
+                    <option value="">...</option>
+                    <option *ngFor="let level of TRlevels" [value]="level">
+                      {{ level }}</option>
+                </select>
+              </div>
+            </div>
+              <button type="submit" class="btn btn-primary btn-block btn-lg mt-5" [disabled]="project.invalid">
+                Add Project
+              </button>
+            </form>
+          </div>
+          <div class="alert alert-success alert-dismissible fade show" role="alert" [hidden]="!successMessage">
+            {{successMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" [hidden]="!errorMessage">
+            {{errorMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>

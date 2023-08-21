@@ -1,0 +1,234 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+    <li class="breadcrumb-item active">Patents</li>
+  </ol>
+</nav>
+<app-patent-dashboard
+  *ngIf="!isloading"
+  [allPatents]="allPatents"
+  [departments]="departments"
+></app-patent-dashboard>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-3 border-secondary">
+        <div class="card-header sona">
+          <h5>Filter</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Department</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.dept"
+              (change)="filterFun('dept', $event)"
+            >
+              <option value="all" selected>All Departments</option>
+              <option *ngFor="let dept of departId" [value]="dept.departmentId">
+                {{ dept.departmentId }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.year"
+              (change)="filterFun('year', $event)"
+            >
+              <option value="all" selected>All Data</option>
+              <option *ngFor="let year of years" value="{{ year }}">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>TRL</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.trl"
+              (change)="filterFun('trl', $event)"
+            >
+              <option value="all" selected>All Data</option>
+              <option *ngFor="let level of TRlevels" value="{{ level }}">
+                {{ level }}
+              </option>
+            </select>
+          </div>
+          <h5 class="text-mint">
+            <span class="mt-4"
+              >Filtered Patents Count : {{ patent?.length }}</span
+            >
+            <button
+              type="reset"
+              class="btn btn-primary float-right"
+              (click)="reset()"
+            >
+              RESET
+            </button>
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 scroll" *ngIf="allPatents?.length; else Emptybox">
+      <input
+        class="form-control mb-2"
+        type="text"
+        name="search"
+        [(ngModel)]="searchText"
+        autocomplete="off"
+        placeholder="Search Patent Title"
+      />
+      <div
+        class=""
+        id="myTable"
+        *ngFor="
+          let patent of allPatents | grdFilter : { paperTitle: searchText }
+        "
+      >
+        <div class="card border-secondary notification">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <span
+                routerLink="/patent/{{ patent.patentId }}"
+                class="btn btn-primary btn-sm float-right"
+              >
+                View details
+              </span>
+
+              <h5 class="card-title">
+                <a routerLink="/patent/{{ patent.patentId }}">
+                  {{ patent.patentTitle }}
+                </a>
+              </h5>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-md-4" *ngIf="patent.TechnologyReadinessLevel">
+                  <h6 class="card-text text-mute">
+                    Technology Readiness Level:
+                  </h6>
+                  <span
+                    class="badge {{
+                      TRlevelBadge[patent.TechnologyReadinessLevel]
+                    }} mb-2 c-pointer"
+                    data-toggle="modal"
+                    data-target="#trlOverviewModal"
+                    >{{ patent.TechnologyReadinessLevel }} -
+                    {{ TRlevelText[patent.TechnologyReadinessLevel] }}</span
+                  >
+                </div>
+                <div class="col-md-2">
+                  <h6 class="card-text text-mute">Department</h6>
+                  <span class="text-muted mb-1">{{
+                    patent.patentDepartment
+                  }}</span>
+                </div>
+                <div class="col-md-4">
+                  <h6 class="card-text text-mute">Inventors</h6>
+                  <span
+                    class="pr-3"
+                    *ngFor="let patentInventor of patent?.patentInventors"
+                  >
+                    <span
+                      #userId
+                      class="badge badge-pill badge-secondary c-pointer"
+                      (click)="showUserOverview(patentInventor)"
+                      data-toggle="modal"
+                      data-target="#userOverviewModal"
+                    >
+                      {{ patentInventor }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-md-2 float-right">
+                  <div class="float-right">
+                    <h6 class="card-text text-mute mx-2">Status</h6>
+                    <span
+                      [ngClass]="{
+                        'badge badge-pill mb-1 p-2': true,
+                        'badge-danger': patent.patentStatus == 'Filed',
+                        'badge-warning':
+                          patent.patentStatus == 'Published' ||
+                          patent.patentStatus == 'FER Submitted',
+                        'badge-secondary':
+                          patent.patentStatus == 'Hearing Completed',
+                        'badge-success': patent.patentStatus == 'Granted'
+                      }"
+                      >{{ patent.patentStatus }}</span
+                    >
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </li>
+            <p class="list-group-item card-text">
+              <small class="text-mute float-right float-bottom"
+                >Last updated
+                {{ patent.updatedAt | date : "mediumDate" }}</small
+              >
+            </p>
+          </ul>
+        </div>
+        <br />
+      </div>
+    </div>
+    <ng-template #Emptybox>
+      <div class="empty-content">
+        <img
+          src="../../../../assets/image/empty-box.png"
+          alt="Empty content :("
+        />
+      </div>
+    </ng-template>
+  </div>
+
+  <div
+    class="modal fade"
+    id="userOverviewModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="userOverviewModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Inventors Details
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-borderless">
+            <tr>
+              <td class="text-muted">Name</td>
+              <td class="card-text text-capitalize">{{ user?.userName }}</td>
+            </tr>
+            <tr>
+              <td class="text-muted">Designation</td>
+              <td class="card-text text-capitalize">
+                {{ user?.userDesignation }}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-muted">Department</td>
+              <td class="card-text text-capitalize">
+                {{ user?.userDepartment }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-trl-modal></app-trl-modal>
+</div>

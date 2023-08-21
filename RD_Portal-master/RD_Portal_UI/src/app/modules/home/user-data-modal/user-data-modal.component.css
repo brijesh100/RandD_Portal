@@ -1,0 +1,6 @@
+.close:hover{
+    color: red;
+}
+.email-input{
+    text-transform: lowercase;
+}

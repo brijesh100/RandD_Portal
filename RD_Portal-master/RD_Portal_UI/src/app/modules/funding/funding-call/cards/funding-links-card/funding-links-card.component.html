@@ -1,0 +1,32 @@
+<div class="card border-secondary mb-1">
+    <div class="card-header">{{isEditMode?'Add Links':'Links'}}</div>
+    <div class="card-body">
+        <div *ngIf="!isEditMode; else Editor">
+            <div *ngFor="let item of urls">
+                <a href={{item?.url}} target="_blank">
+                    <span class="disc">&#9673;</span> 
+                    <span class="card-text text-muted" >{{  item?.title  }}</span>
+                </a>
+            </div>
+        </div>
+     
+        <ng-template #Editor>
+            <form [formGroup]="fundingUrlForm">
+                <div formArrayName="fundingUrls" class="mb-3" *ngFor="let item of fundingUrlsArray.controls; let i = index">
+                    <div class="border" [formGroupName]="i">
+                        <div class="row">
+                            <div class="input-group input-group-sm mb-1">
+                                <input type="text" class="form-control sub-head" formControlName="title" placeholder="Title" />
+                                <div class="input-group-append">
+                                    <span class=" btn input-group-text" (click)="deleteFundingUrl(i)">X</span>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control sub-head" formControlName="url" placeholder="URL" />
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="addFundingUrl()">&#10010;</button>
+            </form>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+
+<div class="row" *ngIf="snapshot">
+    <div class="col-md-6 col-sm-6">
+      <div class="gradient-card borderless text-white bg-c-i mb-3">
+        <div class="card-body" style="color: white;">
+          <h2>{{snapshot[0].tileCount}}</h2>
+          <p class="card-text">{{snapshot[0].tileName}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+      <div class="gradient-card borderless text-white bg-c-b mb-3">
+        <div class="card-body" style="color: white;">
+          <h2>{{snapshot[1].tileCount}} </h2>
+          <p class="card-text">{{snapshot[1].tileName}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+      <div class="gradient-card borderless text-white bg-c-g mb-3">
+        <div class="card-body" style="color: white;">
+          <h2>{{snapshot[2].tileCount}}</h2>
+          <p class="card-text">{{snapshot[2].tileName}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <div class="gradient-card borderless text-white bg-c-o mb-3">
+          <div class="card-body" style="color: white;">
+          <h2>{{snapshot[3].tileCount}}</h2>
+            <p class="card-text">{{snapshot[3].tileName}}</p>
+          </div>
+        </div>
+      </div>
+  </div>

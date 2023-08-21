@@ -1,0 +1,11 @@
+<div class="card my-1">
+    <div class="card-header"><h5>Fundings</h5></div>
+        <div class="card-body">
+                <div *ngFor="let fundingProject of fundingProjects">
+                    <div class="c-pointer" routerLink="/funding/{{fundingProject.isExternal?'apply':'applied'}}/{{fundingProject.fundingProjectId}}" >
+                        <span class="disc">&#9673;</span> 
+                        <span class="card-text text-muted" >{{  fundingProject?.nameOfGrant  }}</span>
+                    </div>
+                </div>
+        </div>
+    </div>

@@ -1,0 +1,11 @@
+.selfscroll {
+    border-right: thin black solid;
+    height: 45vh;
+    overflow: auto;
+  }
+.wrap{
+    max-width: 100px;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+}

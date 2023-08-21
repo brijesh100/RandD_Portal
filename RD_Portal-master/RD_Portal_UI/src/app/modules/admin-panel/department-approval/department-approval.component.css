@@ -1,0 +1,12 @@
+.row {
+  margin-left: 0%;
+  margin-right: 0%;
+}
+.selfscroll {
+  border-right: thin black solid;
+  height: 80vh;
+  overflow: auto;
+}
+.cpointer {
+  cursor: pointer;
+}

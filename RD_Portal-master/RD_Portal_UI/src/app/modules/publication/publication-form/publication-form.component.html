@@ -1,0 +1,392 @@
+  
+<div class="container-fluid mt-5">
+
+  <app-loader
+    [load]="isloading">
+  </app-loader>
+  
+  <div class="row">
+    <div class="col-md-8 m-auto">
+      <app-message 
+        [successMessage]="successMessage" 
+        [errorMessage]="errorMessage">
+      </app-message> 
+      <h5 class="title text-center">Add Publication</h5>
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup] ="publicationForm" (ngSubmit)="addPublication()">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Publication Type <span class="required">*</span> </label>
+                <select class="form-control" formControlName = "publicationType"  (change)="changeform($event)" [ngClass]="{ 'is-invalid': pubf?.publicationType.touched && pubf.publicationType.errors }">
+                  <option value="" disabled selected>Choose Publication type</option>
+                  <option value="Journal">Journal</option>
+                  <option value="Conference Proceedings">Conference Proceedings</option>
+                  <option value="Arvix">Arvix</option>
+                  <option value="Book">Book</option>
+                  <option value="Book Chapter">Book Chapter</option>
+                  <option value="Magazine">Magazine</option>
+                  <option value="Newspaper">Newspaper</option>
+                  <option value="Blog">Blog</option>
+                </select>
+                <div *ngIf="pubf?.publicationType.touched" class="invalid-feedback">
+                  <div *ngIf="pubf?.publicationType.errors">Publication Type is required</div>
+                </div>
+              </div>
+              <div class="form-group col-md-8" *ngIf="type">
+                <label>DOI/URL <span class="required">*</span> </label>
+                <div class="row col-md-12 pr-0">
+
+                  <input type="text" class="form-control col-md-9" placeholder="https://doi.org/10.1109/5.771073" formControlName = "DOIorURL"/>
+                  <a class="btn btn-primary ml-lg-2" (click)="searchDOI()" >
+                    Verify DOI
+                  </a>
+                </div>
+              </div>
+
+              <div class="form-group col-md-12" *ngIf="type">
+                <label>Title<span class="required">*</span> </label>
+                <input list="papers" type="text" class="form-control" (change)="selectMatchedPublication($event.target.value)" (keyup)="searchMatchingPublication(publicationForm.value.paperTitle)" placeholder="Paper Title" formControlName = "paperTitle" [ngClass]="{ 'is-invalid': pubf?.paperTitle.touched && pubf.paperTitle.errors }"/>
+                <datalist id="papers" >
+                  <option *ngFor="let publication of matchedPublications" value="{{publication.publicationId}}">{{publication.paperTitle}}</option>
+                </datalist>
+                
+                <div *ngIf="pubf?.paperTitle.touched" class="invalid-feedback">
+                  <div *ngIf="pubf?.paperTitle?.errors?.required">Title is required</div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-12" *ngIf="type">
+                <label *ngIf="type!='Journal'">Publication <span class="required">*</span> </label>
+                <label *ngIf="type=='Journal'">Journal Name<span class="required">*</span> </label>
+                <input type="text" class="form-control" 
+                  placeholder="Publication/Journal Name" 
+                  formControlName = "publicationName"
+                  [ngClass]="{ 'is-invalid': pubf?.publicationName.touched && pubf.publicationName.errors }"
+                />
+                <div *ngIf="pubf?.publicationName.touched" class="invalid-feedback">
+                  <div *ngIf="pubf?.publicationName?.errors?.required">Publication/Journal Name is required</div>
+                </div>
+              </div>
+
+            </div>
+            <hr/>
+            <!--Arvix-->
+            <div *ngIf='type=="Arvix"'>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Publisher ID <span class="required">*</span> </label>
+                    <input type="text" class="form-control" formControlName = "publisherId" readonly/>
+                  </div>  
+                  <div class="form-group col-md-3">
+                    <label>Contribution as <span class="required">*</span> </label>
+                    <select class="form-control" formControlName = "contributionAs">
+                      <option value="First Author">First Author</option>
+                      <option value="Second Author">Second Author</option>
+                      <option value="Others">Others</option>
+                      <option value="Supervisor">Supervisor</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Publication Date <span class="required">*</span> </label>
+                    <input type="date" class="form-control" formControlName = "yearOfPublication"/>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+            </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>Reach </label>
+                  <select class="form-control" formControlName = "reach">
+                    <option value="International">International</option>
+                    <option value="National">National</option>
+                    <option value="Regional">Regional</option>
+                    <option value="Institutional">Institutional</option>
+                  </select>
+                </div>
+                
+              </div>
+            </div>
+            
+
+            <div *ngIf='type=="Conference Proceedings" || type=="Journal" || type=="Book" || type=="Book Chapter"'>
+              <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>Publisher ID <span class="required">*</span> </label>
+                    <input type="text" class="form-control" formControlName = "publisherId" readonly/>
+                  </div>  
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Volume Number </label>
+                    <input type="number" class="form-control" formControlName = "volumeNumber"/>
+                  </div>  
+                  <div class="form-group col-md-6">
+                    <label>Publication Date <span class="required">*</span> </label>
+                    <input type="date" class="form-control" formControlName = "yearOfPublication"/>
+                  </div>  
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>ISSN </label>
+                    <input type="text" class="form-control" formControlName = "ISSN"/>
+                  </div> 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Contribution as <span class="required">*</span> </label>
+                    <select class="form-control" formControlName = "contributionAs">
+                      <option value="First Author">First Author</option>
+                      <option value="Second Author">Second Author</option>
+                      <option value="Others">Others</option>
+                      <option value="Supervisor">Supervisor</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Reach <span class="required">*</span> </label>
+                    <select class="form-control" formControlName = "reach">
+                      <option value="International">International</option>
+                      <option value="National">National</option>
+                      <option value="Regional">Regional</option>
+                      <option value="Institutional">Institutional</option>
+                    </select>
+                  </div>    
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Pages From </label>
+                    <input type="number" class="form-control" formControlName = "pagesFrom"/>
+                  </div>  
+                  <div class="form-group col-md-6">
+                    <label>Pages To </label>
+                    <input type="number" class="form-control" formControlName = "pagesTo"/>
+                  </div> 
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>ISBN </label>
+                    <input type="text" class="form-control" formControlName = "ISBN"/>
+                  </div> 
+                </div>
+              </div>
+            </div>
+            <hr/>
+            
+            <div class="row">
+              
+              <div class="form-group col-md-6">
+                <label>Indexing <span class="required">*</span> </label>
+                <select class="form-control" formControlName = "indexing">
+                  <option value="SCI">SCI</option>
+                  <option value="SCOPUS">SCOPUS</option>
+                  <option value="UGC">UGC</option>
+                  <option value="WebOfScience">Web of Science</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div> 
+              <div class="form-group col-md-6">
+                <label>Issue Number  </label>
+                <input type="number" class="form-control" formControlName = "issueNumber"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Impact Factor</label>
+                <input type="text" class="form-control" formControlName = "impactFactor"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Edition Number </label>
+                <input type="number" class="form-control" formControlName = "editionNumber"/>
+              </div>
+
+            </div>
+            </div>
+
+
+          <div *ngIf='type=="Magazine" || type=="Newspaper"'>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>Publisher ID <span class="required">*</span> </label>
+                    <input type="text" class="form-control" formControlName = "publisherId" readonly/>
+                  </div>  
+                </div>
+                <div class="row">  
+                  <div class="form-group col-md-6">
+                    <label>Publication Date <span class="required">*</span> </label>
+                    <input type="date" class="form-control" formControlName = "yearOfPublication"/>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Issue Number</label>
+                    <input type="number" class="form-control" formControlName = "issueNumber"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Contribution as <span class="required">*</span> </label>
+                    <select class="form-control" formControlName = "contributionAs">
+                      <option value="First Author">First Author</option>
+                      <option value="Second Author">Second Author</option>
+                      <option value="Others">Others</option>
+                      <option value="Supervisor">Supervisor</option>
+                    </select>
+                  </div>   
+                  <div class="form-group col-md-6">
+                    <label>Reach <span class="required">*</span> </label>
+                    <select class="form-control" formControlName = "reach">
+                      <option value="International">International</option>
+                      <option value="National">National</option>
+                      <option value="Regional">Regional</option>
+                      <option value="Institutional">Institutional</option>
+                    </select>
+                  </div> 
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Pages From</label>
+                    <input type="number" class="form-control" formControlName = "pagesFrom"/>
+                  </div>  
+                  <div class="form-group col-md-6">
+                    <label>Pages To </label>
+                    <input type="number" class="form-control" formControlName = "pagesTo"/>
+                  </div> 
+                </div>
+              </div>
+            </div>
+            <hr/>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>ISSN </label>
+                <input type="text" class="form-control" formControlName = "ISSN"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>ISBN</label>
+                <input type="text" class="form-control" formControlName = "ISBN"/>
+              </div> 
+            </div>
+          </div>
+
+
+          <div *ngIf='type=="Blog"'>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>Publisher ID <span class="required " >*</span> </label><span data-toggle="tooltip" placement="top" title="Please Enter Publisher Id"><i class="fa fa-question-circle mx-1"></i></span>
+                    <input type="text" class="form-control" formControlName = "publisherId" readonly/>
+                  </div>  
+                </div>
+              </div>  
+              <div class="form-group col-md-3">
+                <label>Publication Date <span class="required">*</span> </label>
+                <input type="date" class="form-control" formControlName = "yearOfPublication"/>
+              </div>
+              <div class="form-group col-md-3">
+                <label>Reach <span class="required">*</span> </label>
+                <select class="form-control" formControlName = "reach">
+                  <option value="International">International</option>
+                  <option value="National">National</option>
+                  <option value="Regional">Regional</option>
+                  <option value="Institutional">Institutional</option>
+                </select>
+              </div>
+            </div>
+            <hr/>
+            
+            
+          </div>
+          <div *ngIf='type!=""'>
+            <label for="coAuthor">Co-Authors from Sona</label>
+            <div class="card">
+              <div class="alert alert-danger alert-dismissible fade show " role="alert" [hidden]="!usererror">
+                {{usererror}}
+                <button type="button" class="close" (click) = "clearMessage()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              
+              <div class="card-body form-row">
+                <div class="form-group col-md-6">
+                  <div>
+                    <span *ngFor="let contributorId of team"
+                      class="badge badge-pill badge-secondary pr-1 my-1 mx-1">{{ contributorId }}
+                      <span *ngIf="contributorId !== userIdName" (click)="removeContributorFromTeam(contributorId)" class="c-pointer">X</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Search Username of Sona</label>
+                  <div class="input-group">
+                      <input list="users" placeholder="Search using Username" type="text" class="form-control" formControlName="searchedContributorId"
+                        autocomplete="off" (keyup)="searchContributorIds(publicationForm.value.searchedContributorId)" />
+                        <datalist id="users" >
+                        <option *ngFor="let contributor of contributorIds" [value]="contributor"
+                          (click)="addContributorToTeam(contributor)">{{contributor}}</option>
+                        </datalist>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary"
+                        (click)="addContributorToTeam(publicationForm.get('searchedContributorId').value)">Add</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="card-body form-row">
+                  <div class="form-group col-md-6">
+                    <div>
+                      <span *ngFor="let contributorId of other_cos"
+                        class="badge badge-pill badge-secondary pr-1">{{ contributorId }}
+                        <span *ngIf="contributorId !== userIdName" (click)="removecoauth(contributorId)" class="c-pointer">X</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <br>
+                    <label>Add others</label>
+                    <div class="input-group">
+                      <input list="users" type="text" class="form-control" placeholder="Enter a name and click add" formControlName="otherContributorId"
+                        autocomplete="off" />
+                      <datalist id="users" >
+                        <option *ngFor="let contributor of contributorIds" [value]="contributor"
+                          (click)="addContributorToTeam(contributor)">{{contributor}}</option>
+                      </datalist>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary"
+                          (click)="addotherco(publicationForm.get('otherContributorId').value)">Add</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg mt-5" [disabled]="publicationForm.invalid" >
+              Add Publication
+            </button>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+    <!-- <div class="col-md-6 mt-2">
+      <div class="card">
+        <div class="card body">
+          <h5 class="p-2">DOI link verification</h5>
+          <iframe #iframe frameborder="1" style="height: 70vh;"></iframe>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <button type="button" class="btn btn-primary" #launchModal data-toggle="modal" data-target="#pubAuthResolveModal" [hidden]="true"></button>
+  <app-publication-author-resolve-modal
+    [matchedPublication]="selectedMatchedPublication"
+  >
+  </app-publication-author-resolve-modal>
+</div>

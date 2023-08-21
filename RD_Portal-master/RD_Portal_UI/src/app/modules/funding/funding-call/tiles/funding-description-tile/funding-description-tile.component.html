@@ -1,0 +1,14 @@
+<div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Description of Scheme</h5>
+        <p  *ngIf="!isEditMode; else Editor" class="card-text text-dark" >
+            {{ description }}
+        </p>
+        <ng-template #Editor>
+            <form [formGroup] ="fundingDescriptionForm">
+                <textarea type="text" class="form-control" formControlName="descriptionOfScheme" rows="6">
+                </textarea>
+            </form>
+        </ng-template>
+    </div>
+</div>

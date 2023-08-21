@@ -1,0 +1,130 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/user">Profile</a></li>
+      <li class="breadcrumb-item active">Add Project</li>
+  </ol>
+</nav>
+<div class="container mt-5">
+  <div class="col-md-8 m-auto">
+    <h5 class="title text-center mb-3">Add Project</h5>
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="project" (ngSubmit)="createProject()">
+          <div class="form-group">
+            <label>Project Title <span class="required">*</span> </label>
+            <textarea type="text" class="form-control" formControlName="projectTitle" [ngClass]="{ 'is-invalid': submitted && f.projectTitle.errors }" rows="1"></textarea>
+            <div *ngIf="submitted && f.projectTitle.errors" class="invalid-feedback">
+              <div *ngIf="f.projectTitle.errors.required">Project Title is required</div>
+              <div *ngIf="f.projectTitle.errors.minlength">Enter a valid project title (min. 5 characters required)</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Project summary <span class="required">*</span></label>
+            <textarea type="text" class="form-control" formControlName="projectSummary" rows="3" [ngClass]="{ 'is-invalid': submitted && f.projectSummary.errors }" ></textarea>
+            <div *ngIf="submitted && f.projectSummary.errors" class="invalid-feedback">
+              <div *ngIf="f.projectSummary.errors.required">Project Summary is required</div>
+              <div *ngIf="f.projectSummary.errors.minlength">Enter a valid project summary (min. 10 characters required)</div>
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Department <span class="required">*</span> </label>
+                <div class="input-group" *ngFor="let dept of departmentarray">
+                  <input  type="text" class="form-control  my-2" [value]="getDeptname(dept)" readonly>
+                  <div class="input-group-append">
+                    <button type="button"*ngIf="dept != userDeptId" class="btn btn-secondary  my-2"
+                    (click)="removedepartment(dept)"
+                      >X</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Lab <span class="required">*</span> </label>
+                <select type="text" class="form-control my-2" formControlName="projectLab" [ngClass]="{ 'is-invalid': submitted && f.projectLab.errors }">
+                  <option value="">...</option>
+                  <option *ngFor="let lab of researchLabs" [value]="lab.researchLabId">{{ lab.researchLabName }}</option>
+                </select>
+                <div *ngIf="submitted && f.projectLab.errors" class="invalid-feedback">
+                  <div *ngIf="f.projectLab.errors.required">Research lab is required</div>
+                  <div *ngIf="f.projectLab.errors.minlength">Choose a valid research lab</div>
+                </div>
+              </div>
+              <div class="col-md-6 i-group">
+                <select type="text" class="form-control" formControlName="projectDepartment">
+                    <option value="">...</option>
+                    <option *ngFor="let dept of departments" [value]="dept.departmentId">
+                      {{ dept.departmentName }}
+                    </option>
+                </select>
+              </div>
+              <div class="i-group-append"><button type="button" class="btn btn-secondary mx-2" (click)="addDepartment(project.value.projectDepartment)" >&#10010;</button></div>
+              <small class="form-text text-muted my-2">To add another department, please select a department from the above list and click (+) button.</small>
+          </div>
+          <label for="contributors" class="my-2">Contributors </label>
+          <div class="card">
+            <div class="card-body form-row">
+              <div class="form-group col-md-6">
+                <div>
+                  <span *ngFor="let contributorId of team"
+                    class="badge badge-pill badge-secondary pr-1">{{ contributorId }}
+                    <span *ngIf="contributorId !== userIdName" (click)="removeContributorFromTeam(contributorId)" class="c-pointer">X</span>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Search UserId</label>
+                <div class="input-group">
+                  <input list="users" type="text" class="form-control" formControlName="searchedContributorId"
+                    autocomplete="off" (keyup)="searchContributorIds(project.value.searchedContributorId)"  [ngClass]="{ 'is-invalid': usererror }"/>
+                    <datalist id="users">
+                      <option *ngFor="let contributor of contributorIds" [value]="contributor"
+                      (click)="clearContributorIdsDataList()">{{contributor}}</option>
+                    </datalist>
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-secondary"
+                      (click)="addContributorToTeam(project.get('searchedContributorId').value)">Add</button>
+                    </div>
+                    <div class="invalid-feedback" *ngIf="usererror">
+                      <div >User not found, please select a username from the list.</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row my-2">
+            <div class="form-group col-md-6">
+              <label class="my">Started date <span class="required">*</span></label>
+                <input class="form-control" type="date" value="project.get('createdAt').value"
+                  formControlName="start" max="{{lastDate}}" [ngClass]="{ 'is-invalid': submitted && f.projectLab.errors }"/>
+                <div *ngIf="submitted && f.start.errors" class="invalid-feedback">
+                  <div *ngIf="f.start.errors.required">Start date is required</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="my">End date </label>
+                  <input class="form-control" type="date"
+                    formControlName="end" max="{{lastDate}}" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg mt-5" >
+            Add Project
+          </button>
+          <div class="alert alert-success alert-dismissible fade show" role="alert" [hidden]="!successMessage">
+            {{successMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" [hidden]="!errorMessage">
+            {{errorMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+show academic year count in user profile - show field only which have data
+
+columns are indexing
+main row year
+sub rows are types - ngif on types
+
+funding table - 
+columns PI , CO-PI
+rows years
+
+project page lab edit
+
+publication duplicate check 
+photo upload
+ebs storage space change
+
+publication changes 
+1. form - first auth and sec author validation
+2. check duplicates 
+3. chech doi and names 
+4. request to author/admin to add coauthor 
+
+
+//new
+
+faculty name, dept,  data
+welcome name stuff
+please wait while your profile is being created 2 seconds
+
+update password in another modal
+
+user project-based keywords (collection of all )
+user research keywords
+breadcrumbs in all pages
+
+ex: https
+tag doi less publication
+Get both doi and url
+load doi else load url

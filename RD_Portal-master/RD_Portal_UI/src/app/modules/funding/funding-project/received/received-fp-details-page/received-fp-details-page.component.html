@@ -1,0 +1,120 @@
+<app-loader [load]="isloading"></app-loader>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="home">Home</a></li>
+        <li class="breadcrumb-item active">{{'Received Funding' |  slice:0:30}}</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <app-message 
+        [successMessage]="successMessage" 
+        [errorMessage]="errorMessage">
+    </app-message> 
+    <app-fp-header-section-tile
+        [nameOfGrant] ="nameOfGrant"
+        [fundingOrganisation] ="fundingOrganisation"
+        [fundingType] ="fundingType"
+        [project]="project"
+        [isEditMode] = "editMode"
+        >
+    </app-fp-header-section-tile>
+
+    <div class="row">
+        <div class="col-md-9">
+            <app-fp-summary-tile
+                [summary] = "summary"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #summaryTileRef>
+            </app-fp-summary-tile>
+            <app-fp-keywords-tile
+                [keywords] = "keywords"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #keywordsTileRef>
+            </app-fp-keywords-tile>
+            <app-fp-amount-tile
+                [fundingAmount] = "fundingAmount"
+                [isEditMode] = "editMode"
+                [status]= "status"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #amountTileRef>
+            </app-fp-amount-tile>
+            <app-fp-dates-tile
+                [fundDates] = "fundDates"
+                [isEditMode] = "editMode"
+                [status]= "status"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #datesTileRef>
+            </app-fp-dates-tile>
+            
+        </div>
+        <div class="col-md-3">
+            <app-fp-remark-modal
+                [isAdmin]="isAdmin"
+                [fundingprojectId]="fundingprojectId"
+                [sremark]="remark"
+                (remarkemit) = "refresh()"
+            ></app-fp-remark-modal>
+            <app-fp-status-card
+                [status] = "status"
+                [isEditMode] = "!isExternal"
+                [isExternal]="isExternal"
+                >
+            </app-fp-status-card>
+            <app-fp-investigator-card
+                [investigator] = "investigator"
+                [coInvestigators] = "coInvestigator"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #investigatorCardRef>
+            </app-fp-investigator-card>
+        </div>
+    </div>
+</div>
+
+<app-update-confirmation-modal 
+    [isEditMode] = "editMode"
+    (confirmUpdateEmitter)="updateWithCommit($event)">
+</app-update-confirmation-modal>
+
+
+<div *ngIf="canEdit;" class="bottom-section">
+    <div *ngIf="editMode; else Readmode">
+        <button 
+            class="btn btn-outline-secondary float-right" 
+            (click)="cancelUpdate()">
+            Cancel
+        </button>
+        <button 
+            class="btn btn-primary float-right pl-5 pr-5 mr-2" 
+            data-toggle="modal" 
+            data-target="#confirmUpdateModal"
+            [disabled] = isAnyformInvalid
+            >
+            Update
+        </button>
+    </div>
+
+    <ng-template #Readmode>
+        <button 
+            class="btn btn-primary float-right" 
+            (click)="onEditMode()">
+            Edit
+        </button>
+        <button 
+        class="btn btn-primary float-right pl-5 pr-5 mr-2"
+        *ngIf="isAdmin && !approved"
+        routerLink="/admin-panel/approval/"
+        (click)="Approve()"
+        >Approve</button>
+        <button 
+        class="btn btn-primary float-right pl-5 pr-5 mr-2"
+        *ngIf="isAdmin && !approved"
+        data-toggle="modal" 
+        data-target="#addremarkmodal"
+        >Remarks</button>
+    </ng-template>
+</div>
+

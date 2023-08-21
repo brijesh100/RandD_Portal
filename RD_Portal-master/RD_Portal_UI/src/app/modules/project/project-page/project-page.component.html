@@ -1,0 +1,251 @@
+<app-loader [load]="isloading"></app-loader>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <!-- <li class="breadcrumb-item"><a routerLink="/{{previousUrl}}">{{previousUrl | titlecase}}</a></li> -->
+        <li *ngFor="let item of breadcrumbItems" class="breadcrumb-item"><a routerLink="/{{item.url}}">{{item.name}}</a></li>
+        <li class="breadcrumb-item active">{{project?.projectTitle |  slice:0:30}}</li>
+    </ol>
+</nav>
+<div class="container">
+      
+    <app-message 
+        [successMessage]="successMessage" 
+        [errorMessage]="errorMessage">
+    </app-message> 
+    <app-project-lock-card
+    [islocked]="islocked"
+    [isEditMode] = "editMode"
+    [isAdmin]="isAdmin"
+    [projectId]="projectid"
+    #lockCardRef>
+
+    </app-project-lock-card>
+     <app-project-title-tile
+        [projectTitle] = "projectTitle"
+        [isEditMode] = "editMode"
+        [isPriority] = "isPriority"
+        [isAdmin] = "isAdmin"
+        (isFormValid) = "checkAllFormValidity($event)"
+        #titleTileRef>
+    </app-project-title-tile>
+    <div class="alert warning" *ngIf="Review && !editMode">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>  
+        <strong>Remarks Added, Please Review</strong>
+    </div> 
+    <app-date-tile
+        [showTile] = "!editMode"
+        [createdAt] = "{'title':'Started', 'date':project?.start}"
+        [updatedAt] = "{'title':'Last updated', 'date':project?.updatedAt}">
+    </app-date-tile>
+    <div class="row">
+        <div class="col-md-9">
+            <app-priority-project-tile *ngIf="isPriority"
+                [priorityProjectDetails]= "priorityProjectDetails"
+                [isEditMode] = "editMode"
+                [isAdmin]="isAdmin"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #priorityProjectTileRef
+            >
+            </app-priority-project-tile>
+            <app-project-summary-tile
+                [projectSummary] = "projectSummary"
+                [isEditMode] = "editMode"
+                [isAdmin]="isAdmin"
+                [edited]="summaryedited"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #summaryTileRef>
+            </app-project-summary-tile>
+
+            <app-project-keywords-tile
+                [keywords] = "keywords"
+                [isEditMode] = "editMode"
+                [edited]="keywordedited"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #keywordsTileRef>
+            </app-project-keywords-tile>
+            <a  class="c-pointer" (click)="showtoggle()">{{showButtonName}} <i class={{showicon}}></i></a>
+            <div *ngIf="showdetails || editMode">
+            <app-project-content-tile
+                [projectContent] = "projectContent"
+                [isEditMode] = "editMode"
+                [edited]="detailedited"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #contentTileRef>
+            </app-project-content-tile>
+
+            <app-project-references-tile
+                [referenceLink] = "referenceLink"
+                [isEditMode] = "editMode"
+                [edited]="referencesedited"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #referenceLinkTileRef>
+            </app-project-references-tile>
+            <app-project-file-tile
+            [isEditMode] = "editMode"
+            [projectId]="projectid"
+            [documents]="documents"
+            [canedit]="canEdit"
+            ></app-project-file-tile>
+            <app-project-funding-card
+                [fundingProjects] = "fundingProjects">
+            </app-project-funding-card>
+            <app-project-publication-tile *ngIf="canEdit && !isAdmin"
+                [userId]="userId"
+                [publications]="publications">
+    
+                </app-project-publication-tile>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <app-show-remark
+            [isEditMode]="editMode"
+            [remarks]="remarks"
+            [remarkLength]="remarks"
+            >
+            </app-show-remark>
+            <app-view-review-remark-modal
+            [isEditMode]="editMode"
+            [remarks]="priorityProjectDetails?.remarkHistory"
+            [remarkLength]="priorityProjectDetails?.remarkHistory?.length"
+            >
+            </app-view-review-remark-modal>
+            
+            <app-project-publication-card
+                [userId]="userId"
+                [publications]="publications"
+                [canedit]="canEdit">
+            </app-project-publication-card>
+            
+            <app-project-history-modal
+                [projectHistory] = "history"
+                [isEditMode] = "editMode">
+            </app-project-history-modal>
+            <!-- <button *ngIf="canEdit" (click)="onpatent()" class="btn btn-info mb-1 my-1" style="width: 100%;"> -->
+                <!-- <span ><img src="../../../../assets/image/patent.png"  class="float-left ui-icon-image" style="width: 20%;height: 20%;background-color: transparent; border: 0;border-radius: 50%;"></span>
+                <p class="mt-2">Patent this project</p> -->
+                <!-- Patent this project -->
+            <!-- </button> -->
+            <app-project-status-card
+                [status] = "status"
+                [isEditMode] = "editMode"
+                #statusCardRef>
+            </app-project-status-card>
+            <app-project-visibility-card
+                [visibility]="visibility"
+                [isEditMode] = "editMode"
+                #visibilityCardRef
+                >
+            </app-project-visibility-card>
+            
+
+            <app-project-contributors-card
+                [contributors] = "contributors"
+                [isEditMode] = "editMode"
+                #contributorsCardRef>
+            </app-project-contributors-card>
+            <app-project-department *ngIf="project"
+                [departments] = "project.projectDepartment"
+                [isEditMode] = "editMode"
+                #projectDepartment>
+            </app-project-department>
+        </div>
+    </div>
+</div>
+<app-project-update-modal
+    [isEditMode] = "editMode"
+    (confirmUpdateEmitter)="updateProjectWithCommit($event)">
+</app-project-update-modal>
+<app-remark-modal 
+    [isAdmin]="isAdmin"
+    [projectid]="projectid"
+    [projectTitle]="projectTitle"
+    [contributors]="contributors"
+    [userId]="userId"
+    [dept]="dept"
+    (confirmReviewEmitter)="refresh()"
+>
+</app-remark-modal>
+<app-add-review-remark-modal 
+    [isAdmin]="isAdmin"
+    [projectid]="projectid"
+    [projectTitle]="projectTitle"
+    (confirmReviewEmitter)="refresh()"
+>
+</app-add-review-remark-modal>
+<app-message-modal
+[goBack]=1
+[successMessage]="modalmessage"
+>  
+</app-message-modal>
+<div *ngIf="canEdit" class="bottom-section">
+    <br>
+    <div *ngIf="editMode; else Readmode">
+        <button 
+            class="btn btn-outline-secondary float-right" 
+            (click)="cancelUpdate()">
+            Cancel
+        </button>
+
+        <button 
+            class="btn btn-primary float-right pl-5 pr-5 mr-2" 
+            data-toggle="modal" 
+            data-target="#confirmUpdateModal"
+            [disabled] = isAnyformInvalid
+            >
+            Update
+        </button>
+
+    </div>
+
+    <ng-template #Readmode>
+        <button *ngIf="isAdmin && !isPriority && !isarchived"
+        class="btn btn-primary mx-2" 
+        (click)="onreview()"
+        data-toggle="modal" data-target="#success_tic"
+        >
+            Review
+        </button>
+        <button *ngIf="isAdmin && !isarchived"
+        class="btn btn-primary mx-2" 
+        data-toggle="modal" 
+        data-target="#reviewRemarkModal"
+        >
+            Periodical Review
+        </button>
+        <button *ngIf="isAdmin && !isarchived"
+        class="btn btn-primary mx-2" 
+        data-toggle="modal" 
+        data-target="#confirmReviewModal"
+        >
+            Add Remarks
+        </button>
+        <button *ngIf="isAdmin && !approved && !isarchived"
+            class="btn btn-primary mx-2" 
+            (click)="onApprove()"
+            data-toggle="modal" data-target="#success_tic">
+            Approve
+        </button>
+        <button 
+            class="btn btn-primary float-right mx-2" 
+            (click)="onEditMode()"
+            *ngIf="isAdmin || (!islocked)">
+            Edit
+        </button>
+        <button 
+        class="btn btn-primary mx-2" 
+        *ngIf="isAdmin && !isarchived && !isPriority"
+        (click)="onarchive()"
+        data-toggle="modal" data-target="#success_tic">
+        Archive
+    </button>
+    <button 
+    class="btn btn-primary mx-2" 
+    *ngIf="isAdmin && isarchived"
+    (click)="onrestore()"
+    data-toggle="modal" data-target="#success_tic">
+    Restore
+</button>
+        
+    </ng-template>
+</div>

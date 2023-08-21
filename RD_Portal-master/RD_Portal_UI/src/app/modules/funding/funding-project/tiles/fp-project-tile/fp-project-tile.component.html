@@ -1,0 +1,53 @@
+<div class="card border-secondary mb-1" *ngIf="!isEditMode">
+    <div class="card-body">
+        <h5 *ngIf="!isEditMode" class="card-title">Project Keywords</h5>
+        <div *ngIf="!isEditMode">
+            <span *ngFor="let keyword of project?.projectKeyword">
+                <span class="card-text text-dark mr-2">
+                    <span class="disc">&#9673;</span>{{ keyword }}
+                </span>
+            </span>
+        </div>
+        <br>
+        <h5 *ngIf="!isEditMode" class="card-title">Project Departments</h5>
+        <div *ngIf="!isEditMode">
+            <span *ngFor="let dept of project?.department">
+                <span class="card-text text-dark mr-2">
+                    <span class="disc">&#9673;</span>{{ dept }}
+                </span>
+            </span>
+        </div>
+
+      
+    </div>
+</div>
+<div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Files</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="row">
+                <div class="col-md-10" *ngIf="downloadableDocName!=undefined">
+                    <span >
+                        <button type="button" class="btn btn-secondary btn-sm mx-2" (click) = "download()">Download</button>
+                    </span>
+                    {{downloadableDocName}}
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <input type="file"
+            id="filledApplication" 
+            name="filledApplication"
+            (change) = "selectApplication($event)"
+            >
+            {{downloadableDocName}}
+            <button class="btn btn-secondary btn-sm" (click) = "uploadApplication()">Upload</button>
+            <div>
+                <div *ngIf="uploaded">
+                    <small class="text-muted"> Application has uploaded</small>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

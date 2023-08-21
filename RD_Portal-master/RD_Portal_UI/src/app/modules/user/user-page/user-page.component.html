@@ -1,0 +1,315 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+  </nav>
+<div class="container-fluid pt-5 ">
+    <div class="col-md-12 mx-auto">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card cool n" routerLink="/user/update-password">
+                    <div class="card-header sona" >
+                        <h6 style="text-align: center; margin-bottom: 0px;" ><b>Profile</b></h6>
+                    </div>
+                    <div class="card-body cool ">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="../../../../assets/image/im_avatar.png" class="card-img-top" alt="avatar">
+                            </div>
+                            <div class="col-md-8">
+                                <h5 class="card-title  ">{{userName}}</h5>
+                                <h6 class="card-text text-muted ">{{userId}}</h6>
+                                <h6 class="card-text text-muted ">{{designation}}</h6>
+                                <h6 class="card-text text-muted ">{{researchlab}}</h6>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover  sona  my-3">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;" class="sona"><b >Add R&D Details </b></td>
+                        </tr>
+                        <tr routerLink="/project/add">
+                            <td class="cool rnd"><b>+ Research Project</b></td>
+                        </tr>
+                        <tr routerLink="/funding/usergrant">
+                            <td class="cool rnd"><b>+ Funding</b></td>
+                        </tr>
+                        <tr routerLink="/publication/add">
+                            <td class="cool rnd"><b>+ Publication</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cool rnd"><b>+ Patent</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cool rnd"><b>+ Conference/Workshops</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cool rnd"><b>+ MOU & Collaboration</b></td>
+                        </tr>
+                        <tr routerLink="/consultancy/add">
+                            <td class="cool rnd"><b>+ Consultancy</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link active usertabs" id="projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="projects" aria-selected="true">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link usertabs"  id="publications-tab" data-toggle="tab" href="#publications" role="tab" aria-controls="publications" aria-selected="false">Publications</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link usertabs" id="fundings-tab" data-toggle="tab" href="#fundings" role="tab" aria-controls="fundings" aria-selected="false">Fundings</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link usertabs" id="fundingProjects-tab" data-toggle="tab" href="#fundingProjects" role="tab" aria-controls="fundingProjects" aria-selected="false">Funding Projects</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link usertabs" id="consultancy-tab" data-toggle="tab" href="#consultancy" role="tab" aria-controls="consultancy" aria-selected="false">Consultancy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link usertabs" id="patents-tab" data-toggle="tab" href="#patents" role="tab" aria-controls="patents" aria-selected="false">Patents</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="projects" role="tabpanel" aria-labelledby="projects-tab">
+                        <div class="table-responsive" *ngIf="projects?.length; else Emptybox">
+                            <table class="table table-hover tbl">
+                                <thead class="thead sona">
+                                    <tr>
+                                        <th scope="col-md-3">S.No</th>
+                                        <th scope="col-md-5">Project Title</th>
+                                        <th scope="col-md-2">Status</th>
+                                        <th scope="col-md-2">Started On</th>
+                                        <th scope="col-md-2"><i class="fa fa-flag" style="font-size:20px"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                                    <tr *ngFor="let project of projects; index as i"
+                                        routerLink="/project/{{project.projectId}}">
+                                        <th scope="row">{{i+1}}</th>
+                                        <td style="width: 60%;">{{project.projectTitle}}</td>
+                                        <td style="width: 10%;">{{project.status}}</td>
+                                        <td style="width: 20%;">{{project.createdAt | date:'mediumDate'}}</td>
+                                        <td style="width: 10%;">
+                                            <i *ngIf="project.approved" class="fa fa-check" style="color:rgb(3, 200, 3);font-size:20px"></i>
+                                            <i *ngIf="project.review" class="fa fa-search" style="color:rgb(241, 157, 55);font-size:20px"></i>
+                                            <i *ngIf="!project.approved && !project.review" class="fa fa-hourglass-half" style="color:rgb(241, 157, 55);font-size:20px"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="publications" role="tabpanel" aria-labelledby="publications-tab">
+                        <div class="table-responsive" *ngIf="publications?.length; else Emptybox">
+                            <table class="table table-hover">
+                                <thead class="thead sona">
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Paper Title</th>
+                                        <th scope="col">Publication</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Year</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                                    <tr *ngFor="let publication of publications; index as i"
+                                    routerLink="/publication/{{publication.publicationId}}">
+                                        <th scope="row">{{i+1}}</th>
+                                        <td style="width: 45%;">{{publication.paperTitle}}</td>
+                                        <td style="width: 25%;">{{publication.publicationName}}</td>
+                                        <td style="width: 20%;">{{publication.publicationType}}</td>
+                                        <td style="width: 10%;">{{publication.yearOfPublication | date:'yyyy'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ng-template #Emptybox>
+                            <app-empty-layout></app-empty-layout>
+                        </ng-template>
+                    </div>
+                    <div class="tab-pane fade" id="fundingProjects" role="tabpanel" aria-labelledby="fundingProjects-tab">
+                        <div>
+                            <div class="table-responsive" *ngIf="fundingProjects?.length;else Emptybox">
+                                <table class="table table-hover">
+                                    <thead class="thead sona">
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Name of Fund</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Organisation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr *ngFor="let fundingProject of fundingProjects; index as i"
+                                            routerLink="/funding/{{fundingProject.isExternal?'apply':'applied'}}/{{fundingProject.fundingProjectId}}">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td style="width: 55%;">{{fundingProject.nameOfGrant}}</td>
+                                            <td style="width: 10%;">{{fundingProject.fundingType}}</td>
+                                            <td style="width: 10%;">{{fundingProject.status}}</td>
+                                            <td style="width: 25%;">{{fundingProject.fundingOrganisation}}</td>
+            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="fundings" role="tabpanel" aria-labelledby="fundings-tab">
+                        <div >
+                            <div class="table-responsive" *ngIf="receivedfundings?.length; else Emptybox">
+                                <table class="table table-hover">
+                                    <thead class="thead sona">
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Name of Fund</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Organisation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr *ngFor="let receivedfunding of receivedfundings; index as i"
+                                            routerLink="/funding/{{receivedfunding.isExternal?'apply':'applied'}}/{{receivedfunding.fundingProjectId}}">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td style="width: 55%;">{{receivedfunding.nameOfGrant}}</td>
+                                            <td style="width: 10%;">{{receivedfunding.fundingType}}</td>
+                                            <td style="width: 10%;">{{receivedfunding.status}}</td>
+                                            <td style="width: 25%;">{{receivedfunding.fundingOrganisation}}</td>
+            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                        <div *ngIf="fundingProjects?.length">
+                            <div class="table-responsive" *ngIf="fundingProjects?.length">
+                                <table class="table table-hover">
+                                    <thead class="thead sona">
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Name of Fund</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Organisation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr *ngFor="let fundingProject of fundingProjects; index as i"
+                                            routerLink="/funding/{{fundingProject.isExternal?'apply':'applied'}}/{{fundingProject.fundingProjectId}}">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td style="width: 55%;">{{fundingProject.nameOfGrant}}</td>
+                                            <td style="width: 10%;">{{fundingProject.fundingType}}</td>
+                                            <td style="width: 10%;">{{fundingProject.status}}</td>
+                                            <td style="width: 25%;">{{fundingProject.fundingOrganisation}}</td>
+            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="consultancy" role="tabpanel" aria-labelledby="consultancy-tab">
+                        <div>
+                            <div class="table-responsive" *ngIf="consultancy?.length;else Emptybox">
+                                <table class="table table-hover">
+                                    <thead class="thead sona">
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Title of Consultancy</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Industry</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr *ngFor="let consultancy of consultancy; index as i"
+                                        routerLink="/consultancy/{{consultancy.consultancyId}}">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td style="width: 45%;" *ngIf="consultancy?.consultancyTitle">{{consultancy.consultancyTitle}}</td>
+                                            <td style="width: 45%;" *ngIf="consultancy?.consultancyTesting">{{consultancy.consultancyTesting}}</td>
+                                            <td style="width: 20%;">{{consultancy.consultancyType}}</td>
+                                            <td style="width: 25%;">{{consultancy.consultancyStatus}}</td>
+                                            <td style="width: 10%;">{{consultancy.consultancyIndustry}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="patents" role="tabpanel" aria-labelledby="patents-tab">
+                        <div>
+                            <div class="table-responsive" *ngIf="patent?.length;else Emptybox ">
+                                <table class="table table-hover">
+                                    <thead class="thead sona">
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Title of Innovation</th>
+                                            <th scope="col">Application no</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Year</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr *ngFor="let patent of patent; index as i"
+                                        routerLink="/patent/{{patent.patentId}}">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td style="width: 50%;">{{patent.patentTitle}}</td>
+                                            <td style="width: 20%;">{{patent.patentApplicationNumber}}</td>
+                                            <td style="width: 20%;">{{patent.patentStatus}}</td>
+                                            <td style="width: 10%;">{{patent.patentYear }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template #Emptybox>
+                                <app-empty-layout></app-empty-layout>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <app-user-data [userId]="userId"></app-user-data>
+            </div>
+            <div class="col-md-3">
+                <div class="card ">
+                    <div class="card-header sona">
+                        <h6 style="margin-bottom: 0; text-align: center;"><b>Notifications</b></h6>
+                    </div>
+                    <div *ngIf="notifications?.length; else nonot" class="scroll">
+                        <div *ngFor="let notification of notifications; index as i" class="{{notification.type}}" style="margin-bottom: 0;">
+                            <a href="#" class="closebtn" style="color: #000000;" data-dismiss="alert" aria-label="close" (click)="readMessage(notification.id)">&times;</a>
+                            <span [innerHTML]="notification.payload"></span>
+                        </div>
+                    </div>
+                    <ng-template #nonot>
+                        <h5 class="text-muted mt-3 mb-3" style="text-align: center;">No Notifications</h5>
+                    </ng-template>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>

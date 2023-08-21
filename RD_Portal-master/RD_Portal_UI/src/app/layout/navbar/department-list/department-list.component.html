@@ -1,0 +1,22 @@
+<li class="nav-item dropdown pr-4">
+  <small
+    class="nav-link dropdown-toggle c-pointer"
+    id="navbarDropdown"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    routerLink="/home" 
+  >
+    DEPARTMENTS
+  </small>
+  <div class="dropdown-menu fade-up" aria-labelledby="navbarDropdown">
+    <a
+      *ngFor="let department of departments"
+      class="dropdown-item"
+      routerLink="/department/{{department.departmentId}}"
+    >
+      {{ department.departmentName }}
+    </a>
+  </div>
+</li>

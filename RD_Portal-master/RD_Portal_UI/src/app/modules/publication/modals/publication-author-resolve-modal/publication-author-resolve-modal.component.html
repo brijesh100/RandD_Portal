@@ -1,0 +1,40 @@
+<div class="modal fade" id="pubAuthResolveModal" tabindex="-1" role="dialog" aria-labelledby="pubAuthResolveModal"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" *ngIf="reEntry">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Publication already listed in Portal</h5>
+            </div>
+            <div class="modal-body">
+                Please Edit your existing Publication<br>
+                Do not Re-enter the same Publication
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" routerLink="/publication/{{this.matchedPublication}}"
+                    data-dismiss="modal">
+                    Go to Publication
+                </button>
+            </div>
+        </div>
+        <div class="modal-content" *ngIf="!reEntry">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Publication already listed in Portal</h5>
+            </div>
+            <div class="modal-body">
+                Publication is already available but you are not a part of the publication.
+                Do you want to add yourself to the publication?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="resolvePublication('publisher')"
+                    data-dismiss="modal">Click here to
+                    add yourself as First Author</button>
+                <button type="button" class="btn btn-primary" (click)="resolvePublication('coAuthor')"
+                    data-dismiss="modal">
+                    Click here to add yourself as Co-Author
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

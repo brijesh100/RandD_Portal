@@ -1,0 +1,40 @@
+<br>
+<div class="card border-secondary mb-1" *ngIf="review">
+    <div class="card-body">
+        <div  *ngIf="remarks.summaryRemarks!=''">
+        <h5 class="card-title">Summary Remarks</h5>
+        <p  class="card-text text-dark" >
+            {{remarks.summaryRemarks}}
+        </p>
+        <hr>
+        </div>
+        
+        <div  *ngIf="remarks.keywordsRemarks!=''">
+            <h5 class="card-title">Keyword Remarks</h5>
+            <p  class="card-text text-dark" >
+                {{remarks.keywordsRemarks}}
+            </p>
+            <hr>
+        </div>
+        
+
+        <div  *ngIf="remarks.detailsRemarks!=''">
+            <h5 class="card-title">Details Remarks</h5>
+            <p  class="card-text text-dark" >
+                {{remarks.detailsRemarks}}
+            </p>
+            <hr>
+        </div>
+        
+        <div  *ngIf="remarks.referenceRemarks!=''">
+            <h5 class="card-title">Reference Remarks</h5>
+            <p  class="card-text text-dark" >
+                {{remarks.referenceRemarks}}
+            </p>
+        </div>
+        
+    </div>
+</div>
+        
+
+        

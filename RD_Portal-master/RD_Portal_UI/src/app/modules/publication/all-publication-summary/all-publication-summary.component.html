@@ -1,0 +1,186 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+    <li class="breadcrumb-item active">Publications</li>
+  </ol>
+</nav>
+<app-loader [load]="isloading"></app-loader>
+<app-publication-dashboard
+  *ngIf="!isloading"
+  [allPublications]="allPublications"
+  [departments]="departments"
+></app-publication-dashboard>
+<div class="container-fluid mt-1">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card my-2 border-secondary">
+        <div class="card-body">
+          <h5 class="card-title">Filter : <br /></h5>
+          <div class="form-group">
+            <label>Department</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.dept"
+              (change)="filterFun('dept', $event)"
+            >
+              <option value="all" selected>All Departments</option>
+              <option *ngFor="let dept of departments" value="{{ dept }}">
+                {{ dept }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Publication Type</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.type"
+              (change)="filterFun('type', $event)"
+            >
+              <option value="all" selected>All Publication types</option>
+              <option value="Journal">Journal</option>
+              <option value="Conference Proceedings">
+                Conference Proceedings
+              </option>
+              <option value="Arvix">Arvix</option>
+              <option value="Book">Book</option>
+              <option value="Book Chapter">Book Chapter</option>
+              <option value="Magazine">Magazine</option>
+              <option value="Newspaper">Newspaper</option>
+              <option value="Blog">Blog</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Indexing</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.indexing"
+              (change)="filterFun('indexing', $event)"
+            >
+              <option value="all" selected>All</option>
+              <option value="SCI">SCI</option>
+              <option value="SCOPUS">SCOPUS</option>
+              <option value="UGC">UGC</option>
+              <option value="WebOfScience">Web of Science</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.year"
+              (change)="filterFun('year', $event)"
+            >
+              <option value="all" selected>All Data</option>
+              <option *ngFor="let year of years" value="{{ year }}">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+          <h5 class="text-mint" *ngIf="publications?.length">
+            Filtered Publication Count : {{ publications.length }}
+          </h5>
+          <button
+            type="reset"
+            class="btn btn-primary float-right"
+            (click)="reset()"
+          >
+            RESET
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 mt-2" *ngIf="publications?.length; else Emptybox">
+      <input
+        class="form-control mb-2"
+        type="text"
+        name="search"
+        [(ngModel)]="searchText"
+        autocomplete="off"
+        placeholder="Search Publication Title"
+      />
+      <div class="scroll">
+        <div
+          class=""
+          id="myTable"
+          *ngFor="
+            let publication of publications
+              | grdFilter : { paperTitle: searchText }
+          "
+        >
+          <div class="card border-secondary">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <h5 class="card-title">
+                  <a routerLink="/publication/{{ publication.publicationId }}">
+                    {{ publication.paperTitle }}
+                  </a>
+                </h5>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <ul class="col-md-5 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Publisher
+                    <!-- <span class="text-muted">{{ publication.publisherId}}</span> -->
+                    <span
+                      class="badge badge-pill badge-secondary c-pointer"
+                      data-toggle="modal"
+                      (click)="showUserOverview(publication.publisherId)"
+                      data-target="#userOverviewModal"
+                    >
+                      {{ publication.publisherId }}
+                    </span>
+                  </ul>
+                  <ul class="col-md-3 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Department:
+                    <span class="text-muted">{{
+                      publication.Department[0]
+                    }}</span>
+                  </ul>
+                  <ul class="col-md-4 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Type:
+                    <span class="text-muted">{{
+                      publication.publicationType
+                    }}</span>
+                  </ul>
+                  <ul class="col-md-5 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Publication Name:
+                    <span class="text-muted">{{
+                      publication.publicationName
+                    }}</span>
+                  </ul>
+                  <ul class="col-md-3 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Indexing:
+                    <span class="text-muted">{{ publication.indexing }}</span>
+                  </ul>
+                  <ul class="col-md-4 list-unstyled">
+                    <span class="disc">&#9673;</span>
+                    Year of Publication:
+                    <span class="text-muted">{{
+                      publication.yearOfPublication | date : "yyyy"
+                    }}</span>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+    <ng-template #Emptybox>
+      <div class="empty-content">
+        <img
+          src="../../../../assets/image/empty-box.png"
+          alt="Empty content :("
+        />
+      </div>
+    </ng-template>
+  </div>
+  <app-user-modal [user]="user"> </app-user-modal>
+</div>

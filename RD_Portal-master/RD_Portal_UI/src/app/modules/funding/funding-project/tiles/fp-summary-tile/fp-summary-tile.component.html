@@ -1,0 +1,14 @@
+<div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Summary</h5>
+        <p  *ngIf="!isEditMode; else Editor" class="card-text text-dark" >
+            {{ summary }}
+        </p>
+        <ng-template #Editor>
+            <form [formGroup] ="fundingProjectSummaryForm">
+                <textarea type="text" class="form-control" formControlName="summary" rows="5">
+                </textarea>
+            </form>
+        </ng-template>
+    </div>
+</div>

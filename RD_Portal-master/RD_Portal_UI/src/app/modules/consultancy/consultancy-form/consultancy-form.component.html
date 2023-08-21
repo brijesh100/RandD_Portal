@@ -1,0 +1,130 @@
+<div class="container mt-5">
+  <div class="col-md-10 m-auto">
+    <!-- <app-message 
+      [successMessage]="successMessage" 
+      [errorMessage]="errorMessage">
+   </app-message>  -->
+    <h5 class="title text-center mb-3">Add Consultancy</h5>
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup] ="consult">
+          <!-- Title -->
+          <div class="row mx-2">
+            <div class="form-group col-md-12 ">
+              <label>Consultancy Type <span class="required">*</span> </label>
+              <select type="text" class="form-control" formControlName="consultancyType" (change)="TypeChange()">
+                <option value="">...</option>
+                <option value="JobWorkServices">Job Work Services</option>
+                <option value="TestingServices">Testing Services</option>
+              </select>
+            </div>
+          </div>    
+        </form>
+        <div *ngIf="show_Job_Work || show_Test_Service">
+            <form [formGroup] ="ConsultancyJobWork" (ngSubmit)="createconsultancy()">
+                <div class="row mx-2">
+                    <div class="form-group col-md-6" *ngIf="show_Job_Work">
+                        <label>Title of Consultancy Project<span class="required">*</span> </label>
+                        <input type="text" class="form-control" placeholder="Title of Consultancy Project" formControlName = "consultancyTitle"/>
+                      </div>
+                      <div class="form-group col-md-6" *ngIf="show_Test_Service">
+                        <label>Testing<span class="required">*</span> </label>
+                        <input type="text" class="form-control" placeholder="Testing" formControlName = "consultancyTesting"/>
+                      </div>
+                    <div class="form-group col-md-6 ">
+                      <label>Department <span class="required">*</span> </label>
+                      <select type="text" class="form-control" formControlName="consultancyDepartment">
+                        <option value="">...</option>
+                        <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-12 ">
+                        <label>Name of the Industry<span class="required">*</span> </label>
+                        <input type="text" class="form-control" placeholder="Name of the Industry" formControlName = "consultancyIndustry"/>
+                    </div>
+                    <hr>
+                </div>
+
+        <!-- TeamMembers -->
+        <div class="row mx-2 mt-2">
+            <div class="form-group col-md-6">
+              <label>Team Members<span class="required">*</span> </label>
+            </div>
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row ">
+                      <div class="col-md-6">
+                          <span *ngFor="let TeamMemberId of team"
+                            class="badge badge-pill badge-secondary pr-1 mx-1 my-1">{{ TeamMemberId }}
+                            <span *ngIf="TeamMemberId !== userIdName" (click)="removeTeamMemberFromTeam(TeamMemberId)" class=" badge badge-dark badge-pill c-pointer">X</span>
+                          </span>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Search UserId</label>
+                        <div class="input-group">
+                          <input list="users" type="text" class="form-control" formControlName="searchedTeamMemberId"
+                            autocomplete="off" (keyup)="searchTeamMemberIds(ConsultancyJobWork.value.searchedTeamMemberId)" />
+                          <datalist id="users">
+                            <option *ngFor="let TeamMember of TeamMemberIds" [value]="TeamMember"
+                              (click)="clearTeamMemberIdsDataList()">{{TeamMember}}</option>
+                          </datalist>
+                          <div class="input-group-append">
+                            <button type="button" class="btn btn-secondary"
+                              (click)="addTeamMemberToTeam(ConsultancyJobWork.get('searchedTeamMemberId').value)">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+          <hr>
+        <div class="row mx-2 mt-2">
+          <div class="form-group col-md-6 ">
+            <label>Invoice Number<span class="required">*</span> </label>
+            <input type="number" class="form-control" placeholder="Invoice Number" formControlName = "consultancyInvoiceNumber"/>
+        </div>
+        <div class="form-group col-md-6 ">
+            <label>Receipt Number<span class="required">*</span> </label>
+            <input type="number" class="form-control" placeholder="Receipt Number" formControlName = "consultancyReceiptNumber"/>
+        </div>
+        <div class="form-group col-md-6 ">
+            <label>Receipts(Rs.)<span class="required">*</span> </label>
+            <input type="number" class="form-control" placeholder="Receipts(Rs.)" formControlName = "consultancyReceiptcost"/>
+        </div>
+        <div class="form-group col-md-6"  *ngIf="show_Test_Service">
+            <label>Receipts Date<span class="required">*</span> </label>
+            <input type="Date" class="form-control" formControlName = "consultancyReceiptDate"/>
+        </div>
+        <div class="col-md-6">
+            <label>Status<span class="required">*</span> </label>
+            <div class="form-check">
+              <input class="form-check-input mr-5" type="radio" formControlName="consultancyStatus" value="Ongoing">
+              <label class="form-check-label">Ongoing</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input mr-5" type="radio" formControlName="consultancyStatus" 
+            value="Completed">
+        <label class="form-check-label" >Completed</label>
+          </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-5" [disabled]="ConsultancyJobWork.invalid">
+            Add Consultancy
+        </button>
+                    
+            </form>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+
+
+
+
+
+          

@@ -1,0 +1,5 @@
+<p *ngIf="showTile" class="list-group-item card-text mb-1">
+    <small class="text-muted">{{createdAt?.title}} {{ createdAt?.date | date:'mediumDate'}}</small>
+    <small class="text-muted float-right">{{updatedAt?.title}}
+        {{ updatedAt?.date | date:'mediumDate' }}</small>
+</p>

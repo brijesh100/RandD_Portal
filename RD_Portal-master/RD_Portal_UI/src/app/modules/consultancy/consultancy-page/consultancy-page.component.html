@@ -1,0 +1,29 @@
+<app-loader [load]="isloading"></app-loader>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/consulancy">Consutancy</a></li>
+        <li class="breadcrumb-item active">{{consultancy?.consultancyTitle |  slice:0:30}}</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="title text-mint">{{consultancy?.consultancyTitle}} </div>
+    <p class="list-group-item card-text mb-1">
+        <small class="text-muted">Created on : {{consultancy?.createdAt | date:'mediumDate'}}</small>
+    </p>
+    <div class="row">
+        <div class="col-md-9">
+            <app-consultancy-details-tile
+            [consultancy]="consultancy"
+            >
+            </app-consultancy-details-tile>
+        </div>
+        <div class="col-md-3">
+            <app-consultancy-card
+            [consultancy]="consultancy"
+            >
+            </app-consultancy-card>
+
+        </div>
+    </div>
+</div>

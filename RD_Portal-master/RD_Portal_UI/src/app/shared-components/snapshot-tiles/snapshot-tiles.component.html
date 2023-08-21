@@ -1,0 +1,58 @@
+
+<div class="row" *ngIf="snapshot">
+    <div class="col-xl-2 col-lg-4 col-sm-6">
+      <div class="gradient-card borderless text-white bg-c-v mb-3">
+        <div class="card-body" style="color: white;">
+          <h6 class="card-text" ><b>{{snapshot[0].tileName}}</b></h6>
+          <small class="card-text" >{{year}}-{{(year+1)%100}}</small><h2>{{snapshot[0].tileCount[0]}}</h2>
+          <small class="card-text" >Amount (in lakhs)</small><h2>{{snapshot[0].tileCount[1]/100000 | currency:"₹"}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-sm-6" >
+    <div class="gradient-card borderless text-white bg-c-i mb-3">
+        <div class="card-body" style="color: white;">
+          <h6 class="card-text"><b>{{snapshot[1].tileName}}</b></h6>
+          <small class="card-text" >{{year}}-{{(year+1)%100}}</small><h2>{{snapshot[1].tileCount[0]}}</h2>
+          <small class="card-text" >Amount (in lakhs)</small><h2>{{snapshot[1].tileCount[1]/100000 | currency:"₹"}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-sm-6" >
+      <div class="gradient-card borderless text-white bg-c-b mb-3">
+        <div class="card-body" style="color: white;">
+          <h6 class="card-text"><b>{{snapshot[2].tileName}}</b></h6>
+          <small class="card-text" >Ongoing Projects</small><h2>{{snapshot[2].tileCount[0]}}</h2>
+          <small class="card-text" >Completed Projects</small><h2>{{snapshot[2].tileCount[1]}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-sm-6" style="color: white;">
+        <div class="gradient-card borderless text-white bg-c-g mb-3">
+          <div class="card-body" style="color: white;">
+            <h6 class="card-text" ><b>{{snapshot[3].tileName}}</b></h6>
+            <small class="card-text" >{{year}}-{{(year+1)%100}}</small><h2>{{snapshot[3].tileCount[0]}}</h2>
+            <small class="card-text" >{{year-1}}-{{(year)%100}}</small><h2>{{snapshot[3].tileCount[1]}}</h2>
+          </div>
+        </div>
+      </div>
+    <div class="col-xl-2 col-lg-4 col-sm-6" style="color: white;">
+      <div class="gradient-card borderless text-white bg-c-y mb-3">
+        <div class="card-body" style="color: white;">
+          <h6 class="card-text"><b>{{snapshot[4].tileName}}</b></h6>
+          <small class="card-text" >{{year}}-{{(year+1)%100}}</small><h2>{{snapshot[4].tileCount[0]}}</h2>
+          <small class="card-text">{{year-1}}-{{(year)%100}}</small><h2>{{snapshot[4].tileCount[1]}}</h2>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-sm-6" style="color: white;">
+      <div class="gradient-card text-white bg-c-o mb-3">
+        <div class="card-body" style="color: white;">
+          <h6 class="card-text" style="text-align: center;"><b>{{snapshot[5].tileName}}</b></h6>
+          <small class="card-text" >Research Labs</small><h2>{{snapshot[5].tileCount[0]}}</h2>
+          <small class="card-text" >Contributors</small><h2>{{snapshot[5].tileCount[1]}}</h2>
+        </div>
+      </div>
+    </div>
+  </div>

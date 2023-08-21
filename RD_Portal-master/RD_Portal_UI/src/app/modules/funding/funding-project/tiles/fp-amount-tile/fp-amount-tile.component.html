@@ -1,0 +1,139 @@
+<div class="card border-secondary mb-1" *ngIf="!isExternal; else External">
+    <div class="card-body" *ngIf="isAccepted; else Pending">
+        <h5 class="card-title">Funding</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="form-group row" *ngIf="fundingAmount?.received">
+                <label class="col-sm-3 col-form-label">Funding received</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.received | currency:"₹" }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundingAmount?.consumable">
+                <label class="col-sm-3 col-form-label">Consumable amount</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.consumable | currency:"₹" }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundingAmount?.nonConsumable">
+                <label class="col-sm-3 col-form-label">Non-Consumable amount</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.nonConsumable | currency:"₹" }}
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="fundingAmountForm">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Funding received</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control col-sm-4" formControlName="received"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Consumable amount</label>
+                    <div class="col-sm-9">
+                        <input 
+                            type="number"
+                            class="form-control col-sm-4"
+                            formControlName="consumable" 
+                            min="{{fundingAmountForm.get('received').value}}"
+                            [readonly]="!fundingAmountForm.get('received').value"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Non-Consumable amount</label>
+                    <div class="col-sm-9">
+                        <input
+                            type="number"
+                            class="form-control col-sm-4" 
+                            formControlName="nonConsumable" 
+                            min="{{fundingAmountForm.get('received').value}}"
+                            [readonly]="!fundingAmountForm.get('received').value"/>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+
+    <ng-template #Pending>
+        <div class="card-body">
+            <h5 class="card-title text-muted">Funding</h5>
+            <p class="text-muted"> Will be available if applied funding has accepted </p>
+        </div>
+    </ng-template>
+    
+
+</div>
+<ng-template #External>
+    <div class="card border-secondary mb-1">
+    <div class="card-body">
+        <h5 class="card-title">Funding</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <div class="form-group row" *ngIf="fundingAmount?.applied">
+                <label class="col-sm-3 col-form-label">Funding Applied</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.applied | currency:"₹" }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundingAmount?.received">
+                <label class="col-sm-3 col-form-label">Funding received</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.received | currency:"₹" }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundingAmount?.consumable">
+                <label class="col-sm-3 col-form-label">Consumable amount</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.consumable | currency:"₹" }}
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="fundingAmount?.nonConsumable">
+                <label class="col-sm-3 col-form-label">Non-Consumable amount</label>
+                <div class="col-sm-9">
+                    {{fundingAmount?.nonConsumable | currency:"₹" }}
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="fundingAmountForm">
+                <div class="form-group row" >
+                    <label class="col-sm-3 col-form-label">Funding Applied</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control col-sm-4" formControlName="applied"/>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Funding received</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control col-sm-4" formControlName="received"/>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Consumable amount</label>
+                    <div class="col-sm-9">
+                        <input 
+                            type="number"
+                            class="form-control col-sm-4"
+                            formControlName="consumable" 
+                            min="{{fundingAmountForm.get('received').value}}"
+                            [readonly]="!fundingAmountForm.get('received').value"/>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="status=='08'">
+                    <label class="col-sm-3 col-form-label">Non-Consumable amount</label>
+                    <div class="col-sm-9">
+                        <input
+                            type="number"
+                            class="form-control col-sm-4" 
+                            formControlName="nonConsumable" 
+                            min="{{fundingAmountForm.get('received').value}}"
+                            [readonly]="!fundingAmountForm.get('received').value"/>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</div>
+</ng-template>

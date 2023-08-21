@@ -1,0 +1,31 @@
+<div>
+    <div class="card">
+        <div class="table-responsive" >
+            <table class="table table-hover">
+                <thead class="thead sona">
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Last seen</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!archive">
+                    <tr *ngFor="let user of users; index as i" routerLink="/admin-panel/user-profile/{{user.userId}}">
+                        <th scope="row">{{i+1}}</th>
+                        <th scope="row">{{user.userName}}</th>
+                        <th scope="row" *ngIf="checklast(user.lastseen)==-1"><span class="badge badge-pill badge-danger " >Inactive</span></th>
+                        <th scope="row" *ngIf="checklast(user.lastseen)==0"><span class="badge badge-pill badge-success " >{{user.lastseen | date : 'short'}}</span></th>
+                        <th scope="row" *ngIf="checklast(user.lastseen)==1"><span class="badge badge-pill badge-warning " >{{user.lastseen | date : 'short'}}</span></th>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="archive">
+                    <tr *ngFor="let user of archivedUsers; index as i" routerLink="/admin-panel/user-profile/{{user.userId}}">
+                        <th scope="row">{{i+1}}</th>
+                        <th scope="row">{{user.userName}}</th>
+                        <th scope="row"><span class="badge badge-pill badge-success " >{{user.lastseen | date : 'short'}}</span></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

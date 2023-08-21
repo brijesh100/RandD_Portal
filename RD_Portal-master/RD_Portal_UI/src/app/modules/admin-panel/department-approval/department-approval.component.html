@@ -1,0 +1,219 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active"><a routerLink="/admin-panel/approval">Manage</a></li>
+        <li class="breadcrumb-item active">{{departmentId.departmentId}}</li>
+    </ol>
+  </nav>
+<div class="row">
+    <div class="col-md-8 selfscroll" >  
+        <div class="container-fluid pt-4" >
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <div class="card card-header">
+                        <div class="custom-control mx-auto custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitches" (change)="change()">
+                            <label class="custom-control-label" for="customSwitches">
+                                <span *ngIf="!archive">
+                                    Toggle to view Archived
+                                </span> 
+                                <span *ngIf="archive">
+                                    Toggle to view Waiting for approval
+                                </span> 
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card mb-2 sona">
+                        <div class="card-header">
+                        <h6 class="card-text cpointer" (click)="proDrop=!proDrop">
+                            <span *ngIf="!archive">
+                                PROJECTS WAITING FOR APPROVAL: <span class="text-mint">{{projects?.length}}</span>
+                            </span>
+                            <span *ngIf="archive">
+                                ARCHIVED PROJECTS: <span class="text-mint">{{projects?.length}}</span>
+                            </span>
+                            <a class="float-right">
+                                <small>
+                                    Click here
+                                </small>
+                                <i class="fa fa-arrow-circle-up" style="font-size:16px" *ngIf="proDrop"></i>
+                                <i class="fa fa-arrow-circle-down" style="font-size:16px" *ngIf="!proDrop"></i>
+                            </a>
+                        </h6>
+                        </div>
+                    </div>
+                    <div class="card" *ngIf="proDrop">
+                        <div class="table-responsive" *ngIf="projects?.length; else Emptybox">
+                            <table class="table table-hover">
+                                <thead class="thead sona">
+                                    <tr (click)="proDrop=!proDrop">
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Project Title</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Started On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let project of projects; index as i"
+                                        routerLink="/project/{{project.projectId}}"
+                                        >
+                                        <th scope="row">{{i+1}}</th>
+                                        <td>{{project.projectTitle}}</td>
+                                        <td>{{project.status}}</td>
+                                        <td>{{project.start | date:'mediumDate'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid pt-2" >
+            <div class="row " >
+                <div class="col-md-12">
+                    <div class="card mb-2 sona">
+                        <div class="card-header">
+                        <h6 class="card-text cpointer" (click)="funDrop=!funDrop">
+                            <span *ngIf="!archive">
+                                FUNDINGS WAITING FOR APPROVAL: <span class="text-mint">{{Rfundings?.length}}</span>
+                            </span>
+                            <span *ngIf="archive">
+                                ARCHIVED FUNDINGS: <span class="text-mint">{{Rfundings?.length}}</span>
+                            </span>
+                            <a class="float-right">
+                                <small>
+                                    Click here
+                                </small>
+                                <i class="fa fa-arrow-circle-up" style="font-size:16px" *ngIf="funDrop"></i>
+                                <i class="fa fa-arrow-circle-down" style="font-size:16px" *ngIf="!funDrop"></i>
+                            </a>
+                        </h6>
+                        </div>
+                    </div>
+                                       
+                    <div class="card" *ngIf="funDrop">
+                        <div class="table-responsive" *ngIf="Rfundings?.length; else Emptybox">
+                            <table class="table table-hover">
+                                <thead class="thead sona">
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Name of Grant/Fund</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Applied On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let funding of Rfundings; index as i"
+                                        routerLink="/funding/apply/{{funding.fundingProjectId}}"
+                                        >
+                                        <th scope="row">{{i+1}}</th>
+                                        <td>{{funding.nameOfGrant}}</td>
+                                        <td>{{funding.fundingType}}</td>
+                                        <td>{{funding?.fundDates?.applied | date:'mediumDate'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid pt-2 pb-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2 sona">
+                        <div class="card-header">
+                        <h6 class="card-text cpointer" (click)="pubDrop=!pubDrop">
+                            <span *ngIf="!archive">
+                                PUBLICATIONS WAITING FOR APPROVAL: <span class="text-mint">{{publications?.length}}</span>
+                            </span>                       
+                            <span *ngIf="archive">
+                                ARCHIVED PUBLICATIONS: <span class="text-mint">{{publications?.length}}</span>
+                            </span>
+                            <a class="float-right">
+                                <small class="pb-1">
+                                    Click here
+                                </small>
+                                <i class="fa fa-arrow-circle-up" style="font-size:16px" *ngIf="pubDrop"></i>
+                                <i class="fa fa-arrow-circle-down" style="font-size:16px" *ngIf="!pubDrop"></i>
+                            </a>
+                        </h6>
+                        </div>
+                    </div>
+                    <div class="card" *ngIf="pubDrop">
+                        <div class="table-responsive" *ngIf="publications?.length; else Emptybox">
+                            <table class="table table-hover">
+                                <thead class="thead sona">
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Publication</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Published</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr 
+                                        *ngFor="let publication of publications; index as i" 
+                                        (click)="onePublication=publication"
+                                        data-toggle="modal" 
+                                        data-target="#publicationModal"
+                                    >
+                                        <th scope="row">{{i+1}}</th>
+                                        <td>{{publication.paperTitle}}</td>
+                                        <td>{{publication.publicationType}}</td>
+                                        <td>{{publication.yearOfPublication | date:'mediumDate'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <div class="col-md-4 selfscroll">
+        <div class="container pt-2" >
+            <div class="col-md-12">
+                <div class="card mb-2 sona">
+                    <div class="card-header">
+                        <h6 class="card-text">
+                            <span *ngIf="!archive">
+                                USER LIST
+                            </span>
+                            <span *ngIf="archive">
+                                ARCHIVED USERS
+                            </span>
+                        </h6>
+                    </div>
+                </div>
+                <app-user-list-card [departmentId]="departmentId"
+                [archive]="archive"
+                [archivedUsers]="archivedUsers"
+                >
+                </app-user-list-card>
+            </div>
+        </div>
+        <button 
+            class="btn btn-primary float-right m-2" 
+            data-toggle="modal" 
+            data-target="#publicationModal"
+            >
+            Update
+        </button>
+
+    </div>
+</div>
+<ng-template #Emptybox>
+    <app-empty-layout></app-empty-layout>
+</ng-template>
+<app-publication-modal
+[publication]='onePublication'
+[isClean]=false
+(refresh)="refresh()"
+>
+
+</app-publication-modal>

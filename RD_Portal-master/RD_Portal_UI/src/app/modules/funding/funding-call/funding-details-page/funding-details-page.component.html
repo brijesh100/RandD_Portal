@@ -1,0 +1,115 @@
+<app-loader [load]="isloading"></app-loader>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/funding">Fundings</a></li>
+        <li class="breadcrumb-item active">{{funding?.nameOfGrant |  slice:0:30}}</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <app-message 
+        [successMessage]="successMessage" 
+        [errorMessage]="errorMessage">
+    </app-message> 
+    <app-funding-header-section-tile
+        [nameOfGrant] ="nameOfGrant"
+        [fundingOrganisation] ="fundingOrganisation"
+        [deadline] ="deadline"
+        [isEditMode] = "editMode"
+        (isFormValid) = "checkAllFormValidity($event)"
+        #headerSectionTileRef>
+    >
+    </app-funding-header-section-tile>
+    <div class="row">
+        <div class="col-md-9">
+            <app-date-tile
+                [showTile] = "!editMode"
+                [createdAt] = "{'title':'Posted on', 'date':funding?.createdAt}">
+            </app-date-tile>
+            <app-funding-description-tile
+                [description] = "descriptionOfScheme"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #descriptionTileRef>
+            </app-funding-description-tile>
+            <app-funding-keyword-tile
+                [keywords] = "keywords"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #keywordTileRef>
+            </app-funding-keyword-tile>
+            <app-funding-additional-details-tile
+                [addlDetails] = "additionalDetails"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #additionalDetailsTileRef>
+            </app-funding-additional-details-tile>
+            
+        </div>
+        <div class="col-md-3">
+            <div 
+                *ngIf="!editMode" 
+                class="p-2 bg-secondary text-white text-center" 
+                data-toggle="modal" 
+                data-target="#applyFundingModal"
+                type="button" >
+                Apply for Funding
+            </div>
+            <div class="card mb-1">
+                <div class="card-body" *ngIf="!editMode">
+                    <h5>
+                        <small>Application
+                            <span class="float-right badge badge-pill badge-{{badge}} p-2">{{status}}</span>
+                        </small>
+                    </h5>
+                </div>
+            </div>
+            <app-funding-links-card
+                [urls] = "fundingUrls"
+                [isEditMode] = "editMode"
+                (isFormValid) = "checkAllFormValidity($event)"
+                #fundingUrlsCardRef>
+            </app-funding-links-card>
+        </div>
+    </div>
+</div>
+
+<app-update-confirmation-modal 
+    [isEditMode] = "editMode"
+    (confirmUpdateEmitter)="updateWithCommit($event)">
+</app-update-confirmation-modal>
+
+<div *ngIf="canEdit;" class="bottom-section">
+    <div *ngIf="editMode; else Readmode">
+        <button 
+            class="btn btn-outline-secondary float-right" 
+            (click)="cancelUpdate()">
+            Cancel
+        </button>
+        <button 
+            class="btn btn-primary float-right pl-5 pr-5 mr-2" 
+            data-toggle="modal" 
+            data-target="#confirmUpdateModal"
+            [disabled] = isAnyformInvalid
+            >
+            Update
+        </button>
+    </div>
+
+    <ng-template #Readmode>
+        <button 
+            class="btn btn-primary float-right" 
+            (click)="onEditMode()">
+            Edit
+        </button>
+    </ng-template>
+</div>
+
+<app-apply-funding-modal
+ [nameOfGrant] ="nameOfGrant"
+ [fundingOrganisation] ="fundingOrganisation"
+ [fundingId] ="funding?.fundingId"
+ fundingType= "Project grant"
+>
+</app-apply-funding-modal>

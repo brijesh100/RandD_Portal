@@ -1,0 +1,98 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active">Consultancy</li>
+    </ol>
+</nav>
+
+<div class="container mt-5">
+    <div class="row" *ngIf="consultancy?.length; else Emptybox">
+        <div class="col-md-12" *ngFor="let consultancy of consultancy">
+            <div class="card border-secondary  notification">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span routerLink="/consultancy/{{consultancy.consultancyId}}" class="btn btn-primary btn-sm float-right">
+                            View details
+                        </span>
+                        
+                        <h5 class="card-title" *ngIf="consultancy?.consultancyTitle">
+                            <a routerLink="/consultancy/{{consultancy.consultancyId}}">
+                                {{ consultancy.consultancyTitle }}
+                            </a>
+                        </h5>
+                        <h5 class="card-title" *ngIf="consultancy?.consultancyTesting">
+                            <a routerLink="/consultancy/{{consultancy.consultancyId}}">
+                                {{ consultancy.consultancyTesting }}
+                            </a>
+                        </h5>
+
+                        <!-- <p class="card-text text-mute" >
+                            <span *ngFor="let keyword of project.keywords" class="mx-1 c-pointer" routerLink="/project/keyword/{{keyword}}"><span class="disc">&#9673;</span>{{ keyword }} </span>
+                        </p> -->
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="card-text text-mute">Consultancy Team</h6>
+                                <span class=" pr-3" *ngFor="let consultancyTm of consultancy?.consultancyTeam">
+                                    <span #userId class="badge badge-pill badge-secondary c-pointer"
+                                        (click)="showUserOverview(consultancyTm)" data-toggle="modal"
+                                        data-target="#userOverviewModal">
+                                        {{ consultancyTm }}
+                                    </span>
+                                </span>
+                            </div>
+                            
+                             <div class="col-md-6">
+                                 <small class="text-mute float-right float-bottom">Last updated
+                                {{ consultancy.consultancyUpdatedAt | date:'mediumDate' }}</small>
+                            <!--    <div class="float-right">
+                                    <h6 class="card-text text-muted">Status</h6>
+                                    <span [ngClass]="{'badge badge-pill p-2' : true , 'badge-success' : project.status=='Completed' , 'badge-warning': project.status=='Ongoing'}">{{project.status}}</span>
+                                </div> --> 
+                            </div> 
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+            <br />
+        </div>
+    </div>
+    <ng-template #Emptybox>
+        <div class="empty-content">
+            <img src="../../../../assets/image/empty-box.png" alt="Empty content :(" />
+        </div>
+    </ng-template>    
+</div>
+
+
+<div class="modal fade" id="userOverviewModal" tabindex="-1" role="dialog" aria-labelledby="userOverviewModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Consultancy Team Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class='table table-borderless'>
+                        <tr>
+                            <td class="text-muted">Name</td>
+                            <td class="card-text text-capitalize">{{user?.userName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Designation</td>
+                            <td class="card-text text-capitalize">{{user?.userDesignation}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Department</td>
+                            <td class="card-text text-capitalize">{{user?.userDepartment}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,67 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+    <li class="breadcrumb-item active">Fundings</li>
+  </ol>
+</nav>
+
+<div class="container mt-5">
+  <div class="row" *ngIf="fundings?.length; else Emptybox">
+    <div class="col-md-12" *ngFor="let funding of fundings">
+      <div class="card border-secondary">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span
+              routerLink="/funding/{{ funding.fundingId }}"
+              class="btn btn-primary btn-sm float-right"
+            >
+              View details
+            </span>
+            <div class="row">
+              <div class="col-md-5 nopadding">
+                <h6 class="card-text text-muted">Name of Fund/ Grant</h6>
+                <h5 class="card-title">
+                  <a routerLink="/funding/{{ funding.fundingId }}">{{
+                    funding.nameOfGrant
+                  }}</a>
+                </h5>
+              </div>
+              <div class="col-md-6">
+                <h6 class="card-text text-muted">Funding Organisation</h6>
+                <h5 class="card-title">{{ funding.fundingOrganisation }}</h5>
+              </div>
+            </div>
+            <p class="card-text text-muted">
+              {{ funding.descriptionOfScheme | slice: 0:300 }}
+              {{ funding.descriptionOfScheme.length > 300 ? "..." : "" }}
+            </p>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                <h6 class="card-text text-muted">Application Deadline</h6>
+                <h6 class="card-text">
+                  {{ funding.deadline | date: "mediumDate" }}
+                </h6>
+              </div>
+              <div class="col-md-4">
+                <small class="text-muted float-right"
+                  >Posted On {{ funding.createdAt | date: "mediumDate" }}</small
+                >
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <br />
+    </div>
+  </div>
+  <ng-template #Emptybox>
+    <div class="empty-content">
+      <img
+        src="../../../../assets/image/empty-box.png"
+        alt="Empty content :("
+      />
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,10 @@
+.sub-head{
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.corner-button{
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+}

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-xl sticky-top navbar-light navbar-custom justify-content-between">
+  <a class="navbar-brand" routerLink="/home">SONA R&D PORTAL </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navItems" aria-controls="navItems" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navItems">  
+    <!-- <small class="navbar-brand rainbow-text nav-link pr-4 c-pointer" routerLink="/fibre">FIBRE</small> -->
+    <ul class="navbar-nav ml-auto" data-toggle="collapse" data-target=".navbar-collapse.show">
+        <app-department-list [departments]="departments"></app-department-list> 
+        <li class="nav-item">
+          <small class="nav-link pr-4 c-pointer" routerLink="/project">PROJECTS</small>
+        </li>
+        <li class="nav-item">
+            <small class="nav-link pr-4 c-pointer" routerLink="/funding">FUNDINGS</small>
+        </li>
+        <li class="nav-item">
+            <small class="nav-link pr-4 c-pointer" routerLink="/publication">PUBLICATIONS</small>
+        </li> 
+        <li class="nav-item">
+          <small class="nav-link pr-4 c-pointer" routerLink="/home">MOUs</small>
+        </li>
+        <li class="nav-item">
+          <small class="nav-link pr-4 c-pointer" routerLink="/consultancy">CONSULTANCY</small>
+        </li>
+        <li class="nav-item">
+          <small class="nav-link pr-4 c-pointer" routerLink="/patent">PATENTS</small>
+        </li>
+        <li class="nav-item">
+           <small class="nav-link pr-4 c-pointer" routerLink="/home">START UPS</small>
+        </li>
+        <!-- <li class="nav-item">
+          <small class="nav-link pr-4 c-pointer" *ngIf="isAdmin" routerLink="/admin-panel/approval">APPROVAL</small>
+       </li> -->
+          <li class="nav-item">
+              <app-user-dropdown 
+                [userName]="userName" 
+                [isProfileAvailable]="isProfileAvailable" 
+                [isAdmin]="isAdmin"
+                [count]="count">
+              </app-user-dropdown>
+          </li>
+      </ul>
+  </div>
+</nav>

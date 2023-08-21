@@ -1,0 +1,174 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/user">Profile</a></li>
+        <li class="breadcrumb-item active">Add Funding/Grant</li>
+    </ol>
+  </nav>
+<div class="container pt-5">
+    <div class="col-md-10 m-auto">
+        <h5 class="title text-center mb-3">Add Grant</h5>
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="grant">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 px-2">
+                            <label>Grant Title <span class="required">*</span> </label>
+                            <input type="text" formControlName="grantTitle" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.grantTitle.errors) }" />
+                            <div *ngIf="submitted && f.grantTitle.errors" class="invalid-feedback">
+                                <div *ngIf="f.grantTitle.errors.required">Grant Title is required</div>
+                                <div *ngIf="f.grantTitle.errors.minlength">Enter a valid grant title</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 px-2">
+                            <label>Grant Type <span class="required">*</span> </label>
+                            <select id="inputState" formControlName="grantType" [ngClass]="{ 'is-invalid': (submitted && f.grantType.errors) }"  class="form-control">
+                                <option value="" disabled selected>...</option>
+                                <option *ngFor="let type of GRANT_TYPE" value="type">{{type}}</option>
+                              </select>
+                            <div *ngIf="submitted && f.grantType.errors" class="invalid-feedback">
+                                <div *ngIf="f.grantType.errors.required">Grant Type is required</div>
+                                <div *ngIf="f.grantType.errors.minlength">Choose a valid grant type</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 px-2">
+                            <label>Agency <span class="required">*</span> </label>
+                            <input type="text" formControlName="agency" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.agency.errors) }" />
+                            <div *ngIf="submitted && f.agency.errors" class="invalid-feedback">
+                                <div *ngIf="f.agency.errors.required">Agency is required</div>
+                                <div *ngIf="f.agency.errors.minlength">Enter a valid agency</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 px-2">
+                            <label>Scheme <span class="required">*</span> </label>
+                            <input type="text" formControlName="scheme" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.scheme.errors) }" />
+                            <div *ngIf="submitted && f.scheme.errors" class="invalid-feedback">
+                                <div *ngIf="f.scheme.errors.required">Scheme is required</div>
+                                <div *ngIf="f.scheme.errors.minlength">Enter a valid Scheme</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 px-2">
+                            <label>Sanction Amount <span class="required">*</span> </label>
+                            <input type="number" formControlName="sanctionAmount" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.sanctionAmount.errors) }" />
+                            <div *ngIf="submitted && f.sanctionAmount.errors" class="invalid-feedback">
+                                <div *ngIf="f.sanctionAmount.errors.required">Sanction Amount is required</div>
+                                <div *ngIf="f.sanctionAmount.errors.minlength">Enter a valid Sanction Amount</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 px-2">
+                            <label>Date of Sanction <span class="required">*</span> </label>
+                            <input type="date" formControlName="dateOfSanction" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.dateOfSanction.errors) }" />
+                            <div *ngIf="submitted && f.dateOfSanction.errors" class="invalid-feedback">
+                                <div *ngIf="f.dateOfSanction.errors.required">Date of sanction is required</div>
+                                <div *ngIf="f.dateOfSanction.errors.minlength">Enter a valid Date</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 px-2">
+                            <label>Sanction Ref. No. <span class="required">*</span> </label>
+                            <input type="text" formControlName="sanctionRef" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.sanctionRef.errors) }" />
+                            <div *ngIf="submitted && f.sanctionRef.errors" class="invalid-feedback">
+                                <div *ngIf="f.sanctionRef.errors.required">Sanction is required</div>
+                                <div *ngIf="f.sanctionRef.errors.minlength">Enter a valid sanction ref no</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 px-2">
+                            <label for="duration">Duration of grant <span class="required">*</span> </label>
+                            <div class="input-group">
+                                <input type="number" formControlName="duration" class="form-control" placeholder="No of months " [ngClass]="{ 'is-invalid': (submitted && f.duration.errors) }" />
+                                <input type="text" class="form-control" value="months" readonly>
+                                <div *ngIf="submitted && f.duration.errors" class="invalid-feedback">
+                                    <div *ngIf="f.duration.errors.required">Duration is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Principal Investigator <span class="required">*</span> </label>
+                            <div class="input-group">
+                                <input 
+                                [ngClass]="{ 'is-invalid': (submitted && f.principalInvestigator.errors) || (submitted && principalError) }"
+                                aria-describedby="userHelp" 
+                                type="text" 
+                                list="user" 
+                                class="form-control" 
+                                formControlName="principalInvestigator" 
+                                autocomplete="off" 
+                                placeholder="Search user name"
+                                (keyup)="searchUser(grant.value.principalInvestigator)">
+                                <datalist id="user">
+                                    <option *ngFor="let userId of searchedUserIdLists" value="{{userId}}">{{userId}}</option>
+                                </datalist>
+                                <div *ngIf="submitted && f.principalInvestigator.errors" class="invalid-feedback">
+                                    <div *ngIf="f.principalInvestigator.errors.required">Principal investigator is required</div>
+                                </div>
+                                <div *ngIf="submitted && principalError" class="invalid-feedback">
+                                    <div *ngIf="principalError">Principal investigator userId is invalid</div>
+                                </div>
+                            </div>
+                            <small id="userHelp" class="text-muted">
+                                Please do not edit the field after choosing the userId.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="mx-4 mt-2">Add Co Investigatrs</label>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-danger alert-dismissible fade show " role="alert" [hidden]="!usererror">
+                                        {{usererror}}
+                                        <button type="button" class="close" (click) = "clearMessage()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        <span
+                                            *ngFor="let coIns of coInvestigators"
+                                            class="badge badge-pill badge-secondary p-2 pr-1 mx-1 my-1">{{ coIns }}
+                                            <span
+                                            (click)="removeCoInvestigator(coIns)"
+                                            class="badge badge-dark badge-pill c-pointer mx-1 p-1">X</span>
+                                        </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Search name</label>
+                                            <div class="input-group">
+                                                <input
+                                                    list="users"
+                                                    type="text"
+                                                    class="form-control"
+                                                    formControlName="searchedUserId"
+                                                    placeholder="Enter user name and select"
+                                                    autocomplete="off"
+                                                    (keyup)="searchUserCo(grant.value.searchedUserId)"
+                                                />
+                                                <datalist id="users">
+                                                    <option *ngFor="let coIns of searchedUserCoLists" [value]="coIns" (click)="clearSearchList()">
+                                                        {{ coIns }}
+                                                    </option>
+                                                </datalist>
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-secondary" (click)="addCoInvestigator(grant.get('searchedUserId').value)">Add</button>
+                                                </div>
+                                            </div>
+                                            <small id="userHelp" class="text-muted">
+                                                Please click add button to add co-investigator.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary btn-block btn-lg " (click)="submitGrant()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

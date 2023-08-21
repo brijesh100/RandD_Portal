@@ -1,0 +1,108 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Angular CD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  pull_request:
+    branches: [ Production ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./RD_Portal_UI
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install npm dependencies
+      run: npm install
+    - name: Run build task
+      run: npm run build --if-present
+    - name: Deploy to Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+          SOURCE: "./RD_Portal_UI/dist/"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: "azureuser"
+          TARGET: "/home/azureuser/"
+          EXCLUDE: "/dist/, /node_modules/"
+    - name: Restarting NGINX
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: "azureuser"
+        key: ${{ secrets.KEY }}
+        port: "22"
+        script: |
+          sudo su
+          sudo systemctl restart nginx
+  node-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./RD_Portal_WebService
+        # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Deploy to Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+          SOURCE: "./RD_Portal_WebService/"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: "azureuser"
+          TARGET: "/home/azureuser/backend"
+          EXCLUDE: "/node_modules/"
+    - name: Killing and starting PM2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: "azureuser"
+        key: ${{ secrets.KEY }}
+        port: "22"
+        script: |
+          cd backend
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          pm2 kill
+          npm i
+  node-git:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Killing and starting PM2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: "azureuser"
+          key: ${{ secrets.KEY }}
+          port: "22"
+          script: |
+            sudo su
+            cd RD_Portal/RD_Portal_WebService
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            pm2 kill
+            git pull
+            npm i
+            pm2 start index.js
+
+

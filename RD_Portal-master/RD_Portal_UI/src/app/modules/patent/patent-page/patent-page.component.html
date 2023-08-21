@@ -1,0 +1,50 @@
+<app-loader [load]="isloading"></app-loader>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+    <li class="breadcrumb-item"><a routerLink="/patent">Patent</a></li>
+    <li class="breadcrumb-item active">
+      {{ patent?.patentTitle | slice: 0:30 }}
+    </li>
+  </ol>
+</nav>
+<div class="container">
+  <div class="title text-mint">{{ patent?.patentTitle }}</div>
+  <p class="list-group-item card-text mb-1">
+    <small class="text-muted"
+      >Created on : {{ patent?.createdAt | date: "mediumDate" }}</small
+    >
+  </p>
+  <div class="row">
+    <div class="col-md-9">
+      <app-patent-details-tile [patent]="patent"> </app-patent-details-tile>
+    </div>
+    <div class="col-md-3">
+      <app-patent-card [patent]="patent"> </app-patent-card>
+    </div>
+  </div>
+  <div class="bottom-section col-md-2">
+    <!-- 
+    <button class="btn btn-primary mx-2" *ngIf="isAdmin" (click)="onarchive()">
+      Archive
+    </button>-->
+    <button class="btn btn-primary mx-2" *ngIf="isAdmin" (click)="onEditMode()">
+      Edit
+    </button>
+  </div>
+  <!-- <div class="row">
+        <div class="col-md-9">
+            <app-patent-details-tile
+            [patent]="patent"
+            >
+            </app-patent-details-tile>
+        </div>
+        <div class="col-md-3">
+            <app-patent-card
+            [patent]="patent"
+            >
+            </app-patent-card>
+
+        </div>
+    </div> -->
+</div>

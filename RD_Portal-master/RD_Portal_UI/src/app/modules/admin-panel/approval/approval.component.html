@@ -1,0 +1,30 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+      <li class="breadcrumb-item active">Manage</li>
+  </ol>
+</nav>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4 col-sm-12" *ngFor="let department of departmentSnapshot">
+          <div class="card mb-5 c-pointer" routerLink="/admin-panel/department-approval/{{department.departmentId}}">
+            <div class="card-body same-height">
+              <span class="title-2">{{department.departmentName}}</span>
+              </div>
+              <div class="row mb-2 pl-3 pr-3 text-secondary">
+              <div class="col-4 text-center">
+                <h2 [ngClass]="{'count':true, 'text-danger':department.approvalProjectsCount>0}">{{department.approvalProjectsCount}}</h2>
+                <small class="card-text">Projects</small>
+              </div>
+              <div class="col-4  text-center">
+                <h2 [ngClass]="{'count':true, 'text-danger':department.approvalPublicationsCount>0}">{{department.approvalPublicationsCount}}</h2>
+                <small class="card-text">Publication</small>
+              </div>
+              <div class="col-4  text-center">
+                <h2 [ngClass]="{'count':true, 'text-danger':department.approvalFundingsCount>0}">{{department.approvalFundingsCount}}</h2>
+                <small class="card-text">Fundings</small>
+            </div>
+          </div>
+          </div>
+        </div>
+</div>

@@ -1,0 +1,104 @@
+.table-hover{
+ cursor:pointer;
+}
+tr:focus{
+    outline: none;
+    border: 0;
+}
+  /* Style the close button (span) */
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  padding: 12px 16px;
+  transform: translate(0%, -50%);
+}
+
+.close:hover {background: #bbb;}
+  
+.closebtn {
+  margin-left: 15px;
+  font-weight: bold;
+  float: right;
+  font-size: 26px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding-left: 5%;
+  padding-bottom: 5%;
+}
+  
+.closebtn:hover {
+  color: black;
+}
+.card {
+  box-shadow: 0 14px 26px rgba(0,0,0,0.04);
+  transition: all 0.3s ease-out;
+  text-decoration: none;
+}
+
+.n:hover {
+  transform: translateY(-5px) scale(1.005) translateZ(0);
+  box-shadow: 0 24px 36px rgba(0,0,0,0.11),
+    0 24px 46px var(--box-shadow-color);
+
+}
+.notc{
+  background-color: rgb(241, 157, 55);
+}
+ul li a {
+ display:block;
+}
+
+ul li a:hover, ul li a:focus {
+ color:red;
+}
+.table td.demo {
+   max-width: 350px;
+}
+.table td.demo span {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: inline-block;
+   white-space: nowrap;
+   max-width: 100%;
+}
+tbody{
+    background-color:#ffffff
+}
+
+.cool
+{
+    background-color: #d3e3f3;
+    color: black;
+}
+.rnd:hover{
+    background-color: #6eaeee;
+    color: black;
+}
+.whitebg{
+    background-color: #ffffff;
+}
+.alert-dismissible {
+  padding-right: 60%;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--sona-blue);
+  color: var(--sona-gold) !important;
+}
+.usertabs{
+  color: var(--text-color) !important;
+}
+.nav-tabs {
+  border-bottom: 1px solid var(--sona-blue);
+}
+.nav-tabs .nav-link {
+  border: 0;
+}
+.scroll{
+  overflow-y: scroll;
+  height: 72vh;
+  margin: 0%;
+}

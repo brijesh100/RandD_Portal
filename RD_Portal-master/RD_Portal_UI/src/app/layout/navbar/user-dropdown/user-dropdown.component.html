@@ -1,0 +1,62 @@
+<style>
+  .notification {
+    text-decoration: none;
+    padding: 15px 26px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+  }
+  .notification .badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 5px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+  }
+  .log {
+    background-color: rgb(14, 182, 238);
+    color: white;
+  }
+  .log:hover {
+    color: aliceblue;
+  }
+</style>
+<li class="nav-item dropdown pr-2">
+  <small
+    class="nav-link dropdown-toggle c-pointer"
+    id="navbarDropdown"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    {{ userName | uppercase }}
+  </small>
+  <div
+    class="dropdown-menu fade-up dropdown-menu-right"
+    aria-labelledby="navbarDropdown"
+  >
+    <a class="dropdown-item" routerLink="/user" *ngIf="isProfileAvailable">
+      Profile
+    </a>
+    <div *ngIf="isAdmin">
+      <a class="notification dropdown-item" routerLink="/admin-panel/approval">
+        <span>Manage</span
+        ><span *ngIf="count > 0" class="badge">{{ count }}</span></a
+      >
+      <a class="dropdown-item" routerLink="/admin-panel/department">
+        + Department
+      </a>
+      <a class="dropdown-item" routerLink="/admin-panel/research-lab">
+        + Research Lab
+      </a>
+      <a class="dropdown-item" routerLink="/admin-panel/user"> + User </a>
+      <a class="dropdown-item" routerLink="/admin-panel/funding"> + Funding </a>
+      <a class="dropdown-item" routerLink="/patent/add-patent"> + Patent </a>
+    </div>
+    <a class="dropdown-item" routerLink="/user/update-password"> Settings </a>
+    <a class="dropdown-item log" (click)="logout()"> Logout </a>
+  </div>
+</li>

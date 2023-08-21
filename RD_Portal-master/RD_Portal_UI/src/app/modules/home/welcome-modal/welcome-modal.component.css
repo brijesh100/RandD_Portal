@@ -1,0 +1,11 @@
+.email-input {
+  text-transform: lowercase;
+}
+
+.s-6 {
+  width: 6rem;
+  height: 6rem;
+  z-index: 11;
+  color: #1e4175;
+  display: flex;
+}

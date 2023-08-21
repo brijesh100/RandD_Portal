@@ -1,0 +1,40 @@
+<div class="container mt-5">
+    <div class="col-md-8 m-auto">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" [hidden]="!successMessage">
+            {{successMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" [hidden]="!errorMessage">
+            {{errorMessage}}
+            <button type="button" class="close">
+              <span (click)="clearMessage()">&times;</span>
+            </button>
+          </div>
+
+        <h5 class="title text-center mb-3">Create Department</h5>
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="departmentForm" (ngSubmit)="createDepartment()">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Department Name<span class="required">*</span> </label>
+                            <input type="text" class="form-control" formControlName="departmentName"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Department Code<span class="required">*</span> </label>
+                            <input type="text" class="form-control" formControlName="departmentId"/>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block mt-5 mb-2" [disabled]="departmentForm.invalid">
+                        Create Department
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

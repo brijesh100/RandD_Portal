@@ -1,0 +1,127 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/project">Projects</a></li>
+        <li class="breadcrumb-item active">Priority Projects</li>
+    </ol>
+</nav>
+<div class="container-fluid my-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="text-mint my-2">Priority Project List </h4>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary float-right mx-4 my-2" routerLink="/project/addPriority" >
+                Add Priority Project
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 mt-2 center ">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filter</h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="trl">Technology Readiness Level</label>
+                                <select type="text" class="form-control" id="trl" [(ngModel)]="selectedTRL" (ngModelChange)="filterFun()">
+                                    <option value="all">...</option>
+                                    <option *ngFor="let level of TRL" [value]="level">
+                                      {{ level }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select type="text" class="form-control" id="status" [(ngModel)]="selectedStatus" (ngModelChange)="filterFun()">
+                                    <option value="all">...</option>
+                                    <option value="00">Under Review</option>
+                                    <option value="01">Ongoing</option>
+                                    <option value="03">Inactive</option>
+                                    <option value="02">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger float-right" (click)="reset()">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 mt-2" >
+            <div *ngIf="priorityProjects?.length; else Emptybox">
+                <div *ngFor="let project of priorityProjects">
+                    <div class="card border-secondary  notification">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <span *ngIf="project.visibility || isadmin" routerLink="/project/{{project.projectId}}" class="btn btn-primary btn-sm float-right">
+                                    View details
+                                </span>
+                                <span class="badge badge-secondary float-right p-2 mx-2" *ngIf="project.isPriority==true">Priority</span>
+                                
+                                <span *ngIf="!project.visibility" class="float-right badge badge-pill badge-warning p-2 mx-2">Confidential</span>
+                                <h5 class="card-title">
+                                    <a *ngIf="project.visibility || isadmin" routerLink="/project/{{project.projectId}}">
+                                        {{ project.projectTitle }}
+                                    </a>
+                                    <span *ngIf="!project.visibility && !isadmin ">{{ project.projectTitle }}</span>
+                                    <span class='blip' *ngIf='!project.approved && isadmin '></span>
+                                </h5>
+                                <p class="card-text text-mute" >
+                                    <span *ngFor="let keyword of project.keywords" class="mx-1 c-pointer" routerLink="/project/keyword/{{keyword}}"><span class="disc">&#9673;</span>{{ keyword }} </span>
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="card-text text-mute">Researchers</h6>
+                                        <span class=" pr-3" *ngFor="let member of project.team">
+                                            <span #userId class="badge badge-pill badge-secondary c-pointer p-2 mb-1"
+                                                (click)="showUserOverview(userId.innerHTML)" data-toggle="modal"
+                                                data-target="#userOverviewModal">
+                                                {{ member }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h6 class="card-text text-mute">Department</h6>
+                                        <span class="text-muted mb-1">{{project.projectDepartment}}</span>
+                                    </div>
+                                    <div class="col-md-4" >
+                                        <h6 class="card-text text-mute">Technology Readiness Level</h6>
+                                        <span *ngIf="project.isPriority==true" placement="bottom" ngbTooltip="{{TRlevelContent[project.priority.technologyReadinessLevel]}}" class="badge {{TRlevelBadge[project.priority.technologyReadinessLevel]}} mb-2 c-pointer p-2" data-toggle="modal"
+                                        data-target="#trlOverviewModal">{{ project.priority.technologyReadinessLevel }} - {{ TRlevelText[project.priority.technologyReadinessLevel] }}</span>
+                                        <span *ngIf="!project.isPriority==true" class="badge {{TRlevelBadge[0]}} mb-2 c-pointer p-2"  style="text-align: center;" 
+                                        placement="bottom" ngbTooltip="{{TRlevelContent[0]}}" data-toggle="modal" data-target="#trlOverviewModal">0 - {{TRlevelText[0]}}</span>
+                                    </div>
+                                    <div class="col-md-2 float-right">
+                                        <div class="float-right">
+                                            <h6 class="card-text text-mute mx-2">Status</h6>
+                                            <span [ngClass]="{'badge badge-pill mb-1 p-2' : true , 'badge-success' : project.status=='Completed' , 'badge-warning': project.status=='Ongoing' || project.status=='Under Review', 'badge-danger': project.status=='Inactive' }">{{project.status}}</span>
+                                            <br>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </li>
+                            <p class="list-group-item card-text">
+                                <small class="text-mute">Started {{ project.start | date:'mediumDate'}}</small>
+                                <small class="text-mute float-right" *ngIf="project.priority.hasOwnProperty('remarkHistory')">Last Review
+                                    {{ project.priority.remarkHistory[0].reviewDate | date:'mediumDate' }}</small>
+                            </p>
+                        </ul>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <ng-template #Emptybox>
+            <app-empty-layout></app-empty-layout>
+        </ng-template>
+    </div>
+</div>
+<app-user-modal
+[user]="user"
+>
+</app-user-modal>
+<app-trl-modal></app-trl-modal>

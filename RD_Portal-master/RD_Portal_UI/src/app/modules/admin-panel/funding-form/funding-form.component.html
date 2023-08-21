@@ -1,0 +1,81 @@
+<div class="container mt-5">
+    <div class="col-md-8 m-auto">
+        <app-message 
+          [successMessage]="successMessage" 
+          [errorMessage]="errorMessage">
+        </app-message> 
+        <h5 class="title text-center mb-3">Create New Funding</h5>
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup] ="fundingForm" (ngSubmit)="createFunding()">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                          <label>Name of Fund/Grant <span class="required">*</span> </label>
+                          <input type="text" class="form-control" formControlName = "nameOfGrant"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label>Funding Organisation <span class="required">*</span> </label>
+                          <input type="text" class="form-control" formControlName = "fundingOrganisation"/>
+                        </div>
+                        <div class="form-group col-md-12">
+                          <label>Description of Scheme <span class="required">*</span> </label>
+                          <textarea type="text" class="form-control" formControlName = "descriptionOfScheme" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Additional Details <span class="required">*</span> </label>
+                      <div id="additionalDetailsBlock" formArrayName="additionalDetails" class="border p-2">
+                          <div class="row mb-2" *ngFor="let item of additionalDetails.controls; let i = index" [formGroupName] = "i">
+                            <div class="col-md-4">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span *ngIf="i!==0" class="btn input-group-text float-right" (click)="deleteAdditionalDetails(i)">X</span>
+                                </div>
+                                <input type="text" class="form-control" formControlName = "title" placeholder="Title">
+                              </div>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea type="text" class="form-control" formControlName = "detail"  placeholder="Content..." rows="3"></textarea>
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-secondary" (click)="addAdditionalDetails()">&#10010;</button>
+                      </div>
+                    </div>
+
+                    
+                    <div class="form-group">
+                      <label>URL <span class="required">*</span> </label>
+                      <div id="URLsBlock" formArrayName="fundingUrls" class="border p-2">
+                          <div class="row mb-2" *ngFor="let item of fundingUrls.controls; let i = index" [formGroupName] = "i">
+                            <div class="col-md-4">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span *ngIf="i!==0" class="btn input-group-text" (click)="deleteFundingUrl(i)">X</span>
+                                </div>
+                                <input type="text" class="form-control" formControlName = "title" placeholder="Title">
+                              </div>
+                            </div>
+                            <div class="col-md-8">
+                                  <input type="text" class="form-control" formControlName = "url"  placeholder="URL">
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-secondary" (click)="addFundingUrl()">&#10010;</button>
+                      </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                      <div class="form-group col-md-4">
+                          <label>Application deadline <span class="required">*</span> </label>
+                          <input type="date" class="form-control" formControlName = "deadline" min="{{todayDate}}"/>
+                      </div>
+                    </div>
+
+                    <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block mt-5 mb-2" [disabled]="fundingForm.invalid">
+                        Create Funding
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

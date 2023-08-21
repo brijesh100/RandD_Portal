@@ -1,0 +1,28 @@
+<div class="card border-secondary mb-1" >
+    <div class="card-body">
+        <h5 class="card-title">Keywords</h5>
+        <div *ngIf="!isEditMode; else Editor">
+            <span *ngFor="let keyword of keywords">
+                <span class="card-text text-dark mr-2">
+                    <span class="disc">&#9673;</span>{{ keyword }}
+                </span>
+            </span>
+        </div>
+
+        <ng-template #Editor>
+            <form [formGroup]="keywordsForm">
+                <div class=row>
+                    <div formArrayName="keyword" class="mb-3 col-md-3" *ngFor="let keyword of keywordArray.controls; let i = index">
+                        <div class="input-group input-group-sm mb-1">
+                            <input type="text" class="form-control sub-head" [formControlName]="i" />
+                            <div class="input-group-append">
+                                <span class="btn input-group-text" (click)="deleteKeyword(i)">X</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="addKeyword()">&#10010;</button>
+            </form>
+        </ng-template>
+    </div>
+</div>

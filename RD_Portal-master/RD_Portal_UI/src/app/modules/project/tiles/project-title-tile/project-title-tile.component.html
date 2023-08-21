@@ -1,0 +1,14 @@
+<div class="title text-mint" *ngIf="!isAdmin">{{ projectTitle }}</div>
+<div *ngIf="isAdmin">
+    <div class="title text-mint" *ngIf="!isEditMode; else Editor">{{ projectTitle }}</div>
+    <ng-template #Editor>
+        <form [formGroup]="projectTitleForm">
+            <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Title</span>
+                </div>
+                <textarea type="text" class="form-control" formControlName="projectTitle" rows="1"></textarea>
+            </div>
+        </form>
+    </ng-template>
+</div>

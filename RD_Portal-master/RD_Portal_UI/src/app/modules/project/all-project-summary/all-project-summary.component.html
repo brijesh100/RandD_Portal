@@ -1,0 +1,232 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+    <li class="breadcrumb-item active">Projects</li>
+  </ol>
+</nav>
+<app-loader [load]="isloading"></app-loader>
+<app-project-dashboard
+  *ngIf="departId && allProjectDetails"
+  [allProjects]="allProjectDetails"
+  [departments]="departId"
+></app-project-dashboard>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-3 border-secondary">
+        <div class="card-header sona">
+          <h5>Filter</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Department</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.dept"
+              (change)="filterFun('dept', $event)"
+            >
+              <option value="all" selected>All Departments</option>
+              <option
+                *ngFor="let dept of departments"
+                value="{{ dept.departmentId }}"
+              >
+                {{ dept.departmentId }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.year"
+              (change)="filterFun('year', $event)"
+            >
+              <option value="all" selected>All Data</option>
+              <option *ngFor="let year of years" value="{{ year }}">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>TRL</label>
+            <select
+              class="form-control"
+              [(ngModel)]="filterData.trl"
+              (change)="filterFun('trl', $event)"
+            >
+              <option value="all" selected>All Data</option>
+              <option *ngFor="let level of TRlevels" value="{{ level }}">
+                {{ level }}
+              </option>
+            </select>
+          </div>
+          <h5 class="text-mint">
+            <span class="mt-4"
+              >Filtered Projects Count : {{ projects?.length }}</span
+            >
+            <button
+              type="reset"
+              class="btn btn-primary float-right"
+              (click)="reset()"
+            >
+              RESET
+            </button>
+          </h5>
+        </div>
+      </div>
+      <div
+        class="card card-red mb-3 c-pointer"
+        *ngIf="isadmin"
+        routerLink="/project/showPriority"
+      >
+        <div class="card-body">
+          <div class="card-text card-red text-center">
+            Manage Priority Projects
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 scroll" *ngIf="projects?.length; else Emptybox">
+      <div *ngFor="let project of projects">
+        <div class="card border-secondary notification">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <span
+                *ngIf="project.visibility || isadmin"
+                routerLink="/project/{{ project.projectId }}"
+                class="btn btn-primary btn-sm float-right"
+              >
+                View details
+              </span>
+              <span
+                class="badge badge-secondary float-right p-2 mx-2"
+                *ngIf="project.isPriority == true"
+                >Priority</span
+              >
+
+              <span
+                *ngIf="!project.visibility"
+                class="float-right badge badge-pill badge-warning p-2 mx-2"
+                >Confidential</span
+              >
+
+              <h5 class="card-title">
+                <a
+                  *ngIf="project.visibility || isadmin"
+                  routerLink="/project/{{ project.projectId }}"
+                >
+                  {{ project.projectTitle }}
+                </a>
+                <span *ngIf="!project.visibility && !isadmin">{{
+                  project.projectTitle
+                }}</span>
+                <span class="blip" *ngIf="!project.approved && isadmin"></span>
+              </h5>
+
+              <p class="card-text text-mute">
+                <span
+                  *ngFor="let keyword of project.keywords"
+                  class="mx-1 c-pointer"
+                  routerLink="/project/keyword/{{ keyword }}"
+                  ><span class="disc">&#9673;</span>{{ keyword }}
+                </span>
+              </p>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6 class="card-text text-mute">Contributors</h6>
+                  <span class="pr-3" *ngFor="let member of project.team">
+                    <span
+                      #userId
+                      class="badge badge-pill badge-secondary c-pointer p-2 mb-1"
+                      (click)="showUserOverview(userId.innerHTML)"
+                      data-toggle="modal"
+                      data-target="#userOverviewModal"
+                    >
+                      {{ member }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-md-2">
+                  <h6 class="card-text text-mute">Department</h6>
+                  <span class="text-muted mb-1">{{
+                    project.projectDepartment
+                  }}</span>
+                </div>
+                <div class="col-md-4">
+                  <h6 class="card-text text-mute">
+                    Technology Readiness Level
+                  </h6>
+                  <span
+                    *ngIf="project.isPriority == true"
+                    placement="bottom"
+                    ngbTooltip="{{
+                      TRlevelContent[project.priority.technologyReadinessLevel]
+                    }}"
+                    class="badge {{
+                      TRlevelBadge[project.priority.technologyReadinessLevel]
+                    }} mb-2 c-pointer p-2"
+                    data-toggle="modal"
+                    data-target="#trlOverviewModal"
+                    >{{ project.priority.technologyReadinessLevel }} -
+                    {{
+                      TRlevelText[project.priority.technologyReadinessLevel]
+                    }}</span
+                  >
+                  <span
+                    *ngIf="!project.isPriority == true"
+                    class="badge {{ TRlevelBadge[0] }} mb-2 c-pointer p-2"
+                    style="text-align: center"
+                    placement="bottom"
+                    ngbTooltip="{{ TRlevelContent[0] }}"
+                    data-toggle="modal"
+                    data-target="#trlOverviewModal"
+                    >0 - {{ TRlevelText[0] }}</span
+                  >
+                </div>
+                <div class="col-md-2 float-right">
+                  <div class="float-right">
+                    <h6 class="card-text text-mute mx-2">Status</h6>
+                    <span
+                      [ngClass]="{
+                        'badge badge-pill mb-1 p-2': true,
+                        'badge-success': project.status == 'Completed',
+                        'badge-warning':
+                          project.status == 'Ongoing' ||
+                          project.status == 'Under Review',
+                        'badge-danger': project.status == 'Inactive'
+                      }"
+                      >{{ project.status }}</span
+                    >
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </li>
+            <p class="list-group-item card-text">
+              <small class="text-mute"
+                >Started {{ project.start | date : "mediumDate" }}</small
+              >
+              <small class="text-mute float-right"
+                >Last updated
+                {{ project.updatedAt | date : "mediumDate" }}</small
+              >
+            </p>
+          </ul>
+        </div>
+        <br />
+      </div>
+    </div>
+    <ng-template #Emptybox>
+      <div class="empty-content">
+        <img
+          src="../../../../assets/image/empty-box.png"
+          alt="Empty content :("
+        />
+      </div>
+    </ng-template>
+  </div>
+</div>
+<app-user-modal [user]="user"> </app-user-modal>
+<app-trl-modal></app-trl-modal>

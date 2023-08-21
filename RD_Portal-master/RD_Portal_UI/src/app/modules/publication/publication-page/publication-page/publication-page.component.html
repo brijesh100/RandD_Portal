@@ -1,0 +1,64 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/publication">Publications</a></li>
+        <li class="breadcrumb-item active">{{publication?.publicationId}}</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <app-lock-card
+            [islocked]="islocked"
+            [isAdmin]="isAdmin"
+            [publicationid]="publicationId"
+            ></app-lock-card>
+    <div class="title text-mint" >{{publication?.paperTitle}} </div>
+    <p class="list-group-item card-text mb-1">
+  <small class="text-muted">Published on : {{publication?.yearOfPublication | date:'mediumDate'}}</small>
+    </p>
+    <div class="row">
+        <div class="col-md-9">
+            <app-publication-title-tile
+            [publication]="publication"
+            >
+            </app-publication-title-tile>
+        </div>
+        <div class="col-md-3">
+            <app-publication-card
+            [publication]="publication"
+            >
+            </app-publication-card>
+
+        </div>
+    </div>
+    <app-message-modal
+    [goBack]=1
+    [successMessage]="modalmessage"
+    >
+    </app-message-modal>
+        <button *ngIf=" checkuser && !isarchived && !islocked"
+            class="btn btn-primary mx-2  float-right" 
+            routerLink="/publication/{{publication?.publicationId}}/edit">
+            Edit
+        </button>
+        <button *ngIf="isAdmin && !approved"
+            class="btn btn-success mx-2 float-right" 
+            (click)="onApprove()"
+            data-toggle="modal" data-target="#success_tic">
+            Approve
+        </button>
+        <button *ngIf="isAdmin && !isarchived"
+            class="btn btn-warning mx-2 float-right" 
+            (click)="onarchive()"
+            data-toggle="modal" data-target="#success_tic">
+            Archive
+        </button>
+        <button *ngIf="isAdmin && isarchived"
+            class="btn btn-info mx-2 float-right" 
+            (click)="onrestore()"
+            data-toggle="modal" data-target="#success_tic">
+            Restore
+        </button>
+        
+
+</div>

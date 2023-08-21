@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="card border-secondary mb-1" >
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 my-2" *ngIf="patent?.patentApplicationNumber"><span class="disc">&#9673;</span>
+                <b>Technology Readiness Level: </b>
+                <span > {{patent?.TechnologyReadinessLevel}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.patentApplicationNumber"><span class="disc">&#9673;</span>
+                <b>Application Number: </b>
+                <span > {{patent?.patentApplicationNumber}}</span>
+            </div>
+            <div class="col-md-6 my-2 " *ngIf="patent?.patentYear"><span class="disc">&#9673;</span>
+                <b>Year: </b>
+                <span > {{patent?.patentYear}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.patentDate"><span class="disc">&#9673;</span>
+                <b>Date of filing: </b>
+                <span >{{patent?.patentDate | date:'mediumDate'}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.patentGrantNum"><span class="disc">&#9673;</span>
+                <b>Grant Patent Number: </b>
+                <span >{{patent?.patentGrantNum}}</span>
+            </div>  
+            <div class="col-md-6 my-2" *ngIf="patent?.PublishedDate"><span class="disc">&#9673;</span>
+                <b>Published Date: </b>
+                <span >{{patent?.PublishedDate | date:'mediumDate'}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.FERDate"><span class="disc">&#9673;</span>
+                <b>FER Submitted Date: </b>
+                <span >{{patent?.FERDate | date:'mediumDate'}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.hearingDate"><span class="disc">&#9673;</span>
+                <b>Hearing Date: </b>
+                <span >{{patent?.HearingDate | date:'mediumDate'}}</span>
+            </div>
+            <div class="col-md-6 my-2" *ngIf="patent?.GrantedDate"><span class="disc">&#9673;</span>
+                <b>Granted Date: </b>
+                <span >{{patent?.GrantedDate | date:'mediumDate'}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="card border-secondary mb-1" >
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 my-2" *ngIf='project?.projectTitle'>
+                <span class="disc">&#9673;</span>
+                <b class="modal-title">Project Name : </b><u><a routerLink='/project/{{project?.projectId}}'>{{project?.projectTitle}}</a></u>
+            </div>
+            <div class="col-md-12 my-2">
+                <span class="disc">&#9673;</span>
+                <b class="modal-title">Patent Summary : </b><span>{{patent?.patentSummary}}</span>
+            </div>
+            <div class="col-md-12 my-2" *ngIf='project?.projectSummary'>
+                <span class="disc">&#9673;</span>
+                <b class="modal-title">Project Summary : </b><span>{{project?.projectSummary}}</span>
+            </div>
+            <div class="col-md-12 my-2" *ngIf='project?.projectKeywords'>
+                <span class="disc">&#9673;</span>
+                <b class="modal-title">Project Keywords : </b><span *ngFor="let keyword of project?.projectKeywords"><span class="disc">&#9673;</span> {{keyword}}</span>
+            </div>
+        </div>
+    </div>
+</div> -->

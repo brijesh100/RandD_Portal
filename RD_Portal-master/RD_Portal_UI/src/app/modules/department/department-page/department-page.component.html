@@ -1,0 +1,29 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink = "/home">Home</a></li>
+        <li class="breadcrumb-item active" >{{department?.departmentName}}</li>
+    </ol>
+</nav>
+
+<div class="container-fluid">
+    <div class="title">{{department?.departmentName}}</div>
+    <app-snapshot-tiles [snapshot] = "departmentSnapshot" > </app-snapshot-tiles>
+    <div class="row mx-auto" *ngIf="researches?.length; else Emptybox">
+        <div *ngFor="let research of researches"  class="col-md-4 ">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ research?.researchLabName }}</h5>
+                        <p class="card-text desc">{{ research?.researchLabDesc | slice:0:100}}
+                            {{ research?.researchLabDesc.length > 100 ? '...' : ''}}</p>
+                        
+                        <a routerLink="./{{research.researchLabId}}" class="btn btn-primary float-right">View projects</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <ng-template #Emptybox>
+        <div class="empty-content">
+            <img src="../../../../assets/image/empty-box.png"  alt="Empty content :("/>
+        </div>
+    </ng-template>
+</div>

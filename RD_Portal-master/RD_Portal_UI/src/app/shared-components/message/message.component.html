@@ -1,0 +1,14 @@
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert" [hidden]="!successMessage">
+        {{successMessage}}
+        <button type="button" class="close" (click) = "clearSuccessMessage()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" [hidden]="!errorMessage">
+        {{errorMessage}}
+        <button type="button" class="close" (click) = "clearErrorMessage()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+

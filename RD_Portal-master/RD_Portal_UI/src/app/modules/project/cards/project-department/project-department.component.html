@@ -1,0 +1,34 @@
+<div class="card mt-1">
+    <div class="card-body" >
+        <h5>
+            <small class="modal-title">{{isEditMode?'Edit Department':'Departments'}}
+            </small>
+        </h5>
+        <div *ngIf="departments && !isEditMode">
+            <span class="badge badge-secondary d-text mx-1 my-1" *ngFor="let dept of departments">{{dept}}</span>
+        </div>
+        <div *ngIf="departments && isEditMode">
+            <span class="badge badge-secondary d-text mx-1 my-1" *ngFor="let dept of departments;let i = index">
+                {{dept}}
+                <span class=" badge badge-dark badge-pill mx-1" (click)="deleteDept(i)">X</span>
+            </span>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="isEditMode">
+        <div class="row" style="display: flex;">
+            <div class="col-sm-10 i-group">
+                <select type="text" class="form-control" [(ngModel)]="selectDept">
+                    <option value="">...</option>
+                    <option *ngFor="let d of allDepartments" [value]="d">
+                        {{ d }}</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-secondary" (click)="addDepartment()" >&#10010;</button>
+            <div class="col-sm-12">
+                <small class="form-text text-muted">
+                   Please click add button after selecting department.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

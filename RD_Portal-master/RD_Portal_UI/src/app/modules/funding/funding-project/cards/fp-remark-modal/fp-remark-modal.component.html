@@ -1,0 +1,50 @@
+<div class="my-2">
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#showremarkmodal" style="width:100%" *ngIf="sremark!=''"> Show Remarks </button>
+        
+    </div>
+<div class="modal fade" id="addremarkmodal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title">Add Remarks</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup] ="remarkform">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea formControlName="remarks" placeholder="Add Remarks..." class="form-control" type="text"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-primary" [disabled]="remarkform?.invalid" (click)="addremark()">Add Remark</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+<div  class="modal fade" id="showremarkmodal" tabindex="-1" role="dialog" aria-hidden="closeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title">Remarks</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="card border-secondary mt-1">
+                            <div class="card-body">
+                            
+                            <p>{{sremark}}</p>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    
+                </div>        
+        </div>
+    </div>
+</div>

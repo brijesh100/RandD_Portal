@@ -1,0 +1,13 @@
+.rainbow-text {
+  background-image: linear-gradient(
+    to left,
+    violet,
+    #e274a0,
+    hsl(123, 86%, 61%),
+    yellow,
+    orange,
+    red
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

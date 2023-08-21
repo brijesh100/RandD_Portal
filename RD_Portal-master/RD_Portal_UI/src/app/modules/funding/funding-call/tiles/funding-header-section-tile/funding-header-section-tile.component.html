@@ -1,0 +1,35 @@
+<div  *ngIf="!isEditMode; else Editor">
+    <dl class="row">
+        <dt class="col-sm-3"><h5>Name of Fund/Grant</h5></dt>
+        <dd class="col-sm-9 blockquote">{{nameOfGrant}}</dd>
+
+        <dt class="col-sm-3"><h5>Funding Organisation</h5></dt>
+        <dd class="col-sm-9 blockquote">{{fundingOrganisation}}</dd>
+        
+        <dt class="col-sm-3"><h5>Application deadLine</h5></dt>
+        <dd class="col-sm-9 blockquote">{{deadline | date:'mediumDate' }}</dd>
+    </dl>
+</div>
+
+<ng-template #Editor>
+    <form [formGroup]="fundingHeaderSectionForm">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Name of Fund/Grant</span>
+            </div>
+            <input type="text" class="form-control" formControlName="nameOfGrant">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Funding Organisation</span>
+            </div>
+            <input type="text" class="form-control" formControlName="fundingOrganisation">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Application deadline</span>
+            </div>
+            <input type="date" class="form-control col-sm-2" formControlName="deadline" min="{{minDate}}"/>
+        </div>
+    </form>
+</ng-template>

@@ -1,0 +1,306 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<div class="container mt-5">
+  <div class="col-md-10 m-auto">
+    <!-- <app-message 
+      [successMessage]="successMessage" 
+      [errorMessage]="errorMessage">
+   </app-message>  -->
+    <h5 class="title text-center mb-3">Update Patent</h5>
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="patent" (ngSubmit)="updatePatent()">
+          <!-- Title -->
+          <div class="row mx-2">
+            <div class="form-group col-md-12">
+              <label>Department <span class="required">*</span> </label>
+              <select
+                type="text"
+                class="form-control"
+                formControlName="PatentDepartment"
+              >
+                <option value="">...</option>
+                <option
+                  *ngFor="let department of departments"
+                  [value]="department.departmentName"
+                >
+                  {{ department.departmentName }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-md-12">
+              <label>Title of Innovation<span class="required">*</span> </label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Title of Innovation"
+                formControlName="PatentTitle"
+              />
+            </div>
+            <div class="form-group col-md-3">
+              <label>Application Number<span class="required">*</span> </label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Application Number"
+                formControlName="PatentApplicationNumber"
+              />
+            </div>
+            <div class="form-group col-md-3">
+              <label>Year <span class="required">*</span> </label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Year"
+                formControlName="PatentYear"
+              />
+            </div>
+            <div class="form-group col-md-5">
+              <label>Date of filing<span class="required">*</span> </label>
+              <input
+                type="date"
+                class="form-control"
+                placeholder="Date of filing"
+                formControlName="PatentDate"
+              />
+            </div>
+          </div>
+          <hr />
+          <!-- Inventors -->
+          <div class="row mx-2 mt-2">
+            <div class="form-group col-md-6">
+              <label>Inventors<span class="required">*</span> </label>
+            </div>
+            <div class="col-md-12">
+              <div class="card">
+                <div class="alert alert-danger alert-dismissible fade show " role="alert" [hidden]="!usererror">
+                  {{usererror}}
+                  <button type="button" class="close" (click) = "clearMessage()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span
+                        *ngFor="let InventorId of team"
+                        class="badge badge-pill badge-secondary pr-1 mx-1 my-1"
+                        >{{ InventorId }}
+                        <span
+                          *ngIf="InventorId !== userIdName"
+                          (click)="removeInventorFromTeam(InventorId)"
+                          class="badge badge-dark badge-pill c-pointer"
+                          >X</span
+                        >
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Search UserId</label>
+                      <div class="input-group">
+                        <input
+                          list="users"
+                          type="text"
+                          class="form-control"
+                          formControlName="searchedInventorId"
+                          autocomplete="off"
+                          (keyup)="
+                            searchInventorIds(patent.value.searchedInventorId)
+                          "
+                        />
+                        <datalist id="users">
+                          <option
+                            *ngFor="let Inventor of InventorIds"
+                            [value]="Inventor"
+                            (click)="clearInventorIdsDataList()"
+                          >
+                            {{ Inventor }}
+                          </option>
+                        </datalist>
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            (click)="
+                              addInventorToTeam(
+                                patent.get('searchedInventorId').value
+                              )
+                            "
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+          <!-- Other inventors -->
+          <div class="row mx-2 mt-2">
+            <div class="form-group col-md-6">
+              <label>Other Inventors </label>
+            </div>
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span
+                        *ngFor="let InventorId of otherIns"
+                        class="badge badge-pill badge-secondary p-2 pr-1 mx-1 my-1"
+                        >{{ InventorId }}
+                        <span
+                          *ngIf="InventorId !== userIdName"
+                          (click)="removeOtherInventorFromTeam(InventorId)"
+                          class="badge badge-dark badge-pill c-pointer mx-1 p-1"
+                          >X</span
+                        >
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Enter name</label>
+                      <div class="input-group">
+                        <input list="users" type="text" class="form-control" placeholder="Enter a name and click add" formControlName="otherPatentInventorId"
+                          autocomplete="off" />
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-secondary"
+                            (click)="addOtherInventorToTeam(patent.get('otherPatentInventorId').value)">Add</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <!-- Patent Status -->
+          <div class="row mx-2 mt-2">
+            <div class="col-md-4">
+              <label>Status<span class="required">*</span> </label>
+              <div class="form-check" *ngFor="let status of all_status">
+                <input
+                  class="form-check-input mr-5"
+                  type="radio"
+                  (change)="statusChange(status)"
+                  formControlName="status"
+                  value="{{ status }}"
+                />
+                <label class="form-check-label">{{ status }}</label>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div
+                  class="col-md-6"
+                  *ngIf="
+                    show_published_date ||
+                    Stat == 'Published' ||
+                    Stat == 'FER Submitted' ||
+                    Stat == 'Hearing Completed' ||
+                    Stat == 'Granted'
+                  "
+                >
+                  <label>Published Date<span class="required">*</span> </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Date of Publication"
+                    formControlName="PublishedDate"
+                  />
+                </div>
+                <div
+                  class="col-md-6"
+                  *ngIf="
+                    show_FER_date ||
+                    Stat == 'FER Submitted' ||
+                    Stat == 'Hearing Completed' ||
+                    Stat == 'Granted'
+                  "
+                >
+                  <label
+                    >FER Submitted Date<span class="required">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Date of FER Submission"
+                    formControlName="FERDate"
+                  />
+                </div>
+              </div>
+              <div class="row my-2">
+                <div
+                  class="col-md-6"
+                  *ngIf="
+                    show_hearing_date ||
+                    Stat == 'Hearing Completed' ||
+                    Stat == 'Granted'
+                  "
+                >
+                  <label>Hearing Date<span class="required">*</span> </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Date of Hearing"
+                    formControlName="HearingDate"
+                  />
+                </div>
+                <div
+                  class="col-md-6"
+                  *ngIf="show_granted_date || Stat == 'Granted'"
+                >
+                  <label>Granted Date<span class="required">*</span> </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Date of Grant"
+                    formControlName="GrantedDate"
+                  />
+                </div>
+              </div>
+              <div class="row my-2">
+                <div
+                  class="col-md-12 my-2"
+                  *ngIf="show_granted_date || Stat == 'Granted'"
+                >
+                  <label
+                    >Granted Patent Number<span class="required">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Granted Patent Number"
+                    formControlName="GrantedPatentNumber"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 form-group mt-4">
+              <label>Technology Readiness Level <span class="required">*</span> </label>
+              <select type="text" class="form-control" formControlName="TechnologyReadinessLevel">
+                  <option value="">...</option>
+                  <option *ngFor="let level of TRlevels" [value]="level">
+                    {{ level }}</option>
+              </select>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-block btn-lg mt-5"
+            [disabled]="patent.invalid"
+          >
+            Update patent
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

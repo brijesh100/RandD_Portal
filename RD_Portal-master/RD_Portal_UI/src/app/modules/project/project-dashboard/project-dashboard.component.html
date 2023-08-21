@@ -1,0 +1,145 @@
+<app-loader [load]="isloading"></app-loader>
+<div class="container-fluid mb-2">
+  <div class="row">
+    <div class="col-xl-4 col-lg-5">
+      <app-snapshots [snapshot]="snapshot"> </app-snapshots>
+      <div class="card mt-2">
+        <div class="card-body container p-2">
+          <div class="row">
+            <span class="col-md-4 text-center my-auto">Choose Dept</span>
+            <select
+              class="form-control my-1 col-md-7 mx-auto"
+              [(ngModel)]="departmentPie"
+              (change)="pieFilter()"
+            >
+              <option value="all" selected>All Departments</option>
+              <option
+                *ngFor="let department of departments"
+                [value]="department"
+              >
+                {{ department }}
+              </option>
+            </select>
+          </div>
+
+          <div class="card-body">
+            <div style="display: block">
+              <canvas
+                baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+                [options]="pieChartOptions"
+                [colors]="pieChartColors"
+                [plugins]="pieChartPlugins"
+                [legend]="pieChartLegend"
+              >
+              </canvas>
+            </div>
+            <!-- <div class="mt-4 text-center small">
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-primary"></i> Direct
+                            </span>
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-success"></i> Social
+                            </span>
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-info"></i> Referral
+                            </span>
+                        </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 col-lg-7 mt-2">
+      <div
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+        [hidden]="!errorMessage"
+      >
+        {{ errorMessage }}
+        <button type="button" class="close">
+          <span (click)="clearMessage()">&times;</span>
+        </button>
+      </div>
+      <div class="row mb-2">
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-body padshort">
+              <div class="row">
+                <div class="col-xl-8 col-sm-12 mt-1 filter-form">
+                  <label for="from" class="mt-1">From: </label>
+                  <input
+                    id="from"
+                    class="form-control input-sm mx-2"
+                    autocomplete="off"
+                    type="number"
+                    placeholder="Year (yyyy)"
+                    [(ngModel)]="fromYear"
+                  />
+                  <label for="to" class="mt-1">To: </label>
+                  <input
+                    id="to"
+                    class="form-control input-sm mx-2"
+                    autocomplete="off"
+                    type="number"
+                    placeholder="Year (yyyy)"
+                    [(ngModel)]="toYear"
+                  />
+                </div>
+                <div class="col-xl-4 col-sm-12 my-1">
+                  <button class="btn btn-primary float-right" (click)="reset()">
+                    Reset
+                  </button>
+                  <button
+                    class="btn btn-primary float-right mx-2"
+                    (click)="filter()"
+                    [disabled]="
+                      !(
+                        fromYear >= 1900 &&
+                        fromYear <= 2500 &&
+                        toYear >= 1900 &&
+                        toYear < 2500
+                      )
+                    "
+                  >
+                    Filter
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4">
+          <div
+            class="card card-red c-pointer"
+            routerLink="/project/showPriority"
+          >
+            <div class="card-body padshort">
+              <div class="card-red card-text p-2">Priority Projects</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1 mb-3">
+        <div class="col-xl-12">
+          <div
+            [ngClass]="{ 'card mb-2': true, dark: darktheme }"
+            style="display: block"
+          >
+            <canvas
+              baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [colors]="barChartColors"
+              [chartType]="barChartType"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
